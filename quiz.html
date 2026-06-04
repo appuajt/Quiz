@@ -1308,16 +1308,16 @@ const questions = [
   },
   {
     mockup: "q06",
-    navTitle: "Policy Confirmation",
-    question: "What's wrong with the header?",
+    navTitle: "Support hours",
+    question: "A UI card needs to show available hours. The draft reads: \"Available from 6 - 8 PM\". What's the correct time format?",
     options: [
-      "It should say \"Your policy is active\" not \"ready\"",
-      "Headers should never end with a full stop",
-      "It should be title case: \"Your Policy Is Ready\"",
-      "Nothing is wrong"
+      "Available from 6:00 PM – 8:00 PM",
+      "Available from 6:00 – 8:00 PM",
+      "Available from 6 PM – 8 PM",
+      "Available from 6 – 8 PM"
     ],
-    correctIndex: 1,
-    explanation: "In app UI, headers are display text — not sentences. A trailing full stop looks heavy and is an unnecessary punctuation mark at this hierarchy level."
+    correctIndex: 0,
+    explanation: "In UI copy, always use the full format (6:00 PM), repeat AM/PM for both times so there's no ambiguity, and use an en-dash (not a hyphen) for ranges."
   },
   {
     mockup: "q07",
@@ -1598,12 +1598,22 @@ function mockupContent(id) {
       <div style="font-size:13px;color:#141414;line-height:1.6;font-family:'Euclid Circular B',sans-serif;padding:0 2px">We know this is stressful. Take a deep breath.</div>`;
 
     case "q06": return `
-      <div class="ph-success-icon">📄</div>
-      <div class="ph-header" style="text-align:center;font-size:16px">Your policy is ready.</div>
-      <div class="ph-body" style="text-align:center">Your car insurance starts today.</div>
-      <div class="ph-divider" style="margin-top:8px"></div>
-      <div class="ph-row"><span class="ph-label">Policy no.</span><span class="ph-value">ACK-2026-00482</span></div>
-      <div class="ph-row"><span class="ph-label">Valid until</span><span class="ph-value">5 Jun 2027</span></div>`;
+      <div class="ph-sub">Need help?</div>
+      <div class="ph-header" style="margin-bottom:10px;font-size:15px">Talk to us</div>
+      <div style="background:#F5F3FF;border-radius:10px;padding:10px 12px;margin-bottom:8px;display:flex;align-items:flex-start;gap:8px">
+        <div style="font-size:16px;margin-top:1px">💬</div>
+        <div>
+          <div style="font-size:11px;font-weight:700;color:#141414;margin-bottom:2px">Live chat</div>
+          <div style="font-size:11px;color:#474649;line-height:1.5;font-family:'Euclid Circular B',sans-serif">Available from 6 - 8 PM</div>
+        </div>
+      </div>
+      <div style="background:#F5F5F5;border-radius:10px;padding:10px 12px;display:flex;align-items:flex-start;gap:8px">
+        <div style="font-size:16px;margin-top:1px">📞</div>
+        <div>
+          <div style="font-size:11px;font-weight:700;color:#141414;margin-bottom:2px">Call us</div>
+          <div style="font-size:11px;color:#474649;line-height:1.5;font-family:'Euclid Circular B',sans-serif">1800-XXX-XXXX · Toll free</div>
+        </div>
+      </div>`;
 
     case "q07": return `
       <div class="ph-success-icon">📬</div>
@@ -1745,7 +1755,7 @@ function mockupCTA(id) {
     q03: [null],
     q04: ["Resend OTP", ""],
     q05: ["Start claim", ""],
-    q06: ["View policy", ""],
+    q06: ["Start chat", ""],
     q07: ["Got it", ""],
     q08: ["View full policy", ""],
     q09: ["Download all", ""],
