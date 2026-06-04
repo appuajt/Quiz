@@ -825,7 +825,39 @@
     background: rgba(123,92,240,0.08);
     transform: translateX(2px);
   }
-  .option-label input[type="radio"] { display: none; }
+  .option-label input[type="radio"],
+  .option-label input[type="checkbox"] { display: none; }
+  .multi-check {
+    margin-left: auto;
+    flex-shrink: 0;
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    border: 1.5px solid rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: transparent;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    align-self: center;
+  }
+  .option-label.selected .multi-check {
+    background: var(--purple);
+    border-color: var(--purple);
+    color: white;
+    box-shadow: 0 0 8px rgba(123,92,240,0.5);
+  }
+  .option-label.correct .multi-check {
+    background: var(--green);
+    border-color: var(--green);
+    color: white;
+  }
+  .option-label.wrong .multi-check {
+    background: var(--red);
+    border-color: var(--red);
+    color: white;
+  }
   .option-letter {
     width: 28px; height: 28px;
     border-radius: 8px;
@@ -1328,17 +1360,17 @@
 
       <h1 class="intro-title"><span id="tw-line"></span><span class="tw-cursor" id="tw-cursor"></span></h1>
 
-      <p class="intro-lede">20 real-app screens with copy that's too vague, off-tone, or just wrong. Can you spot every mistake?</p>
+      <p class="intro-lede">25 real-app screens with copy that's too vague, off-tone, or just wrong. Can you spot every mistake?</p>
 
       <div class="intro-meta">
         <div class="intro-meta-item">
-          <strong>20</strong>
+          <strong>25</strong>
           <span>Questions</span>
         </div>
         <div class="divider-v"></div>
         <div class="intro-meta-item">
-          <strong>10</strong>
-          <span>Minutes</span>
+          <strong>10 min</strong>
+          <span>Give or take</span>
         </div>
       </div>
 
@@ -1373,7 +1405,7 @@
     <!-- Progress -->
     <div class="progress-wrap">
       <div class="progress-top">
-        <span class="progress-label">Question <strong id="q-current">1</strong> of 20</span>
+        <span class="progress-label">Question <strong id="q-current">1</strong> of 25</span>
         <span class="progress-pct" id="q-pct">5%</span>
       </div>
       <div class="progress-track">
@@ -1422,7 +1454,7 @@
         </svg>
         <div class="score-ring-text">
           <div class="score-num" id="result-score">0</div>
-          <div class="score-denom">/ 20</div>
+          <div class="score-denom">/ 25</div>
         </div>
       </div>
       <h2 id="result-headline">Well done!</h2>
@@ -1518,7 +1550,7 @@ async function handleStartQuiz() {
 }
 
 /* ============================================================
-   DATA — 20 questions
+   DATA — 25 questions
    correctIndex is 0-based (0=A, 1=B, 2=C, 3=D)
    mockup: function name string → rendered by buildMockup()
 ============================================================ */
@@ -1541,9 +1573,9 @@ const questions = [
     navTitle: "Get Started",
     question: "What's wrong with the CTA?",
     options: [
-      "\"Let's\" is a contraction — it shouldn't be used",
+      "\"Let's\" is a contraction, so it shouldn't be used",
       "The CTA is in all caps and has an exclamation mark",
-      "The CTA is too short — it should explain what happens next",
+      "The CTA is too short and should explain what happens next",
       "The body copy doesn't match the CTA"
     ],
     correctIndex: 1,
@@ -1554,13 +1586,12 @@ const questions = [
     navTitle: "Claims History",
     question: "What are the two problems with this empty state?",
     options: [
-      "The illustration is missing and the header is wrong",
+      "The illustration is wrong",
       "\"Oops!\" is wrong for a neutral state, and there's no next step for the user",
-      "The body copy is passive and the header needs a full stop",
-      "The tone is too cold — it should be warmer"
+      "The tone is too cold and should be warmer"
     ],
     correctIndex: 1,
-    explanation: "\"Oops!\" implies something went wrong — an empty claims history is neutral. The screen also leaves the user stranded with no next action (e.g. \"File a claim\")."
+    explanation: "\"Oops!\" implies something went wrong, but an empty claims history is neutral. The screen also leaves the user stranded with no next action (e.g. \"File a claim\")."
   },
   {
     mockup: "q04",
@@ -1568,46 +1599,45 @@ const questions = [
     question: "What's wrong with the body copy?",
     options: [
       "\"Try again\" should be a CTA button, not inline text",
-      "The header is too blunt — it should apologise",
-      "It blames the user — should say \"The OTP doesn't match\"",
+      "The header is too blunt and should apologise",
+      "It blames the user; it should say \"The OTP doesn't match\"",
       "It's missing the reason why verification failed"
     ],
     correctIndex: 2,
-    explanation: "\"You entered the wrong OTP\" points the finger. \"The OTP doesn't match\" states the system state without blame — a key UX writing principle."
+    explanation: "\"You entered the wrong OTP\" points the finger. \"The OTP doesn't match\" states the system state without blame, a key UX writing principle."
   },
   {
     mockup: "q05",
     navTitle: "File a claim",
     question: "Someone just had a car accident and opened the app. What should your copy prioritise?",
     options: [
-      "Empathy — We know this is stressful. Take a deep breath.",
-      "Next steps — Don't get your car repaired yet. File a claim first — we'll send an inspector to assess the damage.",
-      "Brand proof — With a 96% settlement ratio, you're in safe hands.",
-      "Energy — Don't worry! We've got your back! Let's sort this out 💪"
+      "Next steps: Don't get your car repaired yet. File a claim first and we'll send an inspector to assess the damage.",
+      "Brand proof: With a 96% settlement ratio, you're in safe hands.",
+      "Energy: Don't worry! We've got your back! Let's sort this out 💪"
     ],
-    correctIndex: 1,
+    correctIndex: 0,
     explanation: "In high-stress moments, lead with what the user needs to do — not reassurance, not stats. Calm, exact, useful. The next-steps copy gives a concrete action and sets an expectation, which is exactly what a panicked person needs."
   },
   {
     mockup: "q06",
-    navTitle: "Policy Confirmation",
-    question: "What's wrong with the header?",
+    navTitle: "Support hours",
+    question: "What among these is the most flexible time format?",
     options: [
-      "It should say \"Your policy is active\" not \"ready\"",
-      "Headers should never end with a full stop",
-      "It should be title case: \"Your Policy Is Ready\"",
-      "Nothing is wrong"
+      "Available from 6:00 PM – 8:00 PM",
+      "Available from 6:00 – 8:00 PM",
+      "Available from 6 PM – 8 PM",
+      "Available from 6 – 8 PM"
     ],
-    correctIndex: 1,
-    explanation: "In app UI, headers are display text — not sentences. A trailing full stop looks heavy and is an unnecessary punctuation mark at this hierarchy level."
+    correctIndex: 0,
+    explanation: "In UI copy, always use the full format (6:00 PM), repeat AM/PM for both times so there's no ambiguity, and use an en-dash (not a hyphen) for ranges."
   },
   {
     mockup: "q07",
     navTitle: "Claim Submitted",
     question: "What's the key problem with the body copy?",
     options: [
-      "It's too short — needs more detail about the claim",
-      "\"Soon\" is vague — ACKO should always give a specific timeline",
+      "It's too short and needs more detail about the claim",
+      "\"Soon\" is vague; ACKO should always give a specific timeline",
       "The CTA should say \"Okay\" not \"Got it\"",
       "It's missing the claim number"
     ],
@@ -1616,29 +1646,29 @@ const questions = [
   },
   {
     mockup: "q08",
-    navTitle: "Health Summary",
-    question: "Which of these is the plainspoken alternative?",
+    navTitle: "Claim status",
+    question: "As per our UX writing playbook, what's wrong with the copy on screen?",
     options: [
-      "\"Deductible applicable: ₹2,000\"",
-      "\"Co-payment: ₹2,000 per hospitalisation\"",
-      "\"You'll pay ₹2,000 first — ACKO covers the rest\"",
-      "\"IDV deductible: ₹2,000\""
+      "It should use active voice",
+      "It's in title case. Should be sentence case",
+      "It needs an exclamation mark",
+      "Nothing, this is correct"
     ],
-    correctIndex: 2,
-    explanation: "ACKO's voice is plainspoken — explain what something means for the user, not just what it's called. \"You'll pay ₹2,000 first\" communicates the impact directly."
+    correctIndex: 1,
+    explanation: "ACKO uses sentence case everywhere: headings, CTAs, labels, status messages. Title case (capitalising every word) is reserved for product or plan names only. The correct copy is: Your claim is under review."
   },
   {
     mockup: "q09",
     navTitle: "Policy Documents",
     question: "Which verb should replace 'Explore' here?",
     options: [
-      "Check",
-      "Download",
+      "Discover",
+      "Consume",
       "View",
-      "Access"
+      "Peruse"
     ],
     correctIndex: 2,
-    explanation: "\"Explore\" is for discovery — browsing something new. For reading an existing document, \"View\" is the precise, standard verb. \"Download\" implies saving; \"Access\" is vague."
+    explanation: "\"Explore\" is for discovery, for browsing something new. For reading an existing document, \"View\" is the precise, standard verb. \"Discover\" and \"Peruse\" are too literary; \"Consume\" is jargon."
   },
   {
     mockup: "q10",
@@ -1647,7 +1677,7 @@ const questions = [
     options: [
       "The emoji is in the wrong position",
       "The header should not use an exclamation mark",
-      "\"Congratulations\" and \"uncertainties\" both violate ACKO's tone — it's overselling a functional moment",
+      "\"Congratulations\" and \"uncertainties\" both violate ACKO's tone; this oversells a functional moment",
       "The body is too long"
     ],
     correctIndex: 2,
@@ -1671,22 +1701,22 @@ const questions = [
     navTitle: "Claim Update",
     question: "What's wrong with how ACKO refers to itself?",
     options: [
-      "\"ACKO\" is correctly used here — no issue",
-      "ACKO should refer to itself as \"we\" — not by name — in customer-facing copy",
+      "\"ACKO\" is correctly used here, no issue",
+      "ACKO should refer to itself as \"we\", not by name, in customer-facing copy",
       "The sentence is too long",
-      "\"Decision\" is too formal — should be \"update\""
+      "\"Decision\" is too formal and should be \"update\""
     ],
     correctIndex: 1,
-    explanation: "In customer-facing copy, ACKO should always use \"we\" and \"our\". Using the brand name in third person feels cold and robotic — as if the company is talking about itself."
+    explanation: "In customer-facing copy, ACKO should always use \"we\" and \"our\". Using the brand name in third person feels cold and robotic, as if the company is talking about itself."
   },
   {
     mockup: "q13",
     navTitle: "Claim Decision",
     question: "What's wrong with this approach?",
     options: [
-      "It's too short — should explain the reason",
-      "The build-up makes it worse — state the fact, the reason, and the next step directly",
-      "\"Disheartening\" is fine — it shows empathy",
+      "It's too short and should explain the reason",
+      "The build-up makes it worse; state the fact, the reason, and the next step directly",
+      "\"Disheartening\" is fine, it shows empathy",
       "The header should apologise"
     ],
     correctIndex: 1,
@@ -1694,16 +1724,16 @@ const questions = [
   },
   {
     mockup: "q14",
-    navTitle: "Reminder",
-    question: "What should this copy look like?",
+    navTitle: "Policy details",
+    question: "Rs. 2,000 deductible will be applicable. What's wrong with this sentence? Pick all that apply.",
     options: [
-      "\"PUC expiry warning! Don't let your coverage lapse!\"",
-      "\"Your PUC expires in 3 days. Renew now to avoid a fine.\"",
-      "\"Please renew your PUC before it expires.\"",
-      "\"Reminder: PUC certificate renewal required.\""
+      "Currency format is wrong; should be ₹2,000",
+      "\"Will be applicable\" is passive; tell the user directly what they pay",
+      "Doesn't tell the user why they're paying this amount",
+      "\"Deductible\" should be replaced with a simpler word every time it's used"
     ],
-    correctIndex: 1,
-    explanation: "Specificity reduces anxiety and drives action. \"3 days\" is a concrete deadline. \"Renew now to avoid a fine\" gives a clear reason. No exclamation marks, no jargon."
+    correctIndices: [0, 1, 2],
+    explanation: "\"Deductible\" is fine to use — it gets explained when first introduced in the UI, not replaced everywhere. The real issues: Rs. should be ₹, the passive voice buries the user's action, and there's no context for why this amount applies."
   },
   {
     mockup: "q15",
@@ -1713,49 +1743,48 @@ const questions = [
       "It's too long for a headline",
       "\"Guaranteed\" and \"100% of the time\" are overpromises ACKO must never make unless factually true in every case",
       "It should mention the premium price instead",
-      "Nothing is wrong — it's a strong headline"
+      "Nothing is wrong, it's a strong headline"
     ],
     correctIndex: 1,
     explanation: "ACKO's voice is honest. Absolute claims like \"guaranteed\" and \"100% of the time\" are legally and ethically risky, and damage trust the moment an exception occurs."
   },
   {
     mockup: "q16",
-    navTitle: "Nominee Details",
-    question: "Which is the correct replacement CTA?",
+    navTitle: "Notifications",
+    question: "Which of these uses emojis correctly?",
     options: [
-      "\"Confirm Nominee\"",
-      "\"Confirm nominee\"",
-      "\"Confirm nominee details\"",
-      "\"Proceed to confirmation\""
+      "Your car insurance expires tomorrow 🚗",
+      "Get your 🚗 insurance renewed",
+      "Your claim was rejected 😭",
+      "Your policy is active 🎉✨ — great news for you! 🙌"
     ],
-    correctIndex: 1,
-    explanation: "ACKO CTAs follow verb + object in sentence case. \"Confirm nominee\" is concise, action-oriented, and correctly cased. Title case (A) is wrong; (C) is redundant; (D) is passive."
+    correctIndex: 0,
+    explanation: "A is correct: one emoji, at the end, replaces the full stop, and the context suits it. B uses the emoji as a word replacement. C uses an emoji in a high-distress context, which is tone-deaf. D piles on three emojis in one sentence — use them sparingly, one at most."
   },
   {
     mockup: "q17",
-    navTitle: "Cashless Claim",
-    question: "What's wrong with this?",
+    navTitle: "Document upload",
+    question: "A document upload failed. Which copy works better?",
     options: [
-      "It should not apologise at all — the delay isn't ACKO's fault",
-      "\"Sorry\" is fine, but \"but\" after an apology cancels it out",
-      "It's too short — needs a timeline",
-      "The tone is too casual"
+      "Your document couldn't be uploaded. Please try again with a smaller file.",
+      "We couldn't upload your document because the file is too large. Upload a file under 5 MB.",
+      "Upload failed due to file size exceeding the limit. Please try again."
     ],
     correctIndex: 1,
-    explanation: "Never follow \"sorry\" with \"but\" — it negates the apology. Also, only apologise when ACKO is responsible. Better: \"Our agents are busy right now. We'll connect you in [time].\" — no sorry needed if it's a capacity issue."
+    explanation: "B uses active voice (we couldn't), states the exact reason, and gives the precise limit (5 MB) so the user knows exactly what to do. A is passive and vague about the size. C reads like a system error log, not a product."
   },
   {
     mockup: "q18",
-    navTitle: "Documents",
-    question: "What's the better version of this sentence?",
+    navTitle: "Cancel order",
+    question: "A user wants to cancel their food order. What's the core problem with this confirmation dialog?",
     options: [
-      "\"Your documents will be reviewed within 2 hours.\"",
-      "\"We'll review your documents within 2 hours.\"",
-      "\"Document review: within 2 hours.\"",
-      "\"Our team shall review your documents in 2 hours.\""
+      "The heading is too short",
+      "\"Yes\" and \"No\" are ambiguous — the user has to hold the question in their head to understand which button does what",
+      "It needs to explain the refund policy",
+      "Nothing — this is standard confirmation copy"
     ],
     correctIndex: 1,
-    explanation: "ACKO's voice uses contractions (\"we'll\" not \"we will\") and first person (\"we\"). \"Shall\" is too formal. Option A is passive. Option C drops the human touch entirely."
+    explanation: "\"Yes/No\" buttons are the classic confirmation dialog failure. They don't mirror the action. Better: \"Cancel order\" and \"Keep order\" — each button tells the user exactly what will happen without needing to remember the question."
   },
   {
     mockup: "q19",
@@ -1763,25 +1792,90 @@ const questions = [
     question: "What's wrong with this?",
     options: [
       "The date format is wrong",
-      "\"Policyholder\" is third-person — should say \"Your coverage begins on 15 June 2026.\"",
+      "\"Policyholder\" is third-person; it should say \"Your coverage begins on 15 June 2026.\"",
       "It should mention ACKO by name",
       "There's no CTA"
     ],
     correctIndex: 1,
-    explanation: "ACKO writes in second person — always address \"you\". \"The policyholder\" sounds like legal text, not a product. \"Your coverage begins\" is warmer and clearer."
+    explanation: "ACKO writes in second person, always addressing \"you\". \"The policyholder\" sounds like legal text, not a product. \"Your coverage begins\" is warmer and clearer."
   },
   {
     mockup: "q20",
-    navTitle: "Roadside Assist",
-    question: "What's wrong with this tone?",
+    navTitle: "Ride update",
+    question: "A driver just cancelled the user's ride. Which push notification copy works best?",
     options: [
-      "The emoji is inappropriate but the copy is fine",
-      "\"ASAP\" is too informal but otherwise it's correct",
-      "This is a high-stress moment — the copy should be calm, direct, and give a specific next step, not be upbeat",
-      "The header is too short"
+      "\"Driver cancelled your trip. Book again.\"",
+      "\"Oops! Your driver bailed. Tap to rebook 🚗\"",
+      "\"Your driver had to cancel. We're finding you another one now.\"",
+      "\"Trip Cancelled. Please Rebook Your Ride.\""
     ],
     correctIndex: 2,
-    explanation: "A car accident is a high-stress moment. Upbeat copy (\"Let's go! 🚗\", \"ACKO's got you!\") misreads the emotional context. Calm, direct, and specific is right: \"Help is on the way. Our team will reach you within 30 minutes.\""
+    explanation: "C acknowledges the inconvenience, uses active voice, and tells the user what's already happening next — without blaming anyone or requiring action. A is dismissive. B uses humour in a frustrating moment. D uses title case and passive construction."
+  },
+  {
+    mockup: "q21",
+    navTitle: "Search",
+    question: "A user picks a check-out date before check-in. Which error message handles this best?",
+    options: [
+      "\"You have entered invalid dates. Please correct your search.\"",
+      "\"Invalid date range. Try again.\"",
+      "\"Error: Date range not valid.\"",
+      "\"Check-out needs to be after check-in. Try different dates.\""
+    ],
+    correctIndex: 3,
+    explanation: "D never blames the user, tells them exactly what the constraint is, and gives a clear next step. A blames the user with \"you have entered invalid\". B and C read like system error logs — useful to engineers, not humans."
+  },
+  {
+    mockup: "q22",
+    navTitle: "Checkout",
+    question: "A payment just failed. Which copy handles this best?",
+    options: [
+      "\"Something went wrong. Please try again.\"",
+      "\"Payment failed. Please try again later.\"",
+      "\"Your payment didn't go through. Check your card details or try a different payment method.\"",
+      "\"Transaction unsuccessful. Contact your bank.\""
+    ],
+    correctIndex: 2,
+    explanation: "C tells the user what happened and gives two specific next steps. \"Something went wrong\" (A) is the most useless phrase in product copy — zero information. B adds \"later\" which is wrong when the user can retry immediately. D sends them offsite before suggesting an in-app fix."
+  },
+  {
+    mockup: "q23",
+    navTitle: "Book a ride",
+    question: "What's wrong with the button on this screen?",
+    options: [
+      "It should read \"Confirm your ride\" in title case",
+      "A button label should be a verb phrase. \"Ride Confirmation\" is a noun — it names a page, not an action",
+      "It's too long for a button label",
+      "Nothing — noun labels are standard on confirmation screens"
+    ],
+    correctIndex: 1,
+    explanation: "Button labels should always be verb phrases that tell the user what will happen when they tap. \"Ride Confirmation\" names a concept. \"Confirm ride\" is the right fix: action verb + object, sentence case, no filler."
+  },
+  {
+    mockup: "q24",
+    navTitle: "Your booking",
+    question: "A hotel booking was just cancelled. Which message handles this best?",
+    options: [
+      "\"Booking Cancelled. You may be eligible for a refund based on the cancellation policy.\"",
+      "\"We've cancelled your booking. You'll get a full refund within 5–7 business days. Details sent to your email.\"",
+      "\"Your booking has been cancelled. Refund eligibility depends on the property's policy.\"",
+      "\"Cancelled! Hope to see you book again soon! 🏨\""
+    ],
+    correctIndex: 1,
+    explanation: "B is in active voice, confirms the outcome definitively, gives the exact refund timeline, and tells the user where to find details. A and C use \"may be eligible\" — deliberately non-committal when the user most needs certainty. D is tone-deaf: celebrating a cancellation."
+  },
+  {
+    mockup: "q25",
+    navTitle: "Order history",
+    question: "A first-time user opens their order history. Which empty state copy works best?",
+    options: [
+      "\"No orders found.\"",
+      "\"No data to display.\"",
+      "\"It's empty here! Start ordering food now.\"",
+      "\"You haven't ordered yet. Hungry? Browse restaurants near you.\""
+    ],
+    correctIndex: 3,
+    explanation: "D acknowledges the user's state, adds a touch of warmth, and gives a clear forward path. A and B are database-speak — they describe a system state, not a human one. C is over-enthusiastic and the CTA is vague (\"now\" vs a specific action)."
   }
 ];
 
@@ -1853,9 +1947,22 @@ function mockupContent(id) {
       </div>`;
 
     case "q03": return `
-      <div class="ph-illustration">[ Illustration ]</div>
-      <div class="ph-header" style="text-align:center">Oops! Nothing to see here.</div>
-      <div class="ph-body" style="text-align:center">You haven't made any claims.</div>`;
+      <div style="text-align:center;padding:8px 0 14px">
+        <div style="display:inline-flex;align-items:center;justify-content:center;width:72px;height:72px;background:#F0EDFD;border-radius:50%;margin-bottom:12px">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="6" y="4" width="20" height="26" rx="3" fill="#D4C9F9"/>
+            <rect x="6" y="4" width="20" height="26" rx="3" stroke="#7B5CF0" stroke-width="1.5"/>
+            <line x1="11" y1="12" x2="21" y2="12" stroke="#7B5CF0" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="11" y1="17" x2="21" y2="17" stroke="#B9ADEE" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="11" y1="22" x2="17" y2="22" stroke="#B9ADEE" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="27" cy="27" r="6" fill="#F5F3FF" stroke="#7B5CF0" stroke-width="1.5"/>
+            <line x1="27" y1="24.5" x2="27" y2="27.5" stroke="#7B5CF0" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="27" cy="29.5" r="0.75" fill="#7B5CF0"/>
+          </svg>
+        </div>
+        <div class="ph-header" style="text-align:center">Oops! Nothing to see here.</div>
+        <div class="ph-body" style="text-align:center;margin-top:4px">You haven't made any claims.</div>
+      </div>`;
 
     case "q04": return `
       <div class="ph-header" style="margin-bottom:8px">Verification failed</div>
@@ -1873,23 +1980,41 @@ function mockupContent(id) {
       </div>`;
 
     case "q05": return `
-      <div style="text-align:center;padding:4px 0 8px">
-        <div style="font-size:26px;margin-bottom:6px">🚗</div>
-        <div style="font-size:10px;font-weight:700;color:#F87171;letter-spacing:0.6px;text-transform:uppercase;margin-bottom:8px">Accident reported</div>
+      <div style="text-align:center;padding:4px 0 14px">
+        <div style="font-size:28px;margin-bottom:6px">🚗</div>
+        <div style="font-size:10px;font-weight:700;color:#474649;letter-spacing:0.6px;text-transform:uppercase;margin-bottom:14px">Accident reported</div>
       </div>
-      <div style="background:#FFF8F8;border-radius:10px;padding:11px 13px;border:1.5px dashed #F87171;margin-bottom:10px">
-        <div style="font-size:10px;font-weight:700;color:#F87171;letter-spacing:0.5px;margin-bottom:5px;text-transform:uppercase">⚠ Replace this copy</div>
-        <div style="font-size:12px;color:#141414;line-height:1.55;font-family:'Euclid Circular B',sans-serif">We know this is stressful 💙 Take a deep breath — you've got ACKO on your side! We'll sort everything out for you.</div>
-      </div>
-      <div style="font-size:10px;color:#7A7B7D;line-height:1.5;font-family:'Euclid Circular B',sans-serif">What should this screen say instead?</div>`;
+      <div style="position:relative;background:#F5F3FF;border:1.5px solid #C4B5FD;border-radius:12px;padding:12px 14px;margin:0 4px;display:flex;align-items:flex-start;gap:10px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;margin-top:2px">
+          <path d="M12 2C8.13 2 5 5.13 5 9c0 2.61 1.41 4.89 3.5 6.19V17a1 1 0 001 1h5a1 1 0 001-1v-1.81C17.59 13.89 19 11.61 19 9c0-3.87-3.13-7-7-7z" fill="#7B5CF0" opacity="0.25"/>
+          <path d="M12 2C8.13 2 5 5.13 5 9c0 2.61 1.41 4.89 3.5 6.19V17a1 1 0 001 1h5a1 1 0 001-1v-1.81C17.59 13.89 19 11.61 19 9c0-3.87-3.13-7-7-7z" stroke="#7B5CF0" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M9.5 21h5" stroke="#7B5CF0" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M9.5 18.5h5" stroke="#7B5CF0" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M12 6v3M10.5 9h3" stroke="#7B5CF0" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <div style="font-size:12.5px;color:#141414;line-height:1.6;font-family:'Euclid Circular B',sans-serif">We know this is stressful. Take a deep breath.</div>
+        <div style="position:absolute;bottom:-9px;left:20px;width:16px;height:9px;overflow:hidden">
+          <div style="width:16px;height:16px;background:#F5F3FF;border:1.5px solid #C4B5FD;transform:rotate(45deg);transform-origin:top left;margin-top:-1px;margin-left:1px"></div>
+        </div>
+      </div>`;
 
     case "q06": return `
-      <div class="ph-success-icon">📄</div>
-      <div class="ph-header" style="text-align:center;font-size:16px">Your policy is ready.</div>
-      <div class="ph-body" style="text-align:center">Your car insurance starts today.</div>
-      <div class="ph-divider" style="margin-top:8px"></div>
-      <div class="ph-row"><span class="ph-label">Policy no.</span><span class="ph-value">ACK-2026-00482</span></div>
-      <div class="ph-row"><span class="ph-label">Valid until</span><span class="ph-value">5 Jun 2027</span></div>`;
+      <div class="ph-sub">Need help?</div>
+      <div class="ph-header" style="margin-bottom:10px;font-size:15px">Talk to us</div>
+      <div style="background:#F5F3FF;border-radius:12px;padding:14px 15px;margin-bottom:10px;display:flex;align-items:flex-start;gap:10px">
+        <div style="font-size:20px;margin-top:1px">💬</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#141414;margin-bottom:3px">Live chat</div>
+          <div style="font-size:12px;color:#474649;line-height:1.5;font-family:'Euclid Circular B',sans-serif">Available from 6 - 8 PM</div>
+        </div>
+      </div>
+      <div style="background:#F5F5F5;border-radius:12px;padding:14px 15px;display:flex;align-items:flex-start;gap:10px">
+        <div style="font-size:20px;margin-top:1px">📞</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#141414;margin-bottom:3px">Call us</div>
+          <div style="font-size:12px;color:#474649;line-height:1.5;font-family:'Euclid Circular B',sans-serif">1800-XXX-XXXX · Toll free</div>
+        </div>
+      </div>`;
 
     case "q07": return `
       <div class="ph-success-icon">📬</div>
@@ -1899,14 +2024,14 @@ function mockupContent(id) {
       <div class="ph-row"><span class="ph-label">Claim ID</span><span class="ph-value">#CL-20512</span></div>`;
 
     case "q08": return `
-      <div class="ph-sub">Coverage summary</div>
-      <div class="ph-row"><span class="ph-label">Sum insured</span><span class="ph-value">₹5,00,000</span></div>
-      <div class="ph-row" style="background:#FEF9EC;border-radius:6px;padding:8px;border-bottom:none;margin:2px 0">
-        <span class="ph-label" style="font-size:11px;color:#92400E">Applicable deductible</span>
-        <span class="ph-value" style="color:#92400E">₹2,000 (as per policy terms)</span>
+      <div style="text-align:center;padding:6px 0 12px">
+        <div style="font-size:32px;margin-bottom:8px">🔍</div>
+        <div style="font-size:15px;font-weight:700;color:#141414;line-height:1.4;font-family:'Euclid Circular B',sans-serif">Your Claim Is Under Review</div>
       </div>
-      <div class="ph-row"><span class="ph-label">Room rent</span><span class="ph-value">Up to ₹3,000/day</span></div>
-      <div class="ph-row"><span class="ph-label">Day care</span><span class="ph-value">Covered</span></div>`;
+      <div class="ph-divider"></div>
+      <div class="ph-row"><span class="ph-label">Claim no.</span><span class="ph-value">CLM-2026-00831</span></div>
+      <div class="ph-row"><span class="ph-label">Submitted</span><span class="ph-value">2 Jun 2026</span></div>
+      <div class="ph-row"><span class="ph-label">Est. update</span><span class="ph-value">Within 4 hours</span></div>`;
 
     case "q09": return `
       <div class="ph-sub">Documents</div>
@@ -1959,49 +2084,67 @@ function mockupContent(id) {
       <div class="ph-body">It may be disheartening, but your claim has been rejected.</div>`;
 
     case "q14": return `
-      <div style="background:#FEF3C7;border-left:3px solid #D97706;border-radius:4px;padding:8px 10px;margin-bottom:6px">
-        <div style="font-size:11px;font-weight:700;color:#92400E;margin-bottom:3px">Your policy needs attention!</div>
-        <div style="font-size:11px;color:#78350F;line-height:1.4">Your PUC is about to expire soon. Take action immediately!</div>
-      </div>
-      <div class="ph-row"><span class="ph-label">Vehicle</span><span class="ph-value">MH12 AB 4521</span></div>
-      <div class="ph-row"><span class="ph-label">PUC valid till</span><span class="ph-value" style="color:#D97706">7 Jun 2026</span></div>`;
+      <div class="ph-sub">Claim summary</div>
+      <div class="ph-row"><span class="ph-label">Claim no.</span><span class="ph-value">CLM-2026-00912</span></div>
+      <div class="ph-row"><span class="ph-label">Status</span><span class="ph-value" style="color:#22C55E">Approved</span></div>
+      <div class="ph-row"><span class="ph-label">Amount</span><span class="ph-value">₹48,000</span></div>
+      <div class="ph-divider"></div>
+      <div style="background:#FEF9EC;border-radius:8px;padding:10px 12px;border-left:3px solid #D97706">
+        <div style="font-size:11px;font-weight:700;color:#92400E;margin-bottom:4px">Important</div>
+        <div style="font-size:12px;color:#78350F;line-height:1.5;font-family:'Euclid Circular B',sans-serif">Rs. 2,000 deductible will be applicable.</div>
+      </div>`;
 
     case "q15": return `
       <div style="text-align:center;padding:8px 0 12px">
-        <div style="font-size:11px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px">Health Insurance</div>
-        <div style="font-size:15px;font-weight:800;color:var(--grey-900);line-height:1.3">Guaranteed instant claim<br>approval — 100% of the time.</div>
-        <div style="margin-top:10px;font-size:11px;color:var(--grey-600)">Starting at ₹499/month</div>
+        <div style="font-size:11px;font-weight:700;color:#6841E6;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px">Health Insurance</div>
+        <div style="font-size:15px;font-weight:800;color:#141414;line-height:1.3">Guaranteed instant claim<br>approval — 100% of the time.</div>
+        <div style="margin-top:10px;font-size:11px;color:#474649">Starting at ₹499/month</div>
         <div class="ph-divider" style="margin:10px 0"></div>
-        <div style="font-size:10px;color:var(--grey-400)">• Cashless at 10,000+ hospitals</div>
-        <div style="font-size:10px;color:var(--grey-400);margin-top:3px">• No paperwork</div>
+        <div style="font-size:10px;color:#7A7B7D">• Cashless at 10,000+ hospitals</div>
+        <div style="font-size:10px;color:#7A7B7D;margin-top:3px">• No paperwork</div>
       </div>`;
 
     case "q16": return `
-      <div class="ph-sub">Step 3 of 4</div>
-      <div class="ph-header" style="margin-bottom:6px">Nominee details</div>
-      <div class="ph-row"><span class="ph-label">Name</span><span class="ph-value">Meera Ajith</span></div>
-      <div class="ph-row"><span class="ph-label">Relation</span><span class="ph-value">Spouse</span></div>
-      <div class="ph-row"><span class="ph-label">Share</span><span class="ph-value">100%</span></div>`;
+      <div class="ph-sub" style="margin-bottom:8px">Notifications</div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="background:#F5F5F5;border-radius:8px;padding:9px 11px">
+          <div style="font-size:9px;font-weight:700;color:#7A7B7D;letter-spacing:0.5px;margin-bottom:3px;text-transform:uppercase">ACKO · Insurance</div>
+          <div style="font-size:11.5px;color:#141414;line-height:1.45;font-family:'Euclid Circular B',sans-serif">Your car insurance expires tomorrow 🚗</div>
+        </div>
+        <div style="background:#F5F5F5;border-radius:8px;padding:9px 11px">
+          <div style="font-size:9px;font-weight:700;color:#7A7B7D;letter-spacing:0.5px;margin-bottom:3px;text-transform:uppercase">ACKO · Insurance</div>
+          <div style="font-size:11.5px;color:#141414;line-height:1.45;font-family:'Euclid Circular B',sans-serif">Get your 🚗 insurance renewed</div>
+        </div>
+        <div style="background:#F5F5F5;border-radius:8px;padding:9px 11px">
+          <div style="font-size:9px;font-weight:700;color:#7A7B7D;letter-spacing:0.5px;margin-bottom:3px;text-transform:uppercase">ACKO · Claims</div>
+          <div style="font-size:11.5px;color:#141414;line-height:1.45;font-family:'Euclid Circular B',sans-serif">Your claim was rejected 😭</div>
+        </div>
+        <div style="background:#F5F5F5;border-radius:8px;padding:9px 11px">
+          <div style="font-size:9px;font-weight:700;color:#7A7B7D;letter-spacing:0.5px;margin-bottom:3px;text-transform:uppercase">ACKO · Policy</div>
+          <div style="font-size:11.5px;color:#141414;line-height:1.45;font-family:'Euclid Circular B',sans-serif">Your policy is active 🎉✨ — great news for you! 🙌</div>
+        </div>
+      </div>`;
 
     case "q17": return `
-      <div class="ph-sub">Claim update</div>
-      <div class="ph-header" style="margin-bottom:8px">Agent unavailable</div>
-      <div class="ph-otp-error" style="background:#FEF3C7;color:#92400E;border-radius:8px">
-        <span>ℹ</span>
-        <span>Sorry for the delay, but no agents are available right now.</span>
+      <div class="ph-sub">Upload documents</div>
+      <div class="ph-header" style="margin-bottom:10px;font-size:14px">Policy documents</div>
+      <div style="border:1.5px dashed #E0E0E1;border-radius:10px;padding:14px;text-align:center;margin-bottom:10px">
+        <div style="font-size:22px;margin-bottom:4px">📄</div>
+        <div style="font-size:11px;color:#474649">insurance_policy.pdf</div>
+        <div style="font-size:10px;color:#F87171;margin-top:2px;font-weight:600">Upload failed</div>
       </div>
-      <div class="ph-row" style="margin-top:4px"><span class="ph-label">Request ID</span><span class="ph-value">#REQ-9921</span></div>`;
+      <div style="background:#FEF2F2;border-radius:8px;padding:10px 12px;border-left:3px solid #F87171">
+        <div style="font-size:12px;color:#7F1D1D;line-height:1.5;font-family:'Euclid Circular B',sans-serif">We're having trouble with your upload. Please check your file and try again.</div>
+      </div>`;
 
     case "q18": return `
-      <div class="ph-sub">Document verification</div>
-      <div class="ph-header" style="margin-bottom:8px">We received your documents</div>
-      <div class="ph-notif-bar" style="background:#EEF2FF;border-left-color:#6841E6;color:#3730A3">
-        We will review your documents within 2 hours.
-      </div>
-      <div class="ph-divider" style="margin-top:8px"></div>
-      <div class="ph-timeline-row"><div class="ph-timeline-dot done"></div><div class="ph-timeline-text">Documents uploaded</div></div>
-      <div class="ph-timeline-row"><div class="ph-timeline-dot active"></div><div class="ph-timeline-text"><strong>Review in progress</strong></div></div>
-      <div class="ph-timeline-row"><div class="ph-timeline-dot pending"></div><div class="ph-timeline-text">Verification complete</div></div>`;
+      <div class="ph-sub" style="color:#F59E0B;font-size:11px;font-weight:700;letter-spacing:0.5px;margin-bottom:8px">🍕 PIZZA PALACE · ₹420</div>
+      <div class="ph-header" style="margin-bottom:4px;font-size:16px">Cancel order?</div>
+      <div class="ph-body" style="margin-bottom:16px;color:#474649;font-size:13px">Are you sure you want to cancel?</div>
+      <div style="display:flex;gap:8px;margin-top:4px">
+        <button style="flex:1;padding:11px 8px;border-radius:8px;border:1.5px solid #E0E0E1;background:white;font-size:13px;font-weight:600;color:#0A0A0A;font-family:inherit;cursor:default">No</button>
+        <button style="flex:1;padding:11px 8px;border-radius:8px;border:none;background:#6841E6;color:white;font-size:13px;font-weight:600;font-family:inherit;cursor:default">Yes</button>
+      </div>`;
 
     case "q19": return `
       <div class="ph-success-icon">🛡</div>
@@ -2012,13 +2155,77 @@ function mockupContent(id) {
       <div class="ph-row"><span class="ph-label">Type</span><span class="ph-value">Comprehensive</span></div>`;
 
     case "q20": return `
-      <div style="background:linear-gradient(135deg,#6841E6,#9B72F0);margin:-16px -16px 10px;padding:14px 16px;border-radius:0">
-        <div style="font-size:14px;font-weight:800;color:white;line-height:1.3">Let's get you back on the road quickly! 🚗</div>
+      <div class="ph-sub" style="font-size:11px;color:#7A7B7D;font-weight:600;margin-bottom:10px">Just now</div>
+      <div style="background:#FEF9EC;border:1px solid #FDE68A;border-radius:12px;padding:14px;margin-bottom:8px">
+        <div style="font-size:10px;font-weight:700;color:#92400E;letter-spacing:0.5px;margin-bottom:6px">🚗 RIDE UPDATE</div>
+        <div style="font-size:13px;font-weight:700;color:#0A0A0A;margin-bottom:4px">Driver cancelled your trip.</div>
+        <div style="font-size:12px;color:#474649">Book again.</div>
       </div>
-      <div class="ph-body">Don't worry, ACKO's got you! We'll send help ASAP.</div>
-      <div class="ph-divider" style="margin:6px 0"></div>
-      <div class="ph-row"><span class="ph-label">Request type</span><span class="ph-value">Roadside assist</span></div>
-      <div class="ph-row"><span class="ph-label">Location</span><span class="ph-value">Sharing…</span></div>`;
+      <div style="background:#F5F5F5;border-radius:12px;padding:14px">
+        <div style="font-size:10px;font-weight:700;color:#7A7B7D;letter-spacing:0.5px;margin-bottom:6px">EARLIER TODAY</div>
+        <div style="font-size:12px;color:#7A7B7D">Your ride has been confirmed.</div>
+      </div>`;
+
+    case "q21": return `
+      <div class="ph-sub" style="margin-bottom:10px">Where are you going?</div>
+      <div style="display:flex;gap:8px;margin-bottom:12px">
+        <div style="flex:1;background:#F5F5F5;border-radius:8px;padding:10px 12px">
+          <div style="font-size:10px;color:#7A7B7D;font-weight:700;letter-spacing:0.4px;margin-bottom:3px">CHECK-IN</div>
+          <div style="font-size:15px;font-weight:700;color:#0A0A0A">12 Jun</div>
+        </div>
+        <div style="flex:1;background:#F5F5F5;border-radius:8px;padding:10px 12px;border:1.5px solid #EF4444">
+          <div style="font-size:10px;color:#7A7B7D;font-weight:700;letter-spacing:0.4px;margin-bottom:3px">CHECK-OUT</div>
+          <div style="font-size:15px;font-weight:700;color:#EF4444">10 Jun</div>
+        </div>
+      </div>
+      <div class="ph-notif-bar" style="background:#FEF2F2;border-left-color:#EF4444;color:#B91C1C;font-size:12px">
+        You have entered invalid dates. Please correct your search.
+      </div>`;
+
+    case "q22": return `
+      <div style="text-align:center;padding:12px 0 8px">
+        <div style="width:52px;height:52px;border-radius:50%;background:#FEF2F2;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:24px">✗</div>
+        <div style="font-size:16px;font-weight:700;color:#0A0A0A;margin-bottom:4px">Payment failed</div>
+      </div>
+      <div class="ph-notif-bar" style="background:#FEF2F2;border-left-color:#EF4444;color:#B91C1C;font-size:12px;margin-bottom:10px">
+        Something went wrong. Please try again.
+      </div>
+      <div class="ph-divider"></div>
+      <div class="ph-row"><span class="ph-label">Amount</span><span class="ph-value">₹342</span></div>
+      <div class="ph-row"><span class="ph-label">Method</span><span class="ph-value">UPI · 9876****10</span></div>`;
+
+    case "q23": return `
+      <div style="text-align:center;padding-bottom:12px">
+        <div style="font-size:32px;margin-bottom:6px">🚗</div>
+        <div style="font-size:14px;font-weight:700;color:#0A0A0A">Hatchback · ₹180</div>
+        <div style="font-size:12px;color:#7A7B7D;margin-top:2px">4 min away · up to 4 seats</div>
+      </div>
+      <div class="ph-divider"></div>
+      <div class="ph-row"><span class="ph-label">From</span><span class="ph-value">Koramangala</span></div>
+      <div class="ph-row"><span class="ph-label">To</span><span class="ph-value">MG Road</span></div>
+      <div class="ph-row"><span class="ph-label">Est. time</span><span class="ph-value">22 min</span></div>`;
+
+    case "q24": return `
+      <div style="text-align:center;padding-bottom:12px">
+        <div style="font-size:32px;margin-bottom:6px">🏨</div>
+        <div style="font-size:16px;font-weight:700;color:#0A0A0A;margin-bottom:2px">Booking Cancelled</div>
+      </div>
+      <div class="ph-notif-bar" style="background:#FEF9EC;border-left-color:#F59E0B;color:#92400E;font-size:12px;line-height:1.5;margin-bottom:10px">
+        You may be eligible for a refund based on the host's cancellation policy.
+      </div>
+      <div class="ph-divider"></div>
+      <div class="ph-row"><span class="ph-label">Property</span><span class="ph-value">The Grand Hotel</span></div>
+      <div class="ph-row"><span class="ph-label">Dates</span><span class="ph-value">14–16 Jun 2025</span></div>`;
+
+    case "q25": return `
+      <div style="text-align:center;padding:16px 0 8px">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" style="margin-bottom:12px">
+          <circle cx="32" cy="32" r="32" fill="#F5F5F5"/>
+          <rect x="18" y="20" width="28" height="24" rx="3" stroke="#7A7B7D" stroke-width="2" fill="none"/>
+          <path d="M23 28h18M23 33h12" stroke="#7A7B7D" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <div style="font-size:15px;font-weight:700;color:#0A0A0A;margin-bottom:4px">No orders found.</div>
+      </div>`;
 
     default: return `<div class="ph-body">Screen content</div>`;
   }
@@ -2031,21 +2238,26 @@ function mockupCTA(id) {
     q03: [null],
     q04: ["Resend OTP", ""],
     q05: ["Start claim", ""],
-    q06: ["View policy", ""],
+    q06: ["Start chat", ""],
     q07: ["Got it", ""],
-    q08: ["View full policy", ""],
+    q08: ["Track claim", ""],
     q09: ["Download all", ""],
     q10: ["View policy", ""],
     q11: [null],
     q12: ["Got it", ""],
     q13: ["Contact support", ""],
-    q14: ["Renew PUC", ""],
+    q14: ["View full claim", ""],
     q15: ["View plans", ""],
-    q16: ["Click here to confirm your nominee details and proceed", ""],
-    q17: ["Wait for agent", "muted"],
-    q18: ["Okay", ""],
+    q16: [null],
+    q17: ["Try again", ""],
+    q18: [null],
     q19: ["View policy", ""],
-    q20: ["Track help", ""],
+    q20: [null],
+    q21: ["Search", ""],
+    q22: ["Try again", ""],
+    q23: ["Ride Confirmation", ""],
+    q24: ["Back to home", ""],
+    q25: ["Browse restaurants", ""],
   };
   const entry = map[id];
   if (!entry || !entry[0]) return "";
@@ -2056,9 +2268,9 @@ function mockupCTA(id) {
    QUIZ STATE
 ============================================================ */
 let currentQ = 0;
-let userAnswers = new Array(20).fill(null); // index of selected option
-let submitted = new Array(20).fill(false);
-let skippedFlag = new Array(20).fill(false); // marked when a question is skipped to answer later
+let userAnswers = new Array(25).fill(null); // index of selected option
+let submitted = new Array(25).fill(false);
+let skippedFlag = new Array(25).fill(false); // marked when a question is skipped to answer later
 
 /* count of questions still waiting to be answered */
 function unsubmittedCount() {
@@ -2068,8 +2280,8 @@ function unsubmittedCount() {
 /* next question that still needs an answer, searching forward and wrapping
    around. Returns -1 when every other question is already submitted. */
 function findNextUnsubmitted(from) {
-  for (let step = 1; step <= 19; step++) {
-    const idx = (from + step) % 20;
+  for (let step = 1; step <= 24; step++) {
+    const idx = (from + step) % 25;
     if (!submitted[idx]) return idx;
   }
   return -1;
@@ -2400,15 +2612,13 @@ function renderQuestion(index) {
   currentQ = index;
   document.querySelector('.quiz-question-col')?.classList.add('q-enter');
 
-  // progress now tracks how many questions have actually been answered,
-  // since skipping lets people move through them out of order
-  const answered = submitted.filter(Boolean).length;
-  const pct = Math.round((answered / 20) * 100);
+  // progress
+  const pct = Math.round(((index + 1) / 25) * 100);
   document.getElementById("q-current").textContent = index + 1;
   document.getElementById("q-pct").textContent = pct + "%";
   document.getElementById("progress-fill").style.width = pct + "%";
   const qNum = String(index + 1).padStart(2, "0");
-  document.getElementById("q-tag").textContent = "Question " + qNum + " of 20";
+  document.getElementById("q-tag").textContent = "Question " + qNum + " of 25";
 
   // revisit hint when landing back on a skipped question
   const revisitNote = document.getElementById("revisit-note");
@@ -2428,15 +2638,20 @@ function renderQuestion(index) {
   const ol = document.getElementById("options-list");
   ol.innerHTML = "";
   const letters = ["A","B","C","D"];
+  const isMulti = Array.isArray(q.correctIndices);
   q.options.forEach((opt, i) => {
     const label = document.createElement("label");
     label.className = "option-label";
     label.dataset.index = i;
     label.innerHTML = `
-      <input type="radio" name="option" value="${i}" />
+      <input type="${isMulti ? 'checkbox' : 'radio'}" name="option" value="${i}" />
       <div class="option-letter">${letters[i]}</div>
-      <div class="option-text">${opt}</div>`;
-    label.addEventListener("click", () => selectOption(i));
+      <div class="option-text">${opt}</div>
+      ${isMulti ? '<div class="multi-check">✓</div>' : ''}`;
+    label.addEventListener("click", (e) => {
+      if (isMulti) { e.preventDefault(); toggleOption(i); }
+      else selectOption(i);
+    });
     ol.appendChild(label);
   });
 
@@ -2461,7 +2676,20 @@ function renderQuestion(index) {
   // restore a previous (un-submitted) selection if the question was skipped
   const prev = userAnswers[currentQ];
   if (prev !== null && !submitted[currentQ]) {
-    selectOption(prev);
+    if (Array.isArray(prev)) {
+      prev.forEach(idx => {
+        const lbl = document.querySelectorAll(".option-label")[idx];
+        if (lbl) lbl.classList.add("selected");
+      });
+      if (prev.length > 0) {
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = "1";
+        submitBtn.classList.remove("btn-outline");
+        submitBtn.classList.add("btn-primary");
+      }
+    } else {
+      selectOption(prev);
+    }
   }
 
   // fit the card to the viewport after the DOM has painted
@@ -2471,7 +2699,6 @@ function renderQuestion(index) {
 function selectOption(i) {
   if (submitted[currentQ]) return;
   userAnswers[currentQ] = i;
-  // update UI
   document.querySelectorAll(".option-label").forEach(l => l.classList.remove("selected"));
   document.querySelectorAll(".option-label")[i].classList.add("selected");
   // enable submit — switch to a filled button once a choice is active
@@ -2482,6 +2709,22 @@ function selectOption(i) {
   submitBtn.classList.add("btn-primary");
 }
 
+function toggleOption(i) {
+  if (submitted[currentQ]) return;
+  if (!Array.isArray(userAnswers[currentQ])) userAnswers[currentQ] = [];
+  const arr = userAnswers[currentQ];
+  const pos = arr.indexOf(i);
+  const label = document.querySelectorAll(".option-label")[i];
+  if (pos === -1) { arr.push(i); label.classList.add("selected"); }
+  else { arr.splice(pos, 1); label.classList.remove("selected"); }
+  const hasSelection = arr.length > 0;
+  const submitBtn = document.getElementById("submit-btn");
+  submitBtn.disabled = !hasSelection;
+  submitBtn.style.opacity = hasSelection ? "1" : "0.5";
+  submitBtn.classList.toggle("btn-primary", hasSelection);
+  submitBtn.classList.toggle("btn-outline", !hasSelection);
+}
+
 function submitAnswer() {
   const q = questions[currentQ];
   const chosen = userAnswers[currentQ];
@@ -2489,18 +2732,31 @@ function submitAnswer() {
 
   submitted[currentQ] = true;
   const labels = document.querySelectorAll(".option-label");
+  const isMulti = Array.isArray(q.correctIndices);
 
   labels.forEach((l, i) => {
     l.classList.add("disabled");
-    if (i === q.correctIndex) l.classList.add("correct");
-    else if (i === chosen && i !== q.correctIndex) l.classList.add("wrong");
+    if (isMulti) {
+      if (q.correctIndices.includes(i)) l.classList.add("correct");
+      else if (Array.isArray(chosen) && chosen.includes(i)) l.classList.add("wrong");
+    } else {
+      if (i === q.correctIndex) l.classList.add("correct");
+      else if (i === chosen && i !== q.correctIndex) l.classList.add("wrong");
+    }
   });
 
   // feedback
   const fb = document.getElementById("feedback-banner");
   const fi = document.getElementById("feedback-icon");
   const ft = document.getElementById("feedback-text");
-  const isCorrect = chosen === q.correctIndex;
+  let isCorrect;
+  if (isMulti) {
+    const sel = Array.isArray(chosen) ? [...chosen].sort((a,b)=>a-b) : [];
+    const exp = [...q.correctIndices].sort((a,b)=>a-b);
+    isCorrect = JSON.stringify(sel) === JSON.stringify(exp);
+  } else {
+    isCorrect = chosen === q.correctIndex;
+  }
   pushScore(isCorrect);
   if (!isCorrect) {
     document.querySelector('.quiz-question-col').classList.add('shake');
@@ -2775,9 +3031,16 @@ function showResults() {
   const rs = document.getElementById("results-screen");
   rs.style.display = "block";
 
-  const correct = userAnswers.filter((a, i) => a === questions[i].correctIndex).length;
-  const wrong = 20 - correct;
-  const pct = (correct / 20) * 100;
+  const correct = userAnswers.filter((a, i) => {
+    const q = questions[i];
+    if (Array.isArray(q.correctIndices)) {
+      const sel = Array.isArray(a) ? [...a].sort((x,y)=>x-y) : [];
+      return JSON.stringify(sel) === JSON.stringify([...q.correctIndices].sort((x,y)=>x-y));
+    }
+    return a === q.correctIndex;
+  }).length;
+  const wrong = 25 - correct;
+  const pct = (correct / 25) * 100;
 
   document.getElementById("result-score").textContent = correct;
   document.getElementById("correct-count").textContent = correct;
@@ -2785,15 +3048,15 @@ function showResults() {
 
   // headline
   let headline, subline;
-  if (correct === 20) { headline = "Perfect score!"; subline = "You nailed every single question. ACKO's voice is strong with you."; }
-  else if (correct >= 16) { headline = "Excellent work!"; subline = "You've got a sharp eye for UX writing. Just a few edge cases to review."; }
-  else if (correct >= 12) { headline = "Good effort!"; subline = "Solid foundations. Review the explanations below to sharpen your instincts."; }
-  else if (correct >= 8) { headline = "Room to grow!"; subline = "You're getting there. Go through the explanations — they'll make a big difference."; }
+  if (correct === 25) { headline = "Perfect score!"; subline = "You nailed every single question. ACKO's voice is strong with you."; }
+  else if (correct >= 20) { headline = "Excellent work!"; subline = "You've got a sharp eye for UX writing. Just a few edge cases to review."; }
+  else if (correct >= 15) { headline = "Good effort!"; subline = "Solid foundations. Review the explanations below to sharpen your instincts."; }
+  else if (correct >= 10) { headline = "Room to grow!"; subline = "You're getting there. Go through the explanations, they'll make a big difference."; }
   else { headline = "Keep practising!"; subline = "UX writing takes time. Read through each explanation and try again."; }
   document.getElementById("result-headline").textContent = headline;
   document.getElementById("result-subline").textContent = subline;
 
-  if (correct >= 14) setTimeout(launchConfetti, 400);
+  if (correct >= 17) setTimeout(launchConfetti, 400);
 
   // animate ring — circumference = 2π × 45 ≈ 283
   const ring = document.getElementById("score-ring");
@@ -2812,28 +3075,44 @@ function showResults() {
 
   questions.forEach((q, i) => {
     const ua = userAnswers[i];
-    const isCorrect = ua === q.correctIndex;
+    const isMultiQ = Array.isArray(q.correctIndices);
+    let isCorrect;
+    if (isMultiQ) {
+      const sel = Array.isArray(ua) ? [...ua].sort((a,b)=>a-b) : [];
+      isCorrect = JSON.stringify(sel) === JSON.stringify([...q.correctIndices].sort((a,b)=>a-b));
+    } else {
+      isCorrect = ua === q.correctIndex;
+    }
     const item = document.createElement("div");
     item.className = "result-item";
 
     let detailsHTML = "";
     if (!isCorrect) {
+      const yourText = isMultiQ
+        ? (Array.isArray(ua) && ua.length ? ua.map(x => letters[x]).join(", ") + ". " + ua.map(x => q.options[x]).join(" / ") : "Not answered")
+        : (ua !== null ? `${letters[ua]}. ${q.options[ua]}` : "Not answered");
+      const correctText = isMultiQ
+        ? q.correctIndices.map(x => letters[x]).join(", ") + ". " + q.correctIndices.map(x => q.options[x]).join(" / ")
+        : `${letters[q.correctIndex]}. ${q.options[q.correctIndex]}`;
       detailsHTML = `
         <div class="result-details" id="rd-${i}">
           <div class="result-answer-row">
             <div class="answer-dot your"></div>
-            <div><span class="answer-label">Your answer:</span>${letters[ua] ?? "–"}. ${ua !== null ? q.options[ua] : "Not answered"}</div>
+            <div><span class="answer-label">Your answer:</span>${yourText}</div>
           </div>
           <div class="result-answer-row">
             <div class="answer-dot correct"></div>
-            <div><span class="answer-label">Correct:</span>${letters[q.correctIndex]}. ${q.options[q.correctIndex]}</div>
+            <div><span class="answer-label">Correct:</span>${correctText}</div>
           </div>
           <div style="margin-top:8px;font-size:12px;color:var(--grey-600);line-height:1.5;padding-top:8px;border-top:1px solid var(--grey-200)">${q.explanation}</div>
         </div>`;
     } else {
+      const correctText = isMultiQ
+        ? q.correctIndices.map(x => letters[x]).join(", ")
+        : `${letters[q.correctIndex]}. ${q.options[q.correctIndex]}`;
       detailsHTML = `
         <div class="result-details" id="rd-${i}">
-          <div class="result-correct-badge">✓ Correct — ${letters[q.correctIndex]}. ${q.options[q.correctIndex]}</div>
+          <div class="result-correct-badge">✓ Correct${isMultiQ ? " — " + correctText : " — " + correctText}</div>
           <div style="margin-top:8px;font-size:12px;color:var(--grey-600);line-height:1.5">${q.explanation}</div>
         </div>`;
     }
@@ -2905,9 +3184,9 @@ document.addEventListener("DOMContentLoaded", typeTitle);
 
 function retryQuiz() {
   BalloonFX.stop();
-  userAnswers = new Array(20).fill(null);
-  submitted = new Array(20).fill(false);
-  skippedFlag = new Array(20).fill(false);
+  userAnswers = new Array(25).fill(null);
+  submitted = new Array(25).fill(false);
+  skippedFlag = new Array(25).fill(false);
   currentQ = 0;
   liveScore = 0;
   participantId = null;
