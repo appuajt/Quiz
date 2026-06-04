@@ -1,0 +1,1805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ACKO UX Writing Challenge</title>
+<style>
+  /* ── Euclid Circular B ─────────────────────────────────── */
+  @font-face {
+    font-family: 'Euclid Circular B';
+    src: url('https://pub-c050457d48794d5bb9ffc2b4649de2c1.r2.dev/Euclid%20Font/EuclidCircularB-Regular.ttf') format('truetype'),
+         url('Font/EuclidCircularB-Regular.ttf') format('truetype');
+    font-weight: 400; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'Euclid Circular B';
+    src: url('https://pub-c050457d48794d5bb9ffc2b4649de2c1.r2.dev/Euclid%20Font/EuclidCircularB-Medium.ttf') format('truetype'),
+         url('Font/EuclidCircularB-Medium.ttf') format('truetype');
+    font-weight: 500; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'Euclid Circular B';
+    src: url('https://pub-c050457d48794d5bb9ffc2b4649de2c1.r2.dev/Euclid%20Font/EuclidCircularB-Semibold.ttf') format('truetype'),
+         url('Font/EuclidCircularB-Semibold.ttf') format('truetype');
+    font-weight: 600; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'Euclid Circular B';
+    src: url('https://pub-c050457d48794d5bb9ffc2b4649de2c1.r2.dev/Euclid%20Font/EuclidCircularB-Bold.ttf') format('truetype'),
+         url('Font/EuclidCircularB-Bold.ttf') format('truetype');
+    font-weight: 700; font-style: normal; font-display: swap;
+  }
+
+  /* ── Reset & base ─────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; }
+  body {
+    font-family: 'Euclid Circular B', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #F4F5F7;
+    color: #141414;
+    min-height: 100vh;
+    padding: 0 16px 60px;
+  }
+
+  /* ── Colour tokens ─────────────────────────────────────── */
+  :root {
+    --purple: #6841E6;
+    --purple-light: #EDE9FC;
+    --purple-dark: #4F2FB8;
+    --green: #22C55E;
+    --green-light: #DCFCE7;
+    --red: #EF4444;
+    --red-light: #FEE2E2;
+    --grey-100: #F4F5F7;
+    --grey-200: #E5E7EB;
+    --grey-400: #9CA3AF;
+    --grey-600: #6B7280;
+    --grey-900: #111827;
+    --white: #FFFFFF;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+    --shadow-md: 0 4px 16px rgba(0,0,0,.10), 0 1px 4px rgba(0,0,0,.06);
+    --shadow-lg: 0 10px 40px rgba(0,0,0,.14), 0 2px 8px rgba(0,0,0,.07);
+  }
+
+  /* ── Layout wrapper ────────────────────────────────────── */
+  .wrapper {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  /* ── Site header ───────────────────────────────────────── */
+  .site-header {
+    display: flex;
+    align-items: center;
+    padding: 24px 0 20px;
+    gap: 10px;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+  }
+  .logo-mark {
+    width: 36px;
+    height: 36px;
+    background: var(--purple);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .logo-mark svg { display: block; }
+  .logo-text {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--purple);
+    letter-spacing: -0.5px;
+  }
+
+  /* ── Intro screen ──────────────────────────────────────── */
+  #intro-screen {
+    padding-top: 16px;
+  }
+  .intro-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 40px 36px;
+    box-shadow: var(--shadow-md);
+    text-align: center;
+  }
+  .intro-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--purple-light);
+    color: var(--purple);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+  .intro-card h1 {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--grey-900);
+    line-height: 1.15;
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
+  }
+  .intro-card h1 span { color: var(--purple); }
+  .intro-card p {
+    font-size: 16px;
+    color: var(--grey-600);
+    line-height: 1.6;
+    margin-bottom: 28px;
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .intro-meta {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+  .intro-meta-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .intro-meta-item strong {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--purple);
+  }
+  .intro-meta-item span {
+    font-size: 12px;
+    color: var(--grey-600);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    font-weight: 500;
+  }
+  .divider-v {
+    width: 1px;
+    background: var(--grey-200);
+    align-self: stretch;
+    margin: 4px 0;
+  }
+
+  /* ── Buttons ────────────────────────────────────────────── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 14px 32px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.18s, transform 0.12s, box-shadow 0.18s;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary {
+    background: var(--purple);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(104,65,230,0.35);
+  }
+  .btn-primary:hover { background: var(--purple-dark); box-shadow: 0 6px 18px rgba(104,65,230,0.40); }
+  .btn-outline {
+    background: transparent;
+    color: var(--purple);
+    border: 2px solid var(--purple);
+  }
+  .btn-outline:hover { background: var(--purple-light); }
+  .btn-full { width: 100%; }
+  .btn-lg { font-size: 16px; padding: 16px 36px; border-radius: 14px; }
+
+  /* ── Quiz screen ─────────────────────────────────────────── */
+  #quiz-screen { display: none; padding-top: 8px; }
+
+  /* progress bar */
+  .progress-wrap {
+    margin-bottom: 20px;
+  }
+  .progress-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .progress-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--grey-600);
+  }
+  .progress-label strong { color: var(--purple); }
+  .progress-pct {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--purple);
+  }
+  .progress-track {
+    width: 100%;
+    height: 6px;
+    background: var(--grey-200);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--purple), #9B72F0);
+    border-radius: 100px;
+    transition: width 0.4s cubic-bezier(.4,0,.2,1);
+  }
+
+  /* question card */
+  .question-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 28px 28px 24px;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 16px;
+  }
+  .q-number-tag {
+    display: inline-flex;
+    align-items: center;
+    background: var(--purple-light);
+    color: var(--purple);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 100px;
+    margin-bottom: 16px;
+  }
+
+  /* ── Phone mockup — 9:16 full preview ──────────────────── */
+  .phone-mockup {
+    width: 280px;
+    height: calc(280px * 16 / 9); /* 498px — true 9:16 */
+    margin: 0 auto 24px;
+    background: #fff;
+    border-radius: 40px;
+    /* Realistic phone frame */
+    box-shadow:
+      0 0 0 2px #1C1C1E,
+      0 0 0 4px #2C2C2E,
+      0 20px 60px rgba(0,0,0,.22),
+      0 4px 12px rgba(0,0,0,.12);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    font-family: 'Euclid Circular B', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  /* Dynamic island */
+  .phone-mockup::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 22px;
+    background: #1C1C1E;
+    border-radius: 20px;
+    z-index: 10;
+  }
+
+  /* Status bar */
+  .phone-status-bar {
+    background: #fff;
+    height: 44px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 0 20px 6px;
+    flex-shrink: 0;
+  }
+  .status-time {
+    font-size: 11px;
+    font-weight: 600;
+    color: #141414;
+    letter-spacing: 0.2px;
+    font-family: 'Euclid Circular B', sans-serif;
+  }
+  .status-icons {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
+  /* Signal bars */
+  .status-icons .sig {
+    display: flex;
+    align-items: flex-end;
+    gap: 1.5px;
+    height: 10px;
+  }
+  .status-icons .sig span {
+    display: block;
+    width: 2.5px;
+    background: #141414;
+    border-radius: 1px;
+  }
+  .status-icons .sig span:nth-child(1) { height: 4px; }
+  .status-icons .sig span:nth-child(2) { height: 6px; }
+  .status-icons .sig span:nth-child(3) { height: 8px; }
+  .status-icons .sig span:nth-child(4) { height: 10px; }
+  /* WiFi icon via SVG */
+  .status-icons .wifi svg { display: block; }
+  /* Battery */
+  .status-icons .batt {
+    width: 18px;
+    height: 10px;
+    border: 1.5px solid #141414;
+    border-radius: 2px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 1.5px;
+  }
+  .status-icons .batt::after {
+    content: '';
+    position: absolute;
+    right: -4px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2px;
+    height: 5px;
+    background: #141414;
+    border-radius: 0 1px 1px 0;
+  }
+  .status-icons .batt-fill {
+    height: 100%;
+    width: 70%;
+    background: #141414;
+    border-radius: 1px;
+  }
+
+  /* Nav bar */
+  .phone-nav-bar {
+    background: #6841E6;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .nav-back {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+  }
+  .nav-back svg { display: block; }
+  .nav-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+    letter-spacing: 0;
+    flex: 1;
+    font-family: 'Euclid Circular B', sans-serif;
+  }
+
+  /* Content area */
+  .phone-content {
+    flex: 1;
+    padding: 20px 18px 16px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow: hidden;
+  }
+  .phone-content .ph-header {
+    font-size: 17px;
+    font-weight: 700;
+    color: #0A0A0A;
+    line-height: 1.3;
+    font-family: 'Euclid Circular B', sans-serif;
+  }
+  .phone-content .ph-sub {
+    font-size: 11px;
+    font-weight: 600;
+    color: #7A7B7D;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    margin-bottom: -4px;
+    font-family: 'Euclid Circular B', sans-serif;
+  }
+  .phone-content .ph-body {
+    font-size: 13px;
+    color: #474649;
+    line-height: 1.55;
+    font-family: 'Euclid Circular B', sans-serif;
+  }
+  .phone-content .ph-label {
+    font-size: 12px;
+    color: #7A7B7D;
+    font-weight: 400;
+    font-family: 'Euclid Circular B', sans-serif;
+  }
+  .phone-content .ph-value {
+    font-size: 13px;
+    color: #141414;
+    font-weight: 600;
+    font-family: 'Euclid Circular B', sans-serif;
+  }
+  .phone-content .ph-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #E0E0E1;
+  }
+  .phone-content .ph-row:last-child { border-bottom: none; }
+  .phone-content .ph-divider {
+    height: 1px;
+    background: #E0E0E1;
+    margin: 2px 0;
+  }
+  .phone-content .ph-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: 'Euclid Circular B', sans-serif;
+  }
+  .ph-badge.success { background: #F0FDF4; color: #15803D; }
+  .ph-badge.warning { background: #FFFBEB; color: #B45309; }
+  .ph-badge.error   { background: #FFF1F2; color: #BE123C; }
+  .ph-badge.info    { background: #F5F3FF; color: #6841E6; }
+
+  .ph-illustration {
+    width: 100%;
+    height: 80px;
+    background: #F5F5F5;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #B7B7B8;
+    font-size: 11px;
+    font-weight: 500;
+    margin-bottom: 2px;
+    font-family: 'Euclid Circular B', sans-serif;
+  }
+  .ph-spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid #E0E0E1;
+    border-top-color: #6841E6;
+    border-radius: 50%;
+    margin: 12px auto 8px;
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* CTA bar at bottom of phone */
+  .phone-cta-bar {
+    padding: 12px 16px 16px;
+    background: #fff;
+    border-top: 1px solid #E0E0E1;
+    flex-shrink: 0;
+  }
+  .phone-cta-btn {
+    width: 100%;
+    background: #6841E6;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 13px 0;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0;
+    cursor: default;
+    font-family: 'Euclid Circular B', sans-serif;
+  }
+  .phone-cta-btn.caps {
+    letter-spacing: 0.5px;
+    font-size: 13px;
+    text-transform: uppercase;
+  }
+  .phone-cta-btn.muted {
+    background: #E0E0E1;
+    color: #474649;
+  }
+
+  /* Home indicator */
+  .phone-home-bar {
+    height: 22px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .phone-home-bar::after {
+    content: '';
+    display: block;
+    width: 100px;
+    height: 4px;
+    background: #141414;
+    border-radius: 4px;
+    opacity: 0.18;
+  }
+
+  /* Phone content sub-components */
+  .ph-otp-error {
+    background: #FFF1F2;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 12px;
+    color: #BE123C;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    line-height: 1.45;
+    font-family: 'Euclid Circular B', sans-serif;
+  }
+  .ph-input-row {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin: 6px 0;
+  }
+  .ph-otp-box {
+    width: 34px;
+    height: 40px;
+    border: 1.5px solid #E0E0E1;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: #141414;
+    background: #F5F5F5;
+    font-family: 'Euclid Circular B', sans-serif;
+  }
+  .ph-otp-box.err { border-color: #BE123C; background: #FFF1F2; color: #BE123C; }
+  .ph-notif-bar {
+    background: #F0FDF4;
+    border-left: 3px solid #16A34A;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 12px;
+    color: #15803D;
+    line-height: 1.45;
+    font-family: 'Euclid Circular B', sans-serif;
+  }
+  .ph-success-icon {
+    width: 52px;
+    height: 52px;
+    background: #F0FDF4;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 8px auto 6px;
+    font-size: 26px;
+  }
+  .ph-error-top {
+    background: #FFF1F2;
+    margin: -20px -18px 10px;
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .ph-error-top span { font-size: 12px; color: #BE123C; font-weight: 600; font-family: 'Euclid Circular B', sans-serif; }
+  .ph-timeline-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 5px 0;
+  }
+  .ph-timeline-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    margin-top: 3px;
+    flex-shrink: 0;
+  }
+  .ph-timeline-dot.done    { background: #16A34A; }
+  .ph-timeline-dot.active  { background: #6841E6; }
+  .ph-timeline-dot.pending { background: #CCCCCD; }
+  .ph-timeline-text { font-size: 12px; color: #474649; line-height: 1.45; font-family: 'Euclid Circular B', sans-serif; }
+  .ph-amount {
+    font-size: 26px;
+    font-weight: 700;
+    color: #0A0A0A;
+    letter-spacing: -0.5px;
+    text-align: center;
+    margin: 8px 0 2px;
+    font-family: 'Euclid Circular B', sans-serif;
+  }
+  .ph-amount-label {
+    font-size: 11px;
+    color: #7A7B7D;
+    text-align: center;
+    font-weight: 400;
+    font-family: 'Euclid Circular B', sans-serif;
+  }
+  .ph-chip {
+    display: inline-block;
+    background: #F5F3FF;
+    color: #6841E6;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 6px;
+    padding: 3px 8px;
+    font-family: 'Euclid Circular B', sans-serif;
+  }
+  .ph-link {
+    font-size: 12px;
+    color: #6841E6;
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: default;
+    font-family: 'Euclid Circular B', sans-serif;
+  }
+  .ph-loading-text {
+    font-size: 14px;
+    color: #474649;
+    text-align: center;
+    font-style: normal;
+    margin-top: 6px;
+    font-family: 'Euclid Circular B', sans-serif;
+  }
+
+  /* question text */
+  .question-text {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--grey-900);
+    line-height: 1.45;
+    margin-bottom: 18px;
+  }
+
+  /* options */
+  .options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .option-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    border: 2px solid var(--grey-200);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    user-select: none;
+  }
+  .option-label:hover { border-color: var(--purple); background: var(--purple-light); }
+  .option-label input[type="radio"] { display: none; }
+  .option-letter {
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    background: var(--grey-100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--grey-600);
+    flex-shrink: 0;
+    transition: background 0.15s, color 0.15s;
+  }
+  .option-text {
+    font-size: 14px;
+    color: var(--grey-900);
+    line-height: 1.45;
+    padding-top: 2px;
+  }
+  /* selected */
+  .option-label.selected {
+    border-color: var(--purple);
+    background: var(--purple-light);
+  }
+  .option-label.selected .option-letter {
+    background: var(--purple);
+    color: white;
+  }
+  /* after submit — correct */
+  .option-label.correct {
+    border-color: var(--green);
+    background: var(--green-light);
+  }
+  .option-label.correct .option-letter {
+    background: var(--green);
+    color: white;
+  }
+  /* after submit — wrong */
+  .option-label.wrong {
+    border-color: var(--red);
+    background: var(--red-light);
+  }
+  .option-label.wrong .option-letter {
+    background: var(--red);
+    color: white;
+  }
+  /* disabled */
+  .option-label.disabled { cursor: default; pointer-events: none; }
+
+  /* feedback banner */
+  .feedback-banner {
+    display: none;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    font-size: 13px;
+    line-height: 1.5;
+    margin-top: 14px;
+    font-weight: 500;
+  }
+  .feedback-banner.show { display: flex; }
+  .feedback-banner.correct { background: var(--green-light); color: #166534; }
+  .feedback-banner.wrong { background: var(--red-light); color: #991B1B; }
+  .feedback-icon { font-size: 18px; flex-shrink: 0; line-height: 1; }
+
+  /* nav bar at bottom */
+  .quiz-nav {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  /* ── Results screen ─────────────────────────────────────── */
+  #results-screen { display: none; padding-top: 8px; }
+  .score-hero {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 36px 28px 28px;
+    box-shadow: var(--shadow-md);
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .score-ring-wrap {
+    width: 110px;
+    height: 110px;
+    margin: 0 auto 20px;
+    position: relative;
+  }
+  .score-ring-svg { transform: rotate(-90deg); }
+  .score-ring-bg { fill: none; stroke: var(--grey-200); stroke-width: 8; }
+  .score-ring-fill {
+    fill: none;
+    stroke: var(--purple);
+    stroke-width: 8;
+    stroke-linecap: round;
+    stroke-dasharray: 283;
+    stroke-dashoffset: 283;
+    transition: stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1);
+  }
+  .score-ring-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .score-num {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--grey-900);
+    line-height: 1;
+    letter-spacing: -0.5px;
+  }
+  .score-denom {
+    font-size: 13px;
+    color: var(--grey-400);
+    font-weight: 600;
+  }
+  .score-hero h2 {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--grey-900);
+    margin-bottom: 8px;
+  }
+  .score-hero p {
+    font-size: 14px;
+    color: var(--grey-600);
+    line-height: 1.5;
+    max-width: 360px;
+    margin: 0 auto 24px;
+  }
+  .score-meta {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  .score-meta-item {
+    text-align: center;
+  }
+  .score-meta-item .val {
+    font-size: 20px;
+    font-weight: 800;
+  }
+  .score-meta-item .val.green { color: var(--green); }
+  .score-meta-item .val.red { color: var(--red); }
+  .score-meta-item .lbl {
+    font-size: 11px;
+    color: var(--grey-400);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .results-list { display: flex; flex-direction: column; gap: 12px; }
+  .result-item {
+    background: var(--white);
+    border-radius: 16px;
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+  .result-item-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .result-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .result-icon.correct { background: var(--green-light); }
+  .result-icon.wrong { background: var(--red-light); }
+  .result-q-text {
+    flex: 1;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--grey-900);
+    line-height: 1.4;
+  }
+  .result-q-num {
+    font-size: 11px;
+    color: var(--grey-400);
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+  .result-chevron {
+    color: var(--grey-400);
+    font-size: 12px;
+    transition: transform 0.2s;
+  }
+  .result-chevron.open { transform: rotate(180deg); }
+  .result-details {
+    display: none;
+    padding: 0 18px 16px;
+    border-top: 1px solid var(--grey-200);
+  }
+  .result-details.open { display: block; }
+  .result-answer-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 8px 0;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  .answer-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+  .answer-dot.your { background: var(--red); }
+  .answer-dot.correct { background: var(--green); }
+  .answer-label { font-weight: 600; color: var(--grey-400); font-size: 11px; margin-right: 4px; }
+  .result-correct-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--green-light);
+    color: #15803D;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 100px;
+    margin-top: 6px;
+  }
+
+  .retry-section {
+    text-align: center;
+    padding: 28px 0 8px;
+  }
+  .retry-section p {
+    font-size: 13px;
+    color: var(--grey-400);
+    margin-top: 12px;
+  }
+
+  /* ── Utility ─────────────────────────────────────────────── */
+  .hidden { display: none !important; }
+  .text-center { text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="logo">
+      <span class="logo-text">ACKO</span>
+    </div>
+  </header>
+
+  <!-- ───────────── INTRO SCREEN ───────────── -->
+  <section id="intro-screen">
+    <div class="intro-card">
+
+      <h1>The <span>UX Writing</span><br>Challenge</h1>
+      <p>20 real-app screens with copy that's too vague, off-tone, or just wrong. Can you spot every mistake?</p>
+      <div class="intro-meta">
+        <div class="intro-meta-item">
+          <strong>20</strong>
+          <span>Questions</span>
+        </div>
+        <div class="divider-v"></div>
+        <div class="intro-meta-item">
+          <strong>~10</strong>
+          <span>Minutes</span>
+        </div>
+        <div class="divider-v"></div>
+        <div class="intro-meta-item">
+          <strong>0</strong>
+          <span>Tricks</span>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-lg" onclick="startQuiz()">
+        Start quiz
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- ───────────── QUIZ SCREEN ───────────── -->
+  <section id="quiz-screen">
+    <!-- Progress -->
+    <div class="progress-wrap">
+      <div class="progress-top">
+        <span class="progress-label">Question <strong id="q-current">1</strong> of 20</span>
+        <span class="progress-pct" id="q-pct">5%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width:5%"></div>
+      </div>
+    </div>
+
+    <!-- Question card -->
+    <div class="question-card">
+      <div class="q-number-tag" id="q-tag">Q1</div>
+
+      <!-- Phone mockup — swapped per question by JS -->
+      <div id="phone-mockup-container"></div>
+
+      <div class="question-text" id="question-text"></div>
+
+      <div class="options-list" id="options-list"></div>
+
+      <div class="feedback-banner" id="feedback-banner">
+        <span class="feedback-icon" id="feedback-icon"></span>
+        <span id="feedback-text"></span>
+      </div>
+    </div>
+
+    <!-- Nav -->
+    <div class="quiz-nav">
+      <button class="btn btn-outline" id="submit-btn" onclick="submitAnswer()">Check answer</button>
+      <button class="btn btn-primary hidden" id="next-btn" onclick="nextQuestion()">
+        Next
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- ───────────── RESULTS SCREEN ───────────── -->
+  <section id="results-screen">
+    <div class="score-hero">
+      <div class="score-ring-wrap">
+        <svg class="score-ring-svg" width="110" height="110" viewBox="0 0 110 110">
+          <circle class="score-ring-bg" cx="55" cy="55" r="45"/>
+          <circle class="score-ring-fill" id="score-ring" cx="55" cy="55" r="45"/>
+        </svg>
+        <div class="score-ring-text">
+          <div class="score-num" id="result-score">0</div>
+          <div class="score-denom">/ 20</div>
+        </div>
+      </div>
+      <h2 id="result-headline">Well done!</h2>
+      <p id="result-subline">Here's how you did on each question.</p>
+      <div class="score-meta">
+        <div class="score-meta-item">
+          <div class="val green" id="correct-count">0</div>
+          <div class="lbl">Correct</div>
+        </div>
+        <div class="score-meta-item">
+          <div class="val red" id="wrong-count">0</div>
+          <div class="lbl">Wrong</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="results-list" id="results-list"></div>
+
+    <div class="retry-section">
+      <button class="btn btn-primary btn-lg" onclick="retryQuiz()">Try again</button>
+      <p>Your score resets. Good luck!</p>
+    </div>
+  </section>
+
+</div><!-- /wrapper -->
+
+<script>
+/* ============================================================
+   DATA — 20 questions
+   correctIndex is 0-based (0=A, 1=B, 2=C, 3=D)
+   mockup: function name string → rendered by buildMockup()
+============================================================ */
+const questions = [
+  {
+    mockup: "q01",
+    navTitle: "Claim Status",
+    question: "What's wrong with the copy on this screen?",
+    options: [
+      "The CTA should say \"Got it\" not \"Okay\"",
+      "The copy uses passive voice — it hides who's responsible",
+      "The header should end with a full stop",
+      "The body copy is too long"
+    ],
+    correctIndex: 1,
+    explanation: "Both \"Your documents are being checked\" and \"Your claim is being reviewed\" are passive constructions. Active voice — \"Our team is checking your documents\" — is clearer and more accountable."
+  },
+  {
+    mockup: "q02",
+    navTitle: "Get Started",
+    question: "What's wrong with the CTA?",
+    options: [
+      "\"Let's\" is a contraction — it shouldn't be used",
+      "The CTA is in all caps and has an exclamation mark",
+      "The CTA is too short — it should explain what happens next",
+      "The body copy doesn't match the CTA"
+    ],
+    correctIndex: 1,
+    explanation: "CTAs should be sentence case and calm. All caps reads as shouting, and an exclamation mark adds unnecessary pressure. \"Get started\" is the right form."
+  },
+  {
+    mockup: "q03",
+    navTitle: "Claims History",
+    question: "What are the two problems with this empty state?",
+    options: [
+      "The illustration is missing and the header is wrong",
+      "\"Oops!\" is wrong for a neutral state, and there's no next step for the user",
+      "The body copy is passive and the header needs a full stop",
+      "The tone is too cold — it should be warmer"
+    ],
+    correctIndex: 1,
+    explanation: "\"Oops!\" implies something went wrong — an empty claims history is neutral. The screen also leaves the user stranded with no next action (e.g. \"File a claim\")."
+  },
+  {
+    mockup: "q04",
+    navTitle: "OTP Verification",
+    question: "What's wrong with the body copy?",
+    options: [
+      "\"Try again\" should be a CTA button, not inline text",
+      "The header is too blunt — it should apologise",
+      "It blames the user — should say \"The OTP doesn't match\"",
+      "It's missing the reason why verification failed"
+    ],
+    correctIndex: 2,
+    explanation: "\"You entered the wrong OTP\" points the finger. \"The OTP doesn't match\" states the system state without blame — a key UX writing principle."
+  },
+  {
+    mockup: "q05",
+    navTitle: "Claim Approved",
+    question: "What's wrong with the tone here?",
+    options: [
+      "The CTA verb is wrong — should be \"Check\" not \"View\"",
+      "\"journey\" violates ACKO's word list, and the header is too celebratory for a medical claim context",
+      "The header should be in sentence case",
+      "There are no problems — this is correct"
+    ],
+    correctIndex: 1,
+    explanation: "ACKO avoids the word \"journey\". More importantly, hospitalisation claims are serious moments — \"Woohoo! 🎉\" is tone-deaf. A calm \"Claim approved\" is more appropriate."
+  },
+  {
+    mockup: "q06",
+    navTitle: "Policy Confirmation",
+    question: "What's wrong with the header?",
+    options: [
+      "It should say \"Your policy is active\" not \"ready\"",
+      "Headers should never end with a full stop",
+      "It should be title case: \"Your Policy Is Ready\"",
+      "Nothing is wrong"
+    ],
+    correctIndex: 1,
+    explanation: "In app UI, headers are display text — not sentences. A trailing full stop looks heavy and is an unnecessary punctuation mark at this hierarchy level."
+  },
+  {
+    mockup: "q07",
+    navTitle: "Claim Submitted",
+    question: "What's the key problem with the body copy?",
+    options: [
+      "It's too short — needs more detail about the claim",
+      "\"Soon\" is vague — ACKO should always give a specific timeline",
+      "The CTA should say \"Okay\" not \"Got it\"",
+      "It's missing the claim number"
+    ],
+    correctIndex: 1,
+    explanation: "\"Soon\" creates anxiety. \"We'll update you within 4 hours\" sets a clear expectation and builds trust. Always be specific about time."
+  },
+  {
+    mockup: "q08",
+    navTitle: "Health Summary",
+    question: "Which of these is the plainspoken alternative?",
+    options: [
+      "\"Deductible applicable: ₹2,000\"",
+      "\"Co-payment: ₹2,000 per hospitalisation\"",
+      "\"You'll pay ₹2,000 first — ACKO covers the rest\"",
+      "\"IDV deductible: ₹2,000\""
+    ],
+    correctIndex: 2,
+    explanation: "ACKO's voice is plainspoken — explain what something means for the user, not just what it's called. \"You'll pay ₹2,000 first\" communicates the impact directly."
+  },
+  {
+    mockup: "q09",
+    navTitle: "Policy Documents",
+    question: "Which verb should replace 'Explore' here?",
+    options: [
+      "Check",
+      "Download",
+      "View",
+      "Access"
+    ],
+    correctIndex: 2,
+    explanation: "\"Explore\" is for discovery — browsing something new. For reading an existing document, \"View\" is the precise, standard verb. \"Download\" implies saving; \"Access\" is vague."
+  },
+  {
+    mockup: "q10",
+    navTitle: "Payment",
+    question: "What's wrong with this screen?",
+    options: [
+      "The emoji is in the wrong position",
+      "The header should not use an exclamation mark",
+      "\"Congratulations\" and \"uncertainties\" both violate ACKO's tone — it's overselling a functional moment",
+      "The body is too long"
+    ],
+    correctIndex: 2,
+    explanation: "Payment success is a functional confirmation, not a celebration. \"Congratulations\" is over-the-top, and \"life's uncertainties\" is the kind of insurer cliché ACKO's voice actively avoids."
+  },
+  {
+    mockup: "q11",
+    navTitle: "Processing",
+    question: "What's missing from this loading state?",
+    options: [
+      "An animation — the spinner isn't enough",
+      "It should tell the user what's loading and approximately how long",
+      "\"Please\" should not be used here",
+      "It needs a cancel button"
+    ],
+    correctIndex: 1,
+    explanation: "\"Please wait…\" tells the user nothing. A loading state should communicate what's happening (\"Verifying your documents\") and ideally an estimate (\"This takes about 10 seconds\")."
+  },
+  {
+    mockup: "q12",
+    navTitle: "Claim Update",
+    question: "What's wrong with how ACKO refers to itself?",
+    options: [
+      "\"ACKO\" is correctly used here — no issue",
+      "ACKO should refer to itself as \"we\" — not by name — in customer-facing copy",
+      "The sentence is too long",
+      "\"Decision\" is too formal — should be \"update\""
+    ],
+    correctIndex: 1,
+    explanation: "In customer-facing copy, ACKO should always use \"we\" and \"our\". Using the brand name in third person feels cold and robotic — as if the company is talking about itself."
+  },
+  {
+    mockup: "q13",
+    navTitle: "Claim Decision",
+    question: "What's wrong with this approach?",
+    options: [
+      "It's too short — should explain the reason",
+      "The build-up makes it worse — state the fact, the reason, and the next step directly",
+      "\"Disheartening\" is fine — it shows empathy",
+      "The header should apologise"
+    ],
+    correctIndex: 1,
+    explanation: "Prolonged bad-news build-ups increase anxiety. State the decision clearly, give the specific reason, and offer a next step. Avoid presuming how the user feels (\"disheartening\")."
+  },
+  {
+    mockup: "q14",
+    navTitle: "Reminder",
+    question: "What should this copy look like?",
+    options: [
+      "\"PUC expiry warning! Don't let your coverage lapse!\"",
+      "\"Your PUC expires in 3 days. Renew now to avoid a fine.\"",
+      "\"Please renew your PUC before it expires.\"",
+      "\"Reminder: PUC certificate renewal required.\""
+    ],
+    correctIndex: 1,
+    explanation: "Specificity reduces anxiety and drives action. \"3 days\" is a concrete deadline. \"Renew now to avoid a fine\" gives a clear reason. No exclamation marks, no jargon."
+  },
+  {
+    mockup: "q15",
+    navTitle: "Health Insurance",
+    question: "Why is this line a problem?",
+    options: [
+      "It's too long for a headline",
+      "\"Guaranteed\" and \"100% of the time\" are overpromises ACKO must never make unless factually true in every case",
+      "It should mention the premium price instead",
+      "Nothing is wrong — it's a strong headline"
+    ],
+    correctIndex: 1,
+    explanation: "ACKO's voice is honest. Absolute claims like \"guaranteed\" and \"100% of the time\" are legally and ethically risky, and damage trust the moment an exception occurs."
+  },
+  {
+    mockup: "q16",
+    navTitle: "Nominee Details",
+    question: "Which is the correct replacement CTA?",
+    options: [
+      "\"Confirm Nominee\"",
+      "\"Confirm nominee\"",
+      "\"Confirm nominee details\"",
+      "\"Proceed to confirmation\""
+    ],
+    correctIndex: 1,
+    explanation: "ACKO CTAs follow verb + object in sentence case. \"Confirm nominee\" is concise, action-oriented, and correctly cased. Title case (A) is wrong; (C) is redundant; (D) is passive."
+  },
+  {
+    mockup: "q17",
+    navTitle: "Cashless Claim",
+    question: "What's wrong with this?",
+    options: [
+      "It should not apologise at all — the delay isn't ACKO's fault",
+      "\"Sorry\" is fine, but \"but\" after an apology cancels it out",
+      "It's too short — needs a timeline",
+      "The tone is too casual"
+    ],
+    correctIndex: 1,
+    explanation: "Never follow \"sorry\" with \"but\" — it negates the apology. Also, only apologise when ACKO is responsible. Better: \"Our agents are busy right now. We'll connect you in [time].\" — no sorry needed if it's a capacity issue."
+  },
+  {
+    mockup: "q18",
+    navTitle: "Documents",
+    question: "What's the better version of this sentence?",
+    options: [
+      "\"Your documents will be reviewed within 2 hours.\"",
+      "\"We'll review your documents within 2 hours.\"",
+      "\"Document review: within 2 hours.\"",
+      "\"Our team shall review your documents in 2 hours.\""
+    ],
+    correctIndex: 1,
+    explanation: "ACKO's voice uses contractions (\"we'll\" not \"we will\") and first person (\"we\"). \"Shall\" is too formal. Option A is passive. Option C drops the human touch entirely."
+  },
+  {
+    mockup: "q19",
+    navTitle: "Policy Details",
+    question: "What's wrong with this?",
+    options: [
+      "The date format is wrong",
+      "\"Policyholder\" is third-person — should say \"Your coverage begins on 15 June 2026.\"",
+      "It should mention ACKO by name",
+      "There's no CTA"
+    ],
+    correctIndex: 1,
+    explanation: "ACKO writes in second person — always address \"you\". \"The policyholder\" sounds like legal text, not a product. \"Your coverage begins\" is warmer and clearer."
+  },
+  {
+    mockup: "q20",
+    navTitle: "Roadside Assist",
+    question: "What's wrong with this tone?",
+    options: [
+      "The emoji is inappropriate but the copy is fine",
+      "\"ASAP\" is too informal but otherwise it's correct",
+      "This is a high-stress moment — the copy should be calm, direct, and give a specific next step, not be upbeat",
+      "The header is too short"
+    ],
+    correctIndex: 2,
+    explanation: "A car accident is a high-stress moment. Upbeat copy (\"Let's go! 🚗\", \"ACKO's got you!\") misreads the emotional context. Calm, direct, and specific is right: \"Help is on the way. Our team will reach you within 30 minutes.\""
+  }
+];
+
+/* ============================================================
+   MOCKUP RENDERERS
+   Each returns an HTML string for the phone-mockup-container.
+============================================================ */
+function buildMockup(id, navTitle) {
+  const content = mockupContent(id);
+  return `
+  <div class="phone-mockup">
+    <div class="phone-status-bar">
+      <span class="status-time">9:41</span>
+      <div class="status-icons">
+        <div class="sig"><span></span><span></span><span></span><span></span></div>
+        <div class="wifi">
+          <svg width="14" height="10" viewBox="0 0 14 10" fill="none">
+            <path d="M7 8.5a1 1 0 100-2 1 1 0 000 2z" fill="#141414"/>
+            <path d="M4.2 6.3a4 4 0 015.6 0" stroke="#141414" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+            <path d="M1.8 4a7 7 0 0110.4 0" stroke="#141414" stroke-width="1.3" stroke-linecap="round" fill="none" opacity="0.45"/>
+          </svg>
+        </div>
+        <div class="batt"><div class="batt-fill"></div></div>
+      </div>
+    </div>
+    <div class="phone-nav-bar">
+      <div class="nav-back">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M11 14L6 9l5-5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="nav-title">${navTitle}</div>
+    </div>
+    <div class="phone-content">${content}</div>
+    ${mockupCTA(id)}
+    <div class="phone-home-bar"></div>
+  </div>`;
+}
+
+function mockupContent(id) {
+  switch(id) {
+    case "q01": return `
+      <div class="ph-sub">Status</div>
+      <div class="ph-badge info" style="margin-bottom:6px">🔄 In review</div>
+      <div class="ph-header">Your claim is being reviewed</div>
+      <div class="ph-body">Your documents are being checked by our team.</div>
+      <div class="ph-divider"></div>
+      <div class="ph-row"><span class="ph-label">Claim ID</span><span class="ph-value">#CL-20491</span></div>
+      <div class="ph-row"><span class="ph-label">Submitted</span><span class="ph-value">2 Jun 2026</span></div>`;
+
+    case "q02": return `
+      <div style="text-align:center;padding:6px 0 4px">
+        <div style="font-size:28px;margin-bottom:6px">🏥</div>
+        <div class="ph-header" style="font-size:16px">Let's get you covered</div>
+        <div class="ph-body" style="margin-top:6px">Compare plans that fit your budget.</div>
+      </div>`;
+
+    case "q03": return `
+      <div class="ph-illustration">[ Illustration ]</div>
+      <div class="ph-header" style="text-align:center">Oops! Nothing to see here.</div>
+      <div class="ph-body" style="text-align:center">You haven't made any claims.</div>`;
+
+    case "q04": return `
+      <div class="ph-header" style="margin-bottom:8px">Verification failed</div>
+      <div class="ph-input-row">
+        <div class="ph-otp-box err">2</div>
+        <div class="ph-otp-box err">4</div>
+        <div class="ph-otp-box err">8</div>
+        <div class="ph-otp-box err">1</div>
+        <div class="ph-otp-box err">7</div>
+        <div class="ph-otp-box err">0</div>
+      </div>
+      <div class="ph-otp-error">
+        <span>⚠</span>
+        <span>You entered the wrong OTP. Try again.</span>
+      </div>`;
+
+    case "q05": return `
+      <div class="ph-success-icon">✅</div>
+      <div class="ph-header" style="text-align:center;font-size:16px">Woohoo! Claim approved! 🎉</div>
+      <div class="ph-body" style="text-align:center">Great news — your claim journey is complete.</div>
+      <div class="ph-divider" style="margin-top:6px"></div>
+      <div class="ph-row"><span class="ph-label">Amount</span><span class="ph-value">₹48,000</span></div>
+      <div class="ph-row"><span class="ph-label">Credited to</span><span class="ph-value">HDFC ••4521</span></div>`;
+
+    case "q06": return `
+      <div class="ph-success-icon">📄</div>
+      <div class="ph-header" style="text-align:center;font-size:16px">Your policy is ready.</div>
+      <div class="ph-body" style="text-align:center">Your car insurance starts today.</div>
+      <div class="ph-divider" style="margin-top:8px"></div>
+      <div class="ph-row"><span class="ph-label">Policy no.</span><span class="ph-value">ACK-2026-00482</span></div>
+      <div class="ph-row"><span class="ph-label">Valid until</span><span class="ph-value">5 Jun 2027</span></div>`;
+
+    case "q07": return `
+      <div class="ph-success-icon">📬</div>
+      <div class="ph-header" style="text-align:center">Claim submitted</div>
+      <div class="ph-body" style="text-align:center">We'll update you soon.</div>
+      <div class="ph-divider" style="margin-top:8px"></div>
+      <div class="ph-row"><span class="ph-label">Claim ID</span><span class="ph-value">#CL-20512</span></div>`;
+
+    case "q08": return `
+      <div class="ph-sub">Coverage summary</div>
+      <div class="ph-row"><span class="ph-label">Sum insured</span><span class="ph-value">₹5,00,000</span></div>
+      <div class="ph-row" style="background:#FEF9EC;border-radius:6px;padding:8px;border-bottom:none;margin:2px 0">
+        <span class="ph-label" style="font-size:11px;color:#92400E">Applicable deductible</span>
+        <span class="ph-value" style="color:#92400E">₹2,000 (as per policy terms)</span>
+      </div>
+      <div class="ph-row"><span class="ph-label">Room rent</span><span class="ph-value">Up to ₹3,000/day</span></div>
+      <div class="ph-row"><span class="ph-label">Day care</span><span class="ph-value">Covered</span></div>`;
+
+    case "q09": return `
+      <div class="ph-sub">Documents</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px">
+        <div style="display:flex;align-items:center;gap:10px;padding:8px;background:var(--grey-100);border-radius:10px">
+          <span style="font-size:18px">📄</span>
+          <div>
+            <div class="ph-value" style="font-size:11px">Policy document</div>
+            <div class="ph-label">PDF · 420 KB</div>
+          </div>
+          <button class="phone-cta-btn" style="width:auto;padding:5px 10px;font-size:10px;font-weight:700;border-radius:7px;margin-left:auto">Explore policy</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:8px;background:var(--grey-100);border-radius:10px">
+          <span style="font-size:18px">📋</span>
+          <div>
+            <div class="ph-value" style="font-size:11px">Tax certificate</div>
+            <div class="ph-label">PDF · 98 KB</div>
+          </div>
+        </div>
+      </div>`;
+
+    case "q10": return `
+      <div class="ph-success-icon">💳</div>
+      <div class="ph-header" style="text-align:center;font-size:16px">Payment done! 🎊</div>
+      <div class="ph-body" style="text-align:center">Congratulations! You're now protected against life's uncertainties!</div>
+      <div class="ph-divider" style="margin-top:8px"></div>
+      <div class="ph-row"><span class="ph-label">Amount paid</span><span class="ph-value">₹12,499</span></div>
+      <div class="ph-row"><span class="ph-label">Mode</span><span class="ph-value">UPI</span></div>`;
+
+    case "q11": return `
+      <div style="text-align:center;padding:16px 0 10px">
+        <div class="ph-spinner"></div>
+        <div class="ph-loading-text">Please wait...</div>
+      </div>`;
+
+    case "q12": return `
+      <div class="ph-sub">Update</div>
+      <div class="ph-header" style="margin-bottom:8px">Claim update</div>
+      <div class="ph-notif-bar" style="background:#EEF2FF;border-left-color:#6841E6;color:#3730A3">
+        ACKO will update you by tomorrow with the decision.
+      </div>
+      <div class="ph-divider" style="margin-top:8px"></div>
+      <div class="ph-row"><span class="ph-label">Claim ID</span><span class="ph-value">#CL-20491</span></div>`;
+
+    case "q13": return `
+      <div class="ph-error-top">
+        <span style="font-size:16px">😔</span>
+        <span>We have some bad news.</span>
+      </div>
+      <div class="ph-body">It may be disheartening, but your claim has been rejected.</div>`;
+
+    case "q14": return `
+      <div style="background:#FEF3C7;border-left:3px solid #D97706;border-radius:4px;padding:8px 10px;margin-bottom:6px">
+        <div style="font-size:11px;font-weight:700;color:#92400E;margin-bottom:3px">Your policy needs attention!</div>
+        <div style="font-size:11px;color:#78350F;line-height:1.4">Your PUC is about to expire soon. Take action immediately!</div>
+      </div>
+      <div class="ph-row"><span class="ph-label">Vehicle</span><span class="ph-value">MH12 AB 4521</span></div>
+      <div class="ph-row"><span class="ph-label">PUC valid till</span><span class="ph-value" style="color:#D97706">7 Jun 2026</span></div>`;
+
+    case "q15": return `
+      <div style="text-align:center;padding:8px 0 12px">
+        <div style="font-size:11px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px">Health Insurance</div>
+        <div style="font-size:15px;font-weight:800;color:var(--grey-900);line-height:1.3">Guaranteed instant claim<br>approval — 100% of the time.</div>
+        <div style="margin-top:10px;font-size:11px;color:var(--grey-600)">Starting at ₹499/month</div>
+        <div class="ph-divider" style="margin:10px 0"></div>
+        <div style="font-size:10px;color:var(--grey-400)">• Cashless at 10,000+ hospitals</div>
+        <div style="font-size:10px;color:var(--grey-400);margin-top:3px">• No paperwork</div>
+      </div>`;
+
+    case "q16": return `
+      <div class="ph-sub">Step 3 of 4</div>
+      <div class="ph-header" style="margin-bottom:6px">Nominee details</div>
+      <div class="ph-row"><span class="ph-label">Name</span><span class="ph-value">Meera Ajith</span></div>
+      <div class="ph-row"><span class="ph-label">Relation</span><span class="ph-value">Spouse</span></div>
+      <div class="ph-row"><span class="ph-label">Share</span><span class="ph-value">100%</span></div>`;
+
+    case "q17": return `
+      <div class="ph-sub">Claim update</div>
+      <div class="ph-header" style="margin-bottom:8px">Agent unavailable</div>
+      <div class="ph-otp-error" style="background:#FEF3C7;color:#92400E;border-radius:8px">
+        <span>ℹ</span>
+        <span>Sorry for the delay, but no agents are available right now.</span>
+      </div>
+      <div class="ph-row" style="margin-top:4px"><span class="ph-label">Request ID</span><span class="ph-value">#REQ-9921</span></div>`;
+
+    case "q18": return `
+      <div class="ph-sub">Document verification</div>
+      <div class="ph-header" style="margin-bottom:8px">We received your documents</div>
+      <div class="ph-notif-bar" style="background:#EEF2FF;border-left-color:#6841E6;color:#3730A3">
+        We will review your documents within 2 hours.
+      </div>
+      <div class="ph-divider" style="margin-top:8px"></div>
+      <div class="ph-timeline-row"><div class="ph-timeline-dot done"></div><div class="ph-timeline-text">Documents uploaded</div></div>
+      <div class="ph-timeline-row"><div class="ph-timeline-dot active"></div><div class="ph-timeline-text"><strong>Review in progress</strong></div></div>
+      <div class="ph-timeline-row"><div class="ph-timeline-dot pending"></div><div class="ph-timeline-text">Verification complete</div></div>`;
+
+    case "q19": return `
+      <div class="ph-success-icon">🛡</div>
+      <div class="ph-header" style="text-align:center;margin-bottom:6px">Policy confirmed</div>
+      <div class="ph-body" style="text-align:center;font-size:13px">The policyholder's coverage begins on 15 June 2026.</div>
+      <div class="ph-divider" style="margin-top:8px"></div>
+      <div class="ph-row"><span class="ph-label">Policy no.</span><span class="ph-value">ACK-2026-00502</span></div>
+      <div class="ph-row"><span class="ph-label">Type</span><span class="ph-value">Comprehensive</span></div>`;
+
+    case "q20": return `
+      <div style="background:linear-gradient(135deg,#6841E6,#9B72F0);margin:-16px -16px 10px;padding:14px 16px;border-radius:0">
+        <div style="font-size:14px;font-weight:800;color:white;line-height:1.3">Let's get you back on the road quickly! 🚗</div>
+      </div>
+      <div class="ph-body">Don't worry, ACKO's got you! We'll send help ASAP.</div>
+      <div class="ph-divider" style="margin:6px 0"></div>
+      <div class="ph-row"><span class="ph-label">Request type</span><span class="ph-value">Roadside assist</span></div>
+      <div class="ph-row"><span class="ph-label">Location</span><span class="ph-value">Sharing…</span></div>`;
+
+    default: return `<div class="ph-body">Screen content</div>`;
+  }
+}
+
+function mockupCTA(id) {
+  const map = {
+    q01: ["Okay", ""],
+    q02: ["GET STARTED NOW!", "caps"],
+    q03: [null],
+    q04: ["Resend OTP", ""],
+    q05: ["View breakdown", ""],
+    q06: ["View policy", ""],
+    q07: ["Got it", ""],
+    q08: ["View full policy", ""],
+    q09: ["Download all", ""],
+    q10: ["View policy", ""],
+    q11: [null],
+    q12: ["Got it", ""],
+    q13: ["Contact support", ""],
+    q14: ["Renew PUC", ""],
+    q15: ["View plans", ""],
+    q16: ["Click here to confirm your nominee details and proceed", ""],
+    q17: ["Wait for agent", "muted"],
+    q18: ["Okay", ""],
+    q19: ["View policy", ""],
+    q20: ["Track help", ""],
+  };
+  const entry = map[id];
+  if (!entry || !entry[0]) return "";
+  return `<div class="phone-cta-bar"><button class="phone-cta-btn ${entry[1]}">${entry[0]}</button></div>`;
+}
+
+/* ============================================================
+   QUIZ STATE
+============================================================ */
+let currentQ = 0;
+let userAnswers = new Array(20).fill(null); // index of selected option
+let submitted = new Array(20).fill(false);
+
+function startQuiz() {
+  document.getElementById("intro-screen").style.display = "none";
+  document.getElementById("quiz-screen").style.display = "block";
+  renderQuestion(0);
+}
+
+function renderQuestion(index) {
+  const q = questions[index];
+  currentQ = index;
+
+  // progress
+  const pct = Math.round(((index + 1) / 20) * 100);
+  document.getElementById("q-current").textContent = index + 1;
+  document.getElementById("q-pct").textContent = pct + "%";
+  document.getElementById("progress-fill").style.width = pct + "%";
+  document.getElementById("q-tag").textContent = "Q" + (index + 1);
+
+  // mockup
+  document.getElementById("phone-mockup-container").innerHTML = buildMockup(q.mockup, q.navTitle);
+
+  // question text
+  document.getElementById("question-text").textContent = q.question;
+
+  // options
+  const ol = document.getElementById("options-list");
+  ol.innerHTML = "";
+  const letters = ["A","B","C","D"];
+  q.options.forEach((opt, i) => {
+    const label = document.createElement("label");
+    label.className = "option-label";
+    label.dataset.index = i;
+    label.innerHTML = `
+      <input type="radio" name="option" value="${i}" />
+      <div class="option-letter">${letters[i]}</div>
+      <div class="option-text">${opt}</div>`;
+    label.addEventListener("click", () => selectOption(i));
+    ol.appendChild(label);
+  });
+
+  // restore state if revisiting (not applicable — we move forward only)
+  // feedback
+  const fb = document.getElementById("feedback-banner");
+  fb.className = "feedback-banner";
+  fb.classList.remove("show");
+
+  // buttons
+  document.getElementById("submit-btn").classList.remove("hidden");
+  document.getElementById("next-btn").classList.add("hidden");
+  document.getElementById("submit-btn").disabled = true;
+  document.getElementById("submit-btn").style.opacity = "0.5";
+}
+
+function selectOption(i) {
+  if (submitted[currentQ]) return;
+  userAnswers[currentQ] = i;
+  // update UI
+  document.querySelectorAll(".option-label").forEach(l => l.classList.remove("selected"));
+  document.querySelectorAll(".option-label")[i].classList.add("selected");
+  // enable submit
+  document.getElementById("submit-btn").disabled = false;
+  document.getElementById("submit-btn").style.opacity = "1";
+}
+
+function submitAnswer() {
+  const q = questions[currentQ];
+  const chosen = userAnswers[currentQ];
+  if (chosen === null) return;
+
+  submitted[currentQ] = true;
+  const labels = document.querySelectorAll(".option-label");
+
+  labels.forEach((l, i) => {
+    l.classList.add("disabled");
+    if (i === q.correctIndex) l.classList.add("correct");
+    else if (i === chosen && i !== q.correctIndex) l.classList.add("wrong");
+  });
+
+  // feedback
+  const fb = document.getElementById("feedback-banner");
+  const fi = document.getElementById("feedback-icon");
+  const ft = document.getElementById("feedback-text");
+  const isCorrect = chosen === q.correctIndex;
+  fb.className = "feedback-banner show " + (isCorrect ? "correct" : "wrong");
+  fi.textContent = isCorrect ? "✓" : "✗";
+  ft.textContent = q.explanation;
+
+  // swap buttons
+  document.getElementById("submit-btn").classList.add("hidden");
+  const nb = document.getElementById("next-btn");
+  nb.classList.remove("hidden");
+  nb.textContent = currentQ === 19 ? "See results" : "Next";
+  nb.innerHTML = currentQ === 19
+    ? `See results <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+    : `Next <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+}
+
+function nextQuestion() {
+  if (currentQ < 19) {
+    renderQuestion(currentQ + 1);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  } else {
+    showResults();
+  }
+}
+
+/* ============================================================
+   RESULTS
+============================================================ */
+function showResults() {
+  document.getElementById("quiz-screen").style.display = "none";
+  const rs = document.getElementById("results-screen");
+  rs.style.display = "block";
+
+  const correct = userAnswers.filter((a, i) => a === questions[i].correctIndex).length;
+  const wrong = 20 - correct;
+  const pct = (correct / 20) * 100;
+
+  document.getElementById("result-score").textContent = correct;
+  document.getElementById("correct-count").textContent = correct;
+  document.getElementById("wrong-count").textContent = wrong;
+
+  // headline
+  let headline, subline;
+  if (correct === 20) { headline = "Perfect score!"; subline = "You nailed every single question. ACKO's voice is strong with you."; }
+  else if (correct >= 16) { headline = "Excellent work!"; subline = "You've got a sharp eye for UX writing. Just a few edge cases to review."; }
+  else if (correct >= 12) { headline = "Good effort!"; subline = "Solid foundations. Review the explanations below to sharpen your instincts."; }
+  else if (correct >= 8) { headline = "Room to grow!"; subline = "You're getting there. Go through the explanations — they'll make a big difference."; }
+  else { headline = "Keep practising!"; subline = "UX writing takes time. Read through each explanation and try again."; }
+  document.getElementById("result-headline").textContent = headline;
+  document.getElementById("result-subline").textContent = subline;
+
+  // animate ring — circumference = 2π × 45 ≈ 283
+  const ring = document.getElementById("score-ring");
+  const offset = 283 - (283 * pct / 100);
+  setTimeout(() => { ring.style.strokeDashoffset = offset; }, 100);
+
+  // colour ring
+  if (pct >= 80) ring.style.stroke = "#22C55E";
+  else if (pct >= 50) ring.style.stroke = "#F59E0B";
+  else ring.style.stroke = "#EF4444";
+
+  // build list
+  const list = document.getElementById("results-list");
+  list.innerHTML = "";
+  const letters = ["A","B","C","D"];
+
+  questions.forEach((q, i) => {
+    const ua = userAnswers[i];
+    const isCorrect = ua === q.correctIndex;
+    const item = document.createElement("div");
+    item.className = "result-item";
+
+    let detailsHTML = "";
+    if (!isCorrect) {
+      detailsHTML = `
+        <div class="result-details" id="rd-${i}">
+          <div class="result-answer-row">
+            <div class="answer-dot your"></div>
+            <div><span class="answer-label">Your answer:</span>${letters[ua] ?? "–"}. ${ua !== null ? q.options[ua] : "Not answered"}</div>
+          </div>
+          <div class="result-answer-row">
+            <div class="answer-dot correct"></div>
+            <div><span class="answer-label">Correct:</span>${letters[q.correctIndex]}. ${q.options[q.correctIndex]}</div>
+          </div>
+          <div style="margin-top:8px;font-size:12px;color:var(--grey-600);line-height:1.5;padding-top:8px;border-top:1px solid var(--grey-200)">${q.explanation}</div>
+        </div>`;
+    } else {
+      detailsHTML = `
+        <div class="result-details" id="rd-${i}">
+          <div class="result-correct-badge">✓ Correct — ${letters[q.correctIndex]}. ${q.options[q.correctIndex]}</div>
+          <div style="margin-top:8px;font-size:12px;color:var(--grey-600);line-height:1.5">${q.explanation}</div>
+        </div>`;
+    }
+
+    item.innerHTML = `
+      <div class="result-item-header" onclick="toggleDetail(${i})">
+        <div class="result-icon ${isCorrect ? 'correct' : 'wrong'}">${isCorrect ? '✓' : '✗'}</div>
+        <div class="result-q-text">
+          <div class="result-q-num">Question ${i + 1}</div>
+          ${q.question}
+        </div>
+        <div class="result-chevron" id="chev-${i}">▾</div>
+      </div>
+      ${detailsHTML}`;
+
+    list.appendChild(item);
+  });
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function toggleDetail(i) {
+  const details = document.getElementById("rd-" + i);
+  const chev = document.getElementById("chev-" + i);
+  details.classList.toggle("open");
+  chev.classList.toggle("open");
+}
+
+function retryQuiz() {
+  userAnswers = new Array(20).fill(null);
+  submitted = new Array(20).fill(false);
+  currentQ = 0;
+  document.getElementById("results-screen").style.display = "none";
+  document.getElementById("quiz-screen").style.display = "block";
+  renderQuestion(0);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+</script>
+</body>
+</html>
