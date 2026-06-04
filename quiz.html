@@ -39,7 +39,7 @@
     background: #0B0B18;
     color: #E2E8F0;
     min-height: 100vh;
-    padding: 0 16px 80px;
+    padding: 24px 16px 80px;
     overflow-x: hidden;
   }
   /* Ambient glow orbs */
@@ -102,7 +102,8 @@
   .site-header {
     display: flex;
     align-items: center;
-    padding: 24px 0 20px;
+    justify-content: center;
+    padding: 16px 0 12px;
     gap: 10px;
   }
   .logo {
@@ -128,82 +129,115 @@
     letter-spacing: -0.5px;
   }
 
-  /* ── Intro screen ──────────────────────────────────────── */
-  #intro-screen { padding-top: 16px; }
-  .intro-card {
-    background: var(--card-bg);
-    border-radius: 24px;
-    padding: 44px 36px 40px;
-    box-shadow: var(--shadow-lg);
+  /* ── Intro screen (card-less) ──────────────────────────── */
+  body.intro-active { padding-bottom: 0; }
+  #intro-screen {
+    min-height: calc(100vh - 57px); /* viewport minus the site header */
+    padding: 16px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    position: relative;
-    overflow: hidden;
   }
-  /* top gradient shine */
-  .intro-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--purple), #B48EF8, var(--purple), transparent);
+  /* On the starting page, center the whole group (logo + content) both
+     vertically and horizontally as one block */
+  body.intro-active .wrapper {
+    min-height: calc(100vh - 24px); /* body has 24px top padding, 0 bottom */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  body.intro-active #intro-screen {
+    min-height: 0;
+    padding: 0;
+  }
+  .intro-content {
+    width: 100%;
+    max-width: 560px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: results-enter 0.55s cubic-bezier(.4,0,.2,1);
   }
   .intro-badge {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     background: var(--purple-light);
     color: #B48EF8;
     font-size: 11px;
     font-weight: 700;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
     text-transform: uppercase;
-    padding: 6px 14px;
+    padding: 7px 16px;
     border-radius: 100px;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
     border: 1px solid rgba(123,92,240,0.3);
   }
-  .intro-card h1 {
-    font-size: 38px;
+  .intro-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--purple);
+    box-shadow: 0 0 8px var(--purple-glow);
+  }
+
+  /* Typewriter headline */
+  .intro-title {
+    font-size: clamp(34px, 7vw, 46px);
     font-weight: 800;
     color: #fff;
-    line-height: 1.1;
-    margin-bottom: 14px;
-    letter-spacing: -1px;
+    line-height: 1.08;
+    letter-spacing: -1.5px;
+    margin-bottom: 18px;
+    min-height: 1.08em;
   }
-  .intro-card h1 span {
+  .tw-grad {
     background: linear-gradient(135deg, #A78BFA, var(--purple), #7C3AED);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  .intro-card p {
-    font-size: 16px;
+  .tw-cursor {
+    display: inline-block;
+    width: 3px;
+    height: 0.82em;
+    background: var(--purple);
+    margin-left: 5px;
+    border-radius: 2px;
+    vertical-align: middle;
+    box-shadow: 0 0 10px var(--purple-glow);
+    animation: tw-blink 0.85s steps(1) infinite;
+  }
+  @keyframes tw-blink { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
+
+  .intro-lede {
+    font-size: 17px;
     color: var(--grey-600);
     line-height: 1.6;
-    margin-bottom: 32px;
-    max-width: 400px;
-    margin-left: auto;
-    margin-right: auto;
+    margin-bottom: 30px;
+    max-width: 440px;
   }
   .intro-meta {
     display: flex;
     justify-content: center;
+    align-items: stretch;
     gap: 0;
-    margin-bottom: 32px;
-    background: rgba(255,255,255,0.04);
-    border-radius: 14px;
-    padding: 16px 0;
-    border: 1px solid var(--card-border);
+    margin-bottom: 38px;
+    width: 100%;
+    max-width: 420px;
   }
   .intro-meta-item {
-    flex: 1;
+    flex: 0 0 auto;
+    min-width: 90px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
+    gap: 5px;
   }
   .intro-meta-item strong {
-    font-size: 28px;
+    font-size: 30px;
     font-weight: 800;
     color: var(--purple);
     line-height: 1;
@@ -217,9 +251,9 @@
   }
   .divider-v {
     width: 1px;
-    background: var(--card-border);
+    background: var(--grey-200);
     align-self: stretch;
-    margin: 4px 0;
+    margin: 6px 0;
   }
 
   /* ── Buttons ────────────────────────────────────────────── */
@@ -256,6 +290,14 @@
     border: 1.5px solid rgba(123,92,240,0.4);
   }
   .btn-outline:hover { background: rgba(123,92,240,0.18); border-color: var(--purple); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--grey-300, #7A7B7D);
+    border: 1.5px solid transparent;
+    font-weight: 600;
+  }
+  .btn-ghost:hover { color: #B48EF8; background: rgba(123,92,240,0.08); }
+  .btn-ghost:disabled { opacity: 0.4; cursor: not-allowed; }
   .btn-full { width: 100%; }
   .btn-lg { font-size: 16px; padding: 17px 36px; border-radius: 14px; }
 
@@ -278,11 +320,11 @@
     60%  { transform: translateX(-5px); }
     80%  { transform: translateX(5px); }
   }
-  .question-card.shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97); }
-  .question-card.q-enter { animation: q-enter 0.35s cubic-bezier(.4,0,.2,1); }
+  .question-card.shake, .quiz-question-col.shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97); }
+  .question-card.q-enter, .quiz-question-col.q-enter { animation: q-enter 0.35s cubic-bezier(.4,0,.2,1); }
 
   /* progress bar */
-  .progress-wrap { margin-bottom: 20px; }
+  .progress-wrap { margin-bottom: 12px; }
   .progress-top {
     display: flex;
     justify-content: space-between;
@@ -334,6 +376,7 @@
   }
   .q-number-tag {
     display: inline-flex;
+    align-self: flex-start;
     align-items: center;
     background: var(--purple-light);
     color: #B48EF8;
@@ -347,19 +390,19 @@
     border: 1px solid rgba(123,92,240,0.3);
   }
 
-  /* ── Phone mockup — 9:16 full preview ──────────────────── */
+  /* ── Phone mockup — 360×800 ─────────────────────────────── */
   .phone-mockup {
-    width: 280px;
-    height: calc(280px * 16 / 9); /* 498px — true 9:16 */
+    width: 360px;
+    height: 720px;
     margin: 0 auto 24px;
     background: #fff;
-    border-radius: 40px;
+    border-radius: 52px;
     /* Realistic phone frame */
     box-shadow:
       0 0 0 2px #1C1C1E,
-      0 0 0 4px #2C2C2E,
-      0 20px 60px rgba(0,0,0,.22),
-      0 4px 12px rgba(0,0,0,.12);
+      0 0 0 5px #2C2C2E,
+      0 24px 70px rgba(0,0,0,.25),
+      0 4px 14px rgba(0,0,0,.14);
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -371,28 +414,28 @@
   .phone-mockup::before {
     content: '';
     position: absolute;
-    top: 10px;
+    top: 12px;
     left: 50%;
     transform: translateX(-50%);
-    width: 80px;
-    height: 22px;
+    width: 104px;
+    height: 28px;
     background: #1C1C1E;
-    border-radius: 20px;
+    border-radius: 24px;
     z-index: 10;
   }
 
   /* Status bar */
   .phone-status-bar {
     background: #fff;
-    height: 44px;
+    height: 54px;
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
-    padding: 0 20px 6px;
+    padding: 0 24px 8px;
     flex-shrink: 0;
   }
   .status-time {
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
     color: #141414;
     letter-spacing: 0.2px;
@@ -454,11 +497,11 @@
   /* Nav bar */
   .phone-nav-bar {
     background: #6841E6;
-    height: 48px;
+    height: 58px;
     display: flex;
     align-items: center;
-    padding: 0 16px;
-    gap: 10px;
+    padding: 0 20px;
+    gap: 12px;
     flex-shrink: 0;
   }
   .nav-back {
@@ -472,7 +515,7 @@
   }
   .nav-back svg { display: block; }
   .nav-title {
-    font-size: 15px;
+    font-size: 17px;
     font-weight: 600;
     color: white;
     letter-spacing: 0;
@@ -483,22 +526,22 @@
   /* Content area */
   .phone-content {
     flex: 1;
-    padding: 20px 18px 16px;
+    padding: 22px 22px 18px;
     background: #fff;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
     overflow: hidden;
   }
   .phone-content .ph-header {
-    font-size: 17px;
+    font-size: 20px;
     font-weight: 700;
     color: #0A0A0A;
     line-height: 1.3;
     font-family: 'Euclid Circular B', sans-serif;
   }
   .phone-content .ph-sub {
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
     color: #7A7B7D;
     text-transform: uppercase;
@@ -507,19 +550,19 @@
     font-family: 'Euclid Circular B', sans-serif;
   }
   .phone-content .ph-body {
-    font-size: 13px;
+    font-size: 15px;
     color: #474649;
     line-height: 1.55;
     font-family: 'Euclid Circular B', sans-serif;
   }
   .phone-content .ph-label {
-    font-size: 12px;
+    font-size: 14px;
     color: #7A7B7D;
     font-weight: 400;
     font-family: 'Euclid Circular B', sans-serif;
   }
   .phone-content .ph-value {
-    font-size: 13px;
+    font-size: 15px;
     color: #141414;
     font-weight: 600;
     font-family: 'Euclid Circular B', sans-serif;
@@ -528,7 +571,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 0;
+    padding: 12px 0;
     border-bottom: 1px solid #E0E0E1;
   }
   .phone-content .ph-row:last-child { border-bottom: none; }
@@ -541,9 +584,9 @@
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    padding: 4px 10px;
+    padding: 5px 12px;
     border-radius: 100px;
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
     font-family: 'Euclid Circular B', sans-serif;
   }
@@ -554,32 +597,32 @@
 
   .ph-illustration {
     width: 100%;
-    height: 80px;
+    height: 100px;
     background: #F5F5F5;
-    border-radius: 12px;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #B7B7B8;
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 500;
     margin-bottom: 2px;
     font-family: 'Euclid Circular B', sans-serif;
   }
   .ph-spinner {
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
     border: 3px solid #E0E0E1;
     border-top-color: #6841E6;
     border-radius: 50%;
-    margin: 12px auto 8px;
+    margin: 14px auto 10px;
     animation: spin 1s linear infinite;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
   /* CTA bar at bottom of phone */
   .phone-cta-bar {
-    padding: 12px 16px 16px;
+    padding: 14px 20px 18px;
     background: #fff;
     border-top: 1px solid #E0E0E1;
     flex-shrink: 0;
@@ -589,9 +632,9 @@
     background: #6841E6;
     color: white;
     border: none;
-    border-radius: 12px;
-    padding: 13px 0;
-    font-size: 14px;
+    border-radius: 14px;
+    padding: 15px 0;
+    font-size: 16px;
     font-weight: 600;
     letter-spacing: 0;
     cursor: default;
@@ -609,7 +652,7 @@
 
   /* Home indicator */
   .phone-home-bar {
-    height: 22px;
+    height: 28px;
     background: #fff;
     display: flex;
     align-items: center;
@@ -619,8 +662,8 @@
   .phone-home-bar::after {
     content: '';
     display: block;
-    width: 100px;
-    height: 4px;
+    width: 120px;
+    height: 5px;
     background: #141414;
     border-radius: 4px;
     opacity: 0.18;
@@ -629,9 +672,9 @@
   /* Phone content sub-components */
   .ph-otp-error {
     background: #FFF1F2;
-    border-radius: 10px;
-    padding: 10px 12px;
-    font-size: 12px;
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 14px;
     color: #BE123C;
     display: flex;
     align-items: flex-start;
@@ -646,14 +689,14 @@
     margin: 6px 0;
   }
   .ph-otp-box {
-    width: 34px;
-    height: 40px;
+    width: 42px;
+    height: 50px;
     border: 1.5px solid #E0E0E1;
-    border-radius: 10px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
+    font-size: 20px;
     font-weight: 700;
     color: #141414;
     background: #F5F5F5;
@@ -663,42 +706,42 @@
   .ph-notif-bar {
     background: #F0FDF4;
     border-left: 3px solid #16A34A;
-    border-radius: 6px;
-    padding: 8px 10px;
-    font-size: 12px;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 14px;
     color: #15803D;
     line-height: 1.45;
     font-family: 'Euclid Circular B', sans-serif;
   }
   .ph-success-icon {
-    width: 52px;
-    height: 52px;
+    width: 64px;
+    height: 64px;
     background: #F0FDF4;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 8px auto 6px;
-    font-size: 26px;
+    font-size: 32px;
   }
   .ph-error-top {
     background: #FFF1F2;
-    margin: -20px -18px 10px;
-    padding: 12px 18px;
+    margin: -22px -22px 12px;
+    padding: 14px 22px;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
   }
-  .ph-error-top span { font-size: 12px; color: #BE123C; font-weight: 600; font-family: 'Euclid Circular B', sans-serif; }
+  .ph-error-top span { font-size: 14px; color: #BE123C; font-weight: 600; font-family: 'Euclid Circular B', sans-serif; }
   .ph-timeline-row {
     display: flex;
     align-items: flex-start;
-    gap: 10px;
-    padding: 5px 0;
+    gap: 12px;
+    padding: 6px 0;
   }
   .ph-timeline-dot {
-    width: 9px;
-    height: 9px;
+    width: 11px;
+    height: 11px;
     border-radius: 50%;
     margin-top: 3px;
     flex-shrink: 0;
@@ -706,18 +749,18 @@
   .ph-timeline-dot.done    { background: #16A34A; }
   .ph-timeline-dot.active  { background: #6841E6; }
   .ph-timeline-dot.pending { background: #CCCCCD; }
-  .ph-timeline-text { font-size: 12px; color: #474649; line-height: 1.45; font-family: 'Euclid Circular B', sans-serif; }
+  .ph-timeline-text { font-size: 14px; color: #474649; line-height: 1.45; font-family: 'Euclid Circular B', sans-serif; }
   .ph-amount {
-    font-size: 26px;
+    font-size: 32px;
     font-weight: 700;
     color: #0A0A0A;
     letter-spacing: -0.5px;
     text-align: center;
-    margin: 8px 0 2px;
+    margin: 10px 0 2px;
     font-family: 'Euclid Circular B', sans-serif;
   }
   .ph-amount-label {
-    font-size: 11px;
+    font-size: 13px;
     color: #7A7B7D;
     text-align: center;
     font-weight: 400;
@@ -727,14 +770,14 @@
     display: inline-block;
     background: #F5F3FF;
     color: #6841E6;
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
     border-radius: 6px;
-    padding: 3px 8px;
+    padding: 4px 10px;
     font-family: 'Euclid Circular B', sans-serif;
   }
   .ph-link {
-    font-size: 12px;
+    font-size: 14px;
     color: #6841E6;
     font-weight: 600;
     text-decoration: underline;
@@ -742,17 +785,17 @@
     font-family: 'Euclid Circular B', sans-serif;
   }
   .ph-loading-text {
-    font-size: 14px;
+    font-size: 16px;
     color: #474649;
     text-align: center;
     font-style: normal;
-    margin-top: 6px;
+    margin-top: 8px;
     font-family: 'Euclid Circular B', sans-serif;
   }
 
   /* question text */
   .question-text {
-    font-size: 16px;
+    font-size: 24px;
     font-weight: 700;
     color: #F1F5F9;
     line-height: 1.5;
@@ -872,8 +915,26 @@
   .quiz-nav {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     gap: 10px;
     margin-top: 16px;
+  }
+  /* skip sits on the far left, primary actions stay on the right */
+  .quiz-nav #skip-btn { margin-right: auto; }
+
+  /* hint shown when revisiting a previously skipped question */
+  .revisit-note {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #F2C94C;
+    background: rgba(242,201,76,0.12);
+    border: 1px solid rgba(242,201,76,0.3);
+    border-radius: 10px;
+    padding: 9px 12px;
+    margin-bottom: 12px;
   }
 
   /* ── Results screen ─────────────────────────────────────── */
@@ -992,6 +1053,29 @@
   .retry-section { text-align: center; padding: 28px 0 8px; }
   .retry-section p { font-size: 13px; color: var(--grey-400); margin-top: 12px; }
 
+  /* ── Balloon pop background (results page only) ─────────── */
+  #balloon-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    display: none;
+  }
+  /* Animated shader pattern — shown only while music is playing */
+  #shader-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+  }
+  #shader-canvas.active { opacity: 0.5; }
+
   /* ── Confetti ───────────────────────────────────────────── */
   .confetti-piece {
     position: fixed;
@@ -1012,51 +1096,240 @@
   .hidden { display: none !important; }
   .text-center { text-align: center; }
 
-  /* ── Name entry ────────────────────────────────────────────── */
-  .name-input-wrap { margin-bottom: 24px; }
-  .name-input {
-    width: 100%;
-    padding: 15px 18px;
-    border: 1.5px solid rgba(123,92,240,0.25);
-    border-radius: 13px;
-    font-size: 15px;
-    font-family: 'Euclid Circular B', sans-serif;
-    color: #F1F5F9;
-    background: rgba(255,255,255,0.05);
-    outline: none;
-    transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
-    margin-bottom: 12px;
+  /* ── Widen wrapper for two-column quiz ─────────────────── */
+  .wrapper { max-width: 940px; }
+  #results-screen .score-hero,
+  #results-screen .results-list,
+  #results-screen .retry-section { max-width: 640px; margin-left: auto; margin-right: auto; }
+
+  /* ── Two-column quiz layout (dark theme) ────────────────── */
+  #quiz-screen { padding-top: 4px; }
+
+  /* Lock page scroll only while the quiz screen is active */
+  body.quiz-active { overflow: hidden; height: 100vh; padding-bottom: 0; }
+
+  .quiz-card-body {
+    display: flex;
+    align-items: stretch;
+    background: var(--card-bg);
+    border-radius: 22px;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+    transform-origin: top center;
   }
-  .name-input:focus {
+  .quiz-card-body::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 10%, rgba(123,92,240,0.5) 50%, transparent 90%);
+  }
+
+  .quiz-phone-col {
+    width: 412px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px 26px;
+    background: rgba(255,255,255,0.015);
+    border-right: 1px solid rgba(123,92,240,0.2);
+  }
+  .quiz-phone-col .phone-mockup { margin: 0; }
+
+  /* Keep the question label hugging its content, not stretched by the column flexbox */
+  .quiz-question-col .q-number-tag { align-self: flex-start; }
+
+  .quiz-question-col {
+    flex: 1;
+    padding: 28px 28px 24px;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  /* Nav pushed to bottom of right column */
+  .quiz-question-col .quiz-nav {
+    margin-top: auto;
+    padding-top: 16px;
+    justify-content: flex-start;
+  }
+
+  /* Buttons full-width in right column */
+  .quiz-question-col #submit-btn,
+  .quiz-question-col #next-btn { width: 100%; }
+
+  /* Strip question-card's own box when it's the right column */
+  .quiz-card-body .question-card {
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+    margin-bottom: 0;
+    padding: 28px 28px 24px;
+  }
+  .quiz-card-body .question-card::before { display: none; }
+
+  /* ── Name entry ────────────────────────────────────────────── */
+  .name-entry {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+  }
+  .name-entry-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--grey-600);
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .name-field {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 18px;
+    background: rgba(255,255,255,0.04);
+    border: 1.5px solid var(--grey-200);
+    border-radius: 14px;
+    transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+  }
+  .name-field:focus-within {
     border-color: var(--purple);
     background: rgba(123,92,240,0.08);
-    box-shadow: 0 0 0 3px rgba(123,92,240,0.2);
+    box-shadow: 0 0 0 3px rgba(123,92,240,0.18);
   }
-  .name-input::placeholder { color: rgba(255,255,255,0.25); }
+  .name-field-icon {
+    display: flex;
+    color: var(--grey-400);
+    flex-shrink: 0;
+    transition: color 0.15s;
+  }
+  .name-field:focus-within .name-field-icon { color: #B48EF8; }
+  .name-input {
+    flex: 1;
+    width: 100%;
+    padding: 16px 0;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    font-family: 'Euclid Circular B', sans-serif;
+    color: #F1F5F9;
+    outline: none;
+  }
+  .name-input::placeholder { color: rgba(255,255,255,0.28); }
   .name-error {
-    font-size: 13px; color: var(--red);
-    margin-bottom: 10px; display: none; text-align: left;
+    font-size: 13px;
+    color: var(--red);
+    margin-top: 10px;
+    display: none;
+    text-align: center;
   }
+  #start-btn { margin-top: 16px; }
   .btn-loading { opacity: 0.6; pointer-events: none; }
+
+  /* ── Ambient music toggle ──────────────────────────────── */
+  .music-toggle {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 50;
+    display: none; /* only surfaced during the quiz */
+    align-items: center;
+    gap: 8px;
+    height: 38px;
+    padding: 0 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.14);
+    background: rgba(20,20,20,0.55);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: rgba(255,255,255,0.85);
+    font-family: 'Euclid Circular B', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, transform 0.14s, opacity 0.25s;
+  }
+  .music-toggle:hover { background: rgba(40,40,40,0.7); border-color: rgba(180,142,248,0.5); }
+  .music-toggle:active { transform: scale(0.95); }
+  .music-toggle .music-label { letter-spacing: 0.2px; }
+
+  /* equalizer bars — visible only while playing */
+  .music-eq { display: none; align-items: flex-end; gap: 2px; height: 14px; }
+  .music-eq i {
+    width: 3px;
+    background: #B48EF8;
+    border-radius: 2px;
+    height: 100%;
+    transform-origin: bottom;
+    animation: eq-bounce 0.9s ease-in-out infinite;
+  }
+  .music-eq i:nth-child(2) { animation-delay: 0.25s; }
+  .music-eq i:nth-child(3) { animation-delay: 0.5s; }
+  .music-eq i:nth-child(4) { animation-delay: 0.15s; }
+  @keyframes eq-bounce {
+    0%, 100% { transform: scaleY(0.35); }
+    50%      { transform: scaleY(1); }
+  }
+  .music-off-icon { display: inline-flex; }
+
+  /* when playing: show bars, hide the muted note icon, tint the chip */
+  .music-toggle.playing { color: #fff; border-color: rgba(180,142,248,0.55); background: rgba(123,92,240,0.22); }
+  .music-toggle.playing .music-eq { display: inline-flex; }
+  .music-toggle.playing .music-off-icon { display: none; }
+  body.quiz-active .music-toggle { display: inline-flex; }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
-<body>
+<body class="intro-active">
+<canvas id="shader-canvas" aria-hidden="true"></canvas>
+<canvas id="balloon-canvas" aria-hidden="true"></canvas>
+
+<!-- Ambient music toggle (top corner) -->
+<button id="music-toggle" class="music-toggle" aria-label="Toggle background music" title="Background music" onclick="toggleMusic()">
+  <span class="music-eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+  <span class="music-off-icon" aria-hidden="true">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18V6l10-2v12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="18" r="3" stroke="currentColor" stroke-width="2"/><circle cx="16" cy="16" r="3" stroke="currentColor" stroke-width="2"/><path d="M4 3l16 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </span>
+  <span class="music-label">Music</span>
+</button>
+
 <div class="wrapper">
 
   <!-- Site Header -->
   <header class="site-header">
     <div class="logo">
-      <span class="logo-text">ACKO</span>
+      <svg width="124" height="29" viewBox="0 0 155 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clip-path="url(#acko-clip)">
+          <path d="M64.6426 5.20526H71.2588L81.8043 29.9271H74.4434L72.6392 25.5434H63.0856L61.3168 29.9271H54.0972L64.6426 5.20526ZM70.6585 20.2496L67.8978 13.2699L65.1017 20.2496H70.6585Z" fill="white"/>
+          <path d="M80.1738 17.7237V17.6538C80.1738 10.4991 85.7306 4.89026 93.2298 4.89026C98.2891 4.89026 101.544 6.99328 103.74 10.0092L98.5746 13.9729C97.1589 12.22 95.5314 11.0971 93.1591 11.0971C89.6921 11.0971 87.2493 14.0079 87.2493 17.5837V17.6538C87.2493 21.3347 89.6921 24.2105 93.1591 24.2105C95.7433 24.2105 97.2649 23.0175 98.7512 21.2296L103.916 24.8755C101.58 28.0664 98.4304 30.4172 92.9472 30.4172C85.8689 30.4172 80.1738 25.0505 80.1738 17.7237Z" fill="white"/>
+          <path d="M106.071 5.38031H112.934V15.3408L121.464 5.38031H129.602L120.225 15.9358L129.919 29.9271H121.676L115.448 20.8096L112.934 23.5805V29.9271H106.071V5.38031Z" fill="white"/>
+          <path d="M127.886 17.7237V17.6538C127.886 10.6041 133.619 4.89026 141.263 4.89026C148.906 4.89026 154.569 10.537 154.569 17.5837V17.6538C154.569 24.7035 148.835 30.4172 141.192 30.4172C133.548 30.4172 127.886 24.7705 127.886 17.7237ZM147.561 17.7237V17.6538C147.561 14.1129 144.977 11.027 141.192 11.027C137.407 11.027 134.929 14.0429 134.929 17.5837V17.6538C134.929 21.1947 137.513 24.2805 141.263 24.2805C145.012 24.2805 147.561 21.2646 147.561 17.7237Z" fill="white"/>
+          <path d="M46.4745 12.6624V23.3986C46.4745 24.224 46.1007 24.9356 45.3414 25.4286C35.8553 31.5885 28.6739 34.1756 26.1603 34.896C22.6962 35.8906 20.8596 35.7856 20.5594 35.7652C14.2314 35.3131 3.57397 26.6798 3.57397 26.6798C3.57397 26.6798 12.2712 28.7856 32.3647 19.3064C36.132 17.5302 40.3379 15.6111 45.2266 13.3653C45.2266 13.3653 46.295 12.9073 46.4745 12.6652V12.6624Z" fill="white"/>
+          <path d="M45.9742 12.2978C46.0301 12.2511 46.1008 12.1898 46.1331 12.149C46.1773 12.0935 46.2155 12.0382 46.2391 11.9711C46.3038 11.7903 46.2832 11.5657 46.1802 11.3994C45.9948 11.0961 45.6828 10.8948 45.3414 10.6731C35.8553 4.51314 28.6739 1.92608 26.1603 1.20567C22.6962 0.211091 20.8596 0.316096 20.5594 0.336513C14.2314 0.788594 3.57397 9.422 3.57397 9.422C3.57397 9.422 12.2712 7.31612 32.3647 16.7952C33.0122 17.1015 33.6715 17.4107 34.3455 17.7228L45.3238 12.6769C45.3238 12.6769 45.8771 12.3678 45.9742 12.2919V12.2978Z" fill="white"/>
+          <path d="M13.7605 18.0406C13.7722 15.751 14.0607 13.4585 14.5934 11.1923L14.664 10.9093C10.7083 9.98765 7.78864 9.79236 6.03742 9.79236C4.59229 9.79236 3.82409 9.92351 3.56215 9.97892C3.09123 10.081 2.75867 10.4544 2.52027 10.7665C1.10457 12.6273 0.295166 15.2785 0.295166 18.0406C0.295166 20.8027 1.10457 23.4568 2.52027 25.3147C2.75867 25.6268 3.09123 25.9973 3.56215 26.1023C3.82409 26.1577 4.59229 26.2888 6.03742 26.2888C7.78864 26.2888 10.7054 26.0935 14.664 25.1719L14.5934 24.8889C14.0607 22.6226 13.7722 20.3302 13.7605 18.0406Z" fill="white"/>
+        </g>
+        <defs>
+          <clipPath id="acko-clip">
+            <rect width="154.639" height="36.0038" fill="white"/>
+          </clipPath>
+        </defs>
+      </svg>
     </div>
   </header>
 
   <!-- ───────────── INTRO SCREEN ───────────── -->
   <section id="intro-screen">
-    <div class="intro-card">
+    <div class="intro-content">
 
-      <h1>The <span>UX Writing</span><br>Challenge</h1>
-      <p>20 real-app screens with copy that's too vague, off-tone, or just wrong. Can you spot every mistake?</p>
+      <div class="intro-badge">UX Writing Challenge</div>
+
+      <h1 class="intro-title"><span id="tw-line"></span><span class="tw-cursor" id="tw-cursor"></span></h1>
+
+      <p class="intro-lede">20 real-app screens with copy that's too vague, off-tone, or just wrong. Can you spot every mistake?</p>
+
       <div class="intro-meta">
         <div class="intro-meta-item">
           <strong>20</strong>
@@ -1064,25 +1337,27 @@
         </div>
         <div class="divider-v"></div>
         <div class="intro-meta-item">
-          <strong>~10</strong>
+          <strong>10</strong>
           <span>Minutes</span>
         </div>
-        <div class="divider-v"></div>
-        <div class="intro-meta-item">
-          <strong>0</strong>
-          <span>Tricks</span>
-        </div>
       </div>
-      <div class="name-input-wrap">
-        <input
-          type="text"
-          id="player-name"
-          class="name-input"
-          placeholder="Enter your name to begin"
-          maxlength="30"
-          autocomplete="off"
-          onkeydown="if(event.key==='Enter') handleStartQuiz()"
-        />
+
+      <div class="name-entry">
+        <label class="name-entry-label" for="player-name">First, what should we call you?</label>
+        <div class="name-field">
+          <span class="name-field-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </span>
+          <input
+            type="text"
+            id="player-name"
+            class="name-input"
+            placeholder="Your name"
+            maxlength="30"
+            autocomplete="off"
+            onkeydown="if(event.key==='Enter') handleStartQuiz()"
+          />
+        </div>
         <div class="name-error" id="name-error">Please enter your name to start</div>
         <button class="btn btn-primary btn-lg btn-full" id="start-btn" onclick="handleStartQuiz()">
           Start quiz
@@ -1094,6 +1369,7 @@
 
   <!-- ───────────── QUIZ SCREEN ───────────── -->
   <section id="quiz-screen">
+
     <!-- Progress -->
     <div class="progress-wrap">
       <div class="progress-top">
@@ -1105,30 +1381,34 @@
       </div>
     </div>
 
-    <!-- Question card -->
-    <div class="question-card">
-      <div class="q-number-tag" id="q-tag">Q1</div>
+    <!-- Two-column dark card -->
+    <div class="quiz-card-body">
 
-      <!-- Phone mockup — swapped per question by JS -->
-      <div id="phone-mockup-container"></div>
-
-      <div class="question-text" id="question-text"></div>
-
-      <div class="options-list" id="options-list"></div>
-
-      <div class="feedback-banner" id="feedback-banner">
-        <span class="feedback-icon" id="feedback-icon"></span>
-        <span id="feedback-text"></span>
+      <!-- Left: phone mockup -->
+      <div class="quiz-phone-col">
+        <div id="phone-mockup-container"></div>
       </div>
-    </div>
 
-    <!-- Nav -->
-    <div class="quiz-nav">
-      <button class="btn btn-outline" id="submit-btn" onclick="submitAnswer()">Submit</button>
-      <button class="btn btn-primary hidden" id="next-btn" onclick="nextQuestion()">
-        Next
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
+      <!-- Right: question content -->
+      <div class="quiz-question-col">
+        <div class="q-number-tag" id="q-tag">Q1</div>
+        <div class="revisit-note hidden" id="revisit-note">You skipped this one earlier — answer it now to finish.</div>
+        <div class="question-text" id="question-text"></div>
+        <div class="options-list" id="options-list"></div>
+        <div class="feedback-banner" id="feedback-banner">
+          <span class="feedback-icon" id="feedback-icon"></span>
+          <span id="feedback-text"></span>
+        </div>
+        <div class="quiz-nav">
+          <button class="btn btn-ghost" id="skip-btn" onclick="skipQuestion()">Skip for now</button>
+          <button class="btn btn-outline" id="submit-btn" onclick="submitAnswer()">Submit and continue</button>
+          <button class="btn btn-primary hidden" id="next-btn" onclick="nextQuestion()">
+            Next
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -1229,6 +1509,8 @@ async function handleStartQuiz() {
     return;
   }
   nameError.style.display = 'none';
+  // prime audio synchronously within the click gesture (createParticipant awaits below)
+  try { AmbientMusic.unlock(); } catch (e) {}
   startBtn.classList.add('btn-loading');
   startBtn.innerHTML = 'Setting up… <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   await createParticipant(name);
@@ -1776,24 +2058,365 @@ function mockupCTA(id) {
 let currentQ = 0;
 let userAnswers = new Array(20).fill(null); // index of selected option
 let submitted = new Array(20).fill(false);
+let skippedFlag = new Array(20).fill(false); // marked when a question is skipped to answer later
+
+/* count of questions still waiting to be answered */
+function unsubmittedCount() {
+  return submitted.filter(s => !s).length;
+}
+
+/* next question that still needs an answer, searching forward and wrapping
+   around. Returns -1 when every other question is already submitted. */
+function findNextUnsubmitted(from) {
+  for (let step = 1; step <= 19; step++) {
+    const idx = (from + step) % 20;
+    if (!submitted[idx]) return idx;
+  }
+  return -1;
+}
 
 function startQuiz() {
   document.getElementById("intro-screen").style.display = "none";
   document.getElementById("quiz-screen").style.display = "block";
+  document.body.classList.remove("intro-active");
+  document.body.classList.add("quiz-active");
   renderQuestion(0);
+  // begin the soothing soundtrack (we're inside a user gesture, so autoplay is allowed)
+  startMusic();
 }
+
+/* ============================================================
+   AMBIENT MUSIC
+   Loops the quiz soundtrack (quiz-music.mp3) at a soft volume.
+============================================================ */
+const AmbientMusic = (() => {
+  const VOLUME = 0.5; // 50%
+  let audio = null;
+  let playing = false;
+
+  function ensureAudio() {
+    if (audio) return;
+    audio = new Audio("quiz-music.mp3");
+    audio.loop = true;
+    audio.preload = "auto";
+    audio.volume = VOLUME;
+  }
+
+  function play() {
+    ensureAudio();
+    audio.volume = VOLUME;
+    const p = audio.play();
+    if (p && typeof p.catch === "function") {
+      p.catch((e) => console.warn("Music play blocked:", e));
+    }
+    playing = true;
+  }
+
+  function pause() {
+    if (!audio) { playing = false; return; }
+    audio.pause();
+    playing = false;
+  }
+
+  // prime the audio element while we still have a fresh user gesture,
+  // so playback isn't blocked by autoplay policies after an await
+  function unlock() {
+    ensureAudio();
+    audio.load();
+  }
+
+  return {
+    play,
+    pause,
+    unlock,
+    isPlaying: () => playing,
+  };
+})();
+
+/* ============================================================
+   SHADER BACKGROUND
+   Animated WebGL plasma/grid pattern rendered behind the quiz.
+   Only runs while the music is playing; renders nothing (and the
+   loop is fully stopped) when paused to keep things efficient.
+============================================================ */
+const ShaderBackground = (() => {
+  const vsSource = `
+    attribute vec4 aVertexPosition;
+    void main() { gl_Position = aVertexPosition; }
+  `;
+
+  const fsSource = `
+    precision highp float;
+    uniform vec2 iResolution;
+    uniform float iTime;
+
+    const float overallSpeed = 0.2;
+    const float gridSmoothWidth = 0.015;
+    const float axisWidth = 0.05;
+    const float majorLineWidth = 0.025;
+    const float minorLineWidth = 0.0125;
+    const float majorLineFrequency = 5.0;
+    const float minorLineFrequency = 1.0;
+    const vec4 gridColor = vec4(0.5);
+    const float scale = 5.0;
+    const vec4 lineColor = vec4(0.4, 0.2, 0.8, 1.0);
+    const float minLineWidth = 0.01;
+    const float maxLineWidth = 0.2;
+    const float lineSpeed = 1.0 * overallSpeed;
+    const float lineAmplitude = 1.0;
+    const float lineFrequency = 0.2;
+    const float warpSpeed = 0.2 * overallSpeed;
+    const float warpFrequency = 0.5;
+    const float warpAmplitude = 1.0;
+    const float offsetFrequency = 0.5;
+    const float offsetSpeed = 1.33 * overallSpeed;
+    const float minOffsetSpread = 0.6;
+    const float maxOffsetSpread = 2.0;
+    const int linesPerGroup = 16;
+
+    #define drawCircle(pos, radius, coord) smoothstep(radius + gridSmoothWidth, radius, length(coord - (pos)))
+    #define drawSmoothLine(pos, halfWidth, t) smoothstep(halfWidth, 0.0, abs(pos - (t)))
+    #define drawCrispLine(pos, halfWidth, t) smoothstep(halfWidth + gridSmoothWidth, halfWidth, abs(pos - (t)))
+    #define drawPeriodicLine(freq, width, t) drawCrispLine(freq / 2.0, width, abs(mod(t, freq) - (freq) / 2.0))
+
+    float drawGridLines(float axis) {
+      return drawCrispLine(0.0, axisWidth, axis)
+        + drawPeriodicLine(majorLineFrequency, majorLineWidth, axis)
+        + drawPeriodicLine(minorLineFrequency, minorLineWidth, axis);
+    }
+
+    float drawGrid(vec2 space) {
+      return min(1.0, drawGridLines(space.x) + drawGridLines(space.y));
+    }
+
+    float random(float t) {
+      return (cos(t) + cos(t * 1.3 + 1.3) + cos(t * 1.4 + 1.4)) / 3.0;
+    }
+
+    float getPlasmaY(float x, float horizontalFade, float offset) {
+      return random(x * lineFrequency + iTime * lineSpeed) * horizontalFade * lineAmplitude + offset;
+    }
+
+    void main() {
+      vec2 fragCoord = gl_FragCoord.xy;
+      vec4 fragColor;
+      vec2 uv = fragCoord.xy / iResolution.xy;
+      vec2 space = (fragCoord - iResolution.xy / 2.0) / iResolution.x * 2.0 * scale;
+
+      float horizontalFade = 1.0 - (cos(uv.x * 6.28) * 0.5 + 0.5);
+      float verticalFade = 1.0 - (cos(uv.y * 6.28) * 0.5 + 0.5);
+
+      space.y += random(space.x * warpFrequency + iTime * warpSpeed) * warpAmplitude * (0.5 + horizontalFade);
+      space.x += random(space.y * warpFrequency + iTime * warpSpeed + 2.0) * warpAmplitude * horizontalFade;
+
+      vec4 lines = vec4(0.0);
+      vec4 bgColor1 = vec4(0.1, 0.1, 0.3, 1.0);
+      vec4 bgColor2 = vec4(0.3, 0.1, 0.5, 1.0);
+
+      for(int l = 0; l < linesPerGroup; l++) {
+        float normalizedLineIndex = float(l) / float(linesPerGroup);
+        float offsetTime = iTime * offsetSpeed;
+        float offsetPosition = float(l) + space.x * offsetFrequency;
+        float rand = random(offsetPosition + offsetTime) * 0.5 + 0.5;
+        float halfWidth = mix(minLineWidth, maxLineWidth, rand * horizontalFade) / 2.0;
+        float offset = random(offsetPosition + offsetTime * (1.0 + normalizedLineIndex)) * mix(minOffsetSpread, maxOffsetSpread, horizontalFade);
+        float linePosition = getPlasmaY(space.x, horizontalFade, offset);
+        float line = drawSmoothLine(linePosition, halfWidth, space.y) / 2.0 + drawCrispLine(linePosition, halfWidth * 0.15, space.y);
+
+        float circleX = mod(float(l) + iTime * lineSpeed, 25.0) - 12.0;
+        vec2 circlePosition = vec2(circleX, getPlasmaY(circleX, horizontalFade, offset));
+        float circle = drawCircle(circlePosition, 0.01, space) * 4.0;
+
+        line = line + circle;
+        lines += line * lineColor * rand;
+      }
+
+      fragColor = mix(bgColor1, bgColor2, uv.x);
+      fragColor *= verticalFade;
+      fragColor.a = 1.0;
+      fragColor += lines;
+
+      gl_FragColor = fragColor;
+    }
+  `;
+
+  let canvas = null;
+  let gl = null;
+  let programInfo = null;
+  let positionBuffer = null;
+  let rafId = null;
+  let startTime = 0;
+  let running = false;
+  let initialised = false;
+
+  function loadShader(type, source) {
+    const shader = gl.createShader(type);
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+      console.error("Shader compile error:", gl.getShaderInfoLog(shader));
+      gl.deleteShader(shader);
+      return null;
+    }
+    return shader;
+  }
+
+  function initProgram() {
+    const vertexShader = loadShader(gl.VERTEX_SHADER, vsSource);
+    const fragmentShader = loadShader(gl.FRAGMENT_SHADER, fsSource);
+    const program = gl.createProgram();
+    gl.attachShader(program, vertexShader);
+    gl.attachShader(program, fragmentShader);
+    gl.linkProgram(program);
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+      console.error("Shader link error:", gl.getProgramInfoLog(program));
+      return null;
+    }
+    return program;
+  }
+
+  function resize() {
+    if (!canvas || !gl) return;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    gl.viewport(0, 0, canvas.width, canvas.height);
+  }
+
+  function init() {
+    if (initialised) return gl !== null;
+    initialised = true;
+    canvas = document.getElementById("shader-canvas");
+    if (!canvas) return false;
+    gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+    if (!gl) { console.warn("WebGL not supported — shader background disabled."); return false; }
+
+    const program = initProgram();
+    if (!program) { gl = null; return false; }
+
+    positionBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+
+    programInfo = {
+      program,
+      attribLocations: { vertexPosition: gl.getAttribLocation(program, "aVertexPosition") },
+      uniformLocations: {
+        resolution: gl.getUniformLocation(program, "iResolution"),
+        time: gl.getUniformLocation(program, "iTime"),
+      },
+    };
+
+    window.addEventListener("resize", resize);
+    resize();
+    startTime = Date.now();
+    return true;
+  }
+
+  function frame() {
+    if (!running) return;
+    const t = (Date.now() - startTime) / 1000;
+    gl.clearColor(0, 0, 0, 1);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.useProgram(programInfo.program);
+    gl.uniform2f(programInfo.uniformLocations.resolution, canvas.width, canvas.height);
+    gl.uniform1f(programInfo.uniformLocations.time, t);
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    gl.vertexAttribPointer(programInfo.attribLocations.vertexPosition, 2, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    rafId = requestAnimationFrame(frame);
+  }
+
+  function show() {
+    if (!init()) return;
+    if (!running) {
+      running = true;
+      frame();
+    }
+    canvas.classList.add("active");
+  }
+
+  function hide() {
+    if (canvas) canvas.classList.remove("active");
+    running = false;
+    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+  }
+
+  return { show, hide };
+})();
+
+function reflectMusicState() {
+  const playing = AmbientMusic.isPlaying();
+  const btn = document.getElementById("music-toggle");
+  if (btn) {
+    btn.classList.toggle("playing", playing);
+    const label = btn.querySelector(".music-label");
+    if (label) label.textContent = playing ? "Music on" : "Music";
+  }
+  // pattern background tracks the music: visible when playing, gone when paused
+  if (playing) ShaderBackground.show();
+  else ShaderBackground.hide();
+}
+
+function startMusic() {
+  try { AmbientMusic.play(); } catch (e) { console.warn("Ambient music failed:", e); }
+  reflectMusicState();
+}
+
+function toggleMusic() {
+  if (AmbientMusic.isPlaying()) {
+    AmbientMusic.pause();
+  } else {
+    AmbientMusic.play();
+  }
+  reflectMusicState();
+}
+
+/* Scale the quiz card down (only if needed) so the whole phone stays in view */
+function fitQuiz() {
+  const card = document.querySelector(".quiz-card-body");
+  const screen = document.getElementById("quiz-screen");
+  if (!card || !screen || screen.style.display === "none") return;
+
+  // reset before measuring
+  card.style.transform = "none";
+  card.style.marginBottom = "16px";
+
+  const top = card.getBoundingClientRect().top;
+  const natural = card.offsetHeight;
+  const available = window.innerHeight - top - 18; // small breathing room at the bottom
+  const scale = Math.min(1, available / natural);
+
+  if (scale < 1) {
+    card.style.transform = `scale(${scale})`;
+    // collapse the empty layout space the scale leaves behind
+    card.style.marginBottom = `${16 - natural * (1 - scale)}px`;
+  }
+}
+window.addEventListener("resize", fitQuiz);
 
 function renderQuestion(index) {
   const q = questions[index];
   currentQ = index;
-  document.querySelector('.question-card')?.classList.add('q-enter');
+  document.querySelector('.quiz-question-col')?.classList.add('q-enter');
 
-  // progress
-  const pct = Math.round(((index + 1) / 20) * 100);
+  // progress now tracks how many questions have actually been answered,
+  // since skipping lets people move through them out of order
+  const answered = submitted.filter(Boolean).length;
+  const pct = Math.round((answered / 20) * 100);
   document.getElementById("q-current").textContent = index + 1;
   document.getElementById("q-pct").textContent = pct + "%";
   document.getElementById("progress-fill").style.width = pct + "%";
-  document.getElementById("q-tag").textContent = "Q" + (index + 1);
+  const qNum = String(index + 1).padStart(2, "0");
+  document.getElementById("q-tag").textContent = "Question " + qNum + " of 20";
+
+  // revisit hint when landing back on a skipped question
+  const revisitNote = document.getElementById("revisit-note");
+  if (skippedFlag[index] && !submitted[index]) {
+    revisitNote.classList.remove("hidden");
+  } else {
+    revisitNote.classList.add("hidden");
+  }
 
   // mockup
   document.getElementById("phone-mockup-container").innerHTML = buildMockup(q.mockup, q.navTitle);
@@ -1817,17 +2440,32 @@ function renderQuestion(index) {
     ol.appendChild(label);
   });
 
-  // restore state if revisiting (not applicable — we move forward only)
   // feedback
   const fb = document.getElementById("feedback-banner");
   fb.className = "feedback-banner";
   fb.classList.remove("show");
 
-  // buttons
-  document.getElementById("submit-btn").classList.remove("hidden");
+  // buttons — reset submit to the disabled outline state
+  const submitBtn = document.getElementById("submit-btn");
+  submitBtn.classList.remove("hidden", "btn-primary");
+  submitBtn.classList.add("btn-outline");
   document.getElementById("next-btn").classList.add("hidden");
-  document.getElementById("submit-btn").disabled = true;
-  document.getElementById("submit-btn").style.opacity = "0.5";
+  submitBtn.disabled = true;
+  submitBtn.style.opacity = "0.5";
+
+  // skip button — only useful while there is another unanswered question to jump to
+  const skipBtn = document.getElementById("skip-btn");
+  skipBtn.classList.remove("hidden");
+  skipBtn.disabled = unsubmittedCount() <= 1;
+
+  // restore a previous (un-submitted) selection if the question was skipped
+  const prev = userAnswers[currentQ];
+  if (prev !== null && !submitted[currentQ]) {
+    selectOption(prev);
+  }
+
+  // fit the card to the viewport after the DOM has painted
+  requestAnimationFrame(fitQuiz);
 }
 
 function selectOption(i) {
@@ -1836,9 +2474,12 @@ function selectOption(i) {
   // update UI
   document.querySelectorAll(".option-label").forEach(l => l.classList.remove("selected"));
   document.querySelectorAll(".option-label")[i].classList.add("selected");
-  // enable submit
-  document.getElementById("submit-btn").disabled = false;
-  document.getElementById("submit-btn").style.opacity = "1";
+  // enable submit — switch to a filled button once a choice is active
+  const submitBtn = document.getElementById("submit-btn");
+  submitBtn.disabled = false;
+  submitBtn.style.opacity = "1";
+  submitBtn.classList.remove("btn-outline");
+  submitBtn.classList.add("btn-primary");
 }
 
 function submitAnswer() {
@@ -1862,30 +2503,49 @@ function submitAnswer() {
   const isCorrect = chosen === q.correctIndex;
   pushScore(isCorrect);
   if (!isCorrect) {
-    document.querySelector('.question-card').classList.add('shake');
-    setTimeout(() => document.querySelector('.question-card').classList.remove('shake'), 450);
+    document.querySelector('.quiz-question-col').classList.add('shake');
+    setTimeout(() => document.querySelector('.quiz-question-col').classList.remove('shake'), 450);
   }
   fb.className = "feedback-banner show " + (isCorrect ? "correct" : "wrong");
   fi.textContent = isCorrect ? "✓" : "✗";
   ft.textContent = q.explanation;
 
-  // swap buttons
+  // swap buttons — skip is no longer relevant once an answer is locked in
+  skippedFlag[currentQ] = false;
+  document.getElementById("revisit-note").classList.add("hidden");
+  document.getElementById("skip-btn").classList.add("hidden");
   document.getElementById("submit-btn").classList.add("hidden");
   const nb = document.getElementById("next-btn");
   nb.classList.remove("hidden");
-  nb.textContent = currentQ === 19 ? "See results" : "Next";
-  nb.innerHTML = currentQ === 19
+  // this is the final question only when nothing else is left to answer
+  const isLast = findNextUnsubmitted(currentQ) === -1;
+  nb.innerHTML = isLast
     ? `See results <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`
     : `Next <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+  // feedback banner grows the card — re-fit so nothing spills out of view
+  requestAnimationFrame(fitQuiz);
 }
 
 function nextQuestion() {
-  if (currentQ < 19) {
-    renderQuestion(currentQ + 1);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  } else {
+  // jump to the next question that still needs an answer, wrapping around if
+  // the remaining unanswered ones are earlier in the quiz
+  const nextIdx = findNextUnsubmitted(currentQ);
+  if (nextIdx === -1) {
     showResults();
+  } else {
+    renderQuestion(nextIdx);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
+}
+
+function skipQuestion() {
+  // nothing to skip to if this is the last unanswered question
+  const nextIdx = findNextUnsubmitted(currentQ);
+  if (nextIdx === -1) return;
+  skippedFlag[currentQ] = true;
+  renderQuestion(nextIdx);
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 /* ============================================================
@@ -1910,8 +2570,207 @@ function launchConfetti() {
   }
 }
 
+/* ============================================================
+   BALLOON POP BACKGROUND — results page only
+   Vanilla adaptation of the React canvas component: balloons
+   drift up behind the content and pop (with a particle burst)
+   when the pointer passes over them.
+============================================================ */
+const BalloonFX = (() => {
+  let canvas, ctx, rafId = null, running = false;
+  let balloons = [], particles = [];
+  let cssW = 0, cssH = 0;
+  const mouse = { x: -2000, y: -2000 };
+  const balloonCount = 30;
+
+  const colors = [
+    { base: "#ff2e63", light: "#ff6b8f", dark: "#9d0b2e" },
+    { base: "#00d2ff", light: "#80eaff", dark: "#006a80" },
+    { base: "#ffd700", light: "#fff080", dark: "#998100" },
+    { base: "#9d50bb", light: "#c089d8", dark: "#4f285e" },
+    { base: "#43e97b", light: "#a6f7c1", dark: "#1e6a38" },
+    { base: "#ff9a9e", light: "#fecfef", dark: "#cc7a7e" },
+    { base: "#00c9ff", light: "#92fe9d", dark: "#00607a" },
+  ];
+
+  class Particle {
+    constructor(x, y, color) {
+      this.x = x;
+      this.y = y;
+      this.color = color;
+      this.size = Math.random() * 3 + 1;
+      this.speedX = (Math.random() - 0.5) * 12;
+      this.speedY = (Math.random() - 0.5) * 12;
+      this.gravity = 0.2;
+      this.opacity = 1;
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      this.speedY += this.gravity;
+      this.opacity -= 0.025;
+    }
+    draw() {
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, this.opacity);
+      ctx.fillStyle = this.color;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+
+  class Balloon {
+    constructor(first = true) { this.init(first); }
+    init(firstLoad) {
+      this.r = Math.random() * 15 + 30;
+      this.x = Math.random() * cssW;
+      this.y = firstLoad ? Math.random() * cssH : cssH + this.r + 200;
+      this.colorSet = colors[Math.floor(Math.random() * colors.length)];
+      this.speed = Math.random() * 1 + 0.4;
+      this.wobbleSpeed = Math.random() * 0.02 + 0.01;
+      this.angle = Math.random() * Math.PI * 2;
+      this.popped = false;
+      this.prevX = this.x;
+      this.tailMidY = this.r + 40;
+      this.tailEndY = this.r + 120;
+      this.tailVelMid = 0;
+      this.tailVelEnd = 0;
+    }
+    drawBalloonPath(r) {
+      ctx.beginPath();
+      ctx.moveTo(0, r);
+      ctx.bezierCurveTo(-r * 1.2, r * 0.8, -r * 1.3, -r * 1.2, 0, -r * 1.2);
+      ctx.bezierCurveTo(r * 1.3, -r * 1.2, r * 1.2, r * 0.8, 0, r);
+      ctx.closePath();
+    }
+    drawString() {
+      const dx = this.x - this.prevX;
+      this.prevX = this.x;
+      const stiffness = 0.08, damping = 0.85, gravity = 0.35;
+      const midTarget = this.r + 40 + Math.abs(dx) * 8;
+      this.tailVelMid += (midTarget - this.tailMidY) * stiffness;
+      this.tailVelMid *= damping;
+      this.tailMidY += this.tailVelMid;
+      const endTarget = this.r + 120 + Math.abs(dx) * 14;
+      this.tailVelEnd += (endTarget - this.tailEndY) * stiffness;
+      this.tailVelEnd *= damping;
+      this.tailVelEnd += gravity;
+      this.tailEndY += this.tailVelEnd;
+      const sway = Math.sin(this.angle * 1.8) * 6 + dx * 4;
+      ctx.beginPath();
+      ctx.moveTo(0, this.r + 5);
+      ctx.bezierCurveTo(sway, this.tailMidY * 0.5, -sway, this.tailMidY, sway * 0.6, this.tailEndY);
+      ctx.strokeStyle = "rgba(255,255,255,0.25)";
+      ctx.lineWidth = 1.3;
+      ctx.stroke();
+    }
+    pop() {
+      if (this.popped) return;
+      this.popped = true;
+      for (let i = 0; i < 20; i++) particles.push(new Particle(this.x, this.y, this.colorSet.base));
+      setTimeout(() => this.init(false), 1000 + Math.random() * 1000);
+    }
+    update() {
+      if (this.popped) return;
+      this.y -= this.speed;
+      this.angle += this.wobbleSpeed;
+      this.x += Math.sin(this.angle * 0.6) * 0.8;
+      const dx = this.x - mouse.x;
+      const dy = this.y - this.r * 0.2 - mouse.y;
+      if (Math.sqrt(dx * dx + dy * dy) < this.r + 10) this.pop();
+      if (this.y < -this.r - 200) this.init(false);
+      this.draw();
+    }
+    draw() {
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.rotate(Math.sin(this.angle) * 0.06);
+      this.drawString();
+      this.drawBalloonPath(this.r);
+      const grad = ctx.createRadialGradient(-this.r * 0.3, -this.r * 0.5, this.r * 0.1, 0, 0, this.r * 1.5);
+      grad.addColorStop(0, this.colorSet.light);
+      grad.addColorStop(0.4, this.colorSet.base);
+      grad.addColorStop(1, this.colorSet.dark);
+      ctx.fillStyle = grad;
+      ctx.globalAlpha = 0.92;
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+
+  function resize() {
+    const dpr = window.devicePixelRatio || 1;
+    cssW = window.innerWidth;
+    cssH = window.innerHeight;
+    canvas.width = cssW * dpr;
+    canvas.height = cssH * dpr;
+    canvas.style.width = cssW + "px";
+    canvas.style.height = cssH + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    balloons = [];
+    for (let i = 0; i < balloonCount; i++) balloons.push(new Balloon(true));
+  }
+
+  function loop() {
+    if (!running) return;
+    ctx.clearRect(0, 0, cssW, cssH);
+    particles = particles.filter(p => p.opacity > 0);
+    particles.forEach(p => { p.update(); p.draw(); });
+    balloons.forEach(b => b.update());
+    rafId = requestAnimationFrame(loop);
+  }
+
+  function onMove(e) {
+    const pt = e.touches ? e.touches[0] : e;
+    if (!pt) return;
+    mouse.x = pt.clientX;
+    mouse.y = pt.clientY;
+  }
+
+  function start() {
+    if (running) return;
+    canvas = document.getElementById("balloon-canvas");
+    if (!canvas) return;
+    ctx = canvas.getContext("2d");
+    canvas.style.display = "block";
+    running = true;
+    balloons = [];
+    particles = [];
+    window.addEventListener("resize", resize);
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("touchmove", onMove, { passive: true });
+    resize();
+    loop();
+  }
+
+  function stop() {
+    running = false;
+    if (rafId) cancelAnimationFrame(rafId);
+    rafId = null;
+    window.removeEventListener("resize", resize);
+    window.removeEventListener("mousemove", onMove);
+    window.removeEventListener("touchmove", onMove);
+    if (canvas && ctx) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      canvas.style.display = "none";
+    }
+    balloons = [];
+    particles = [];
+    mouse.x = -2000;
+    mouse.y = -2000;
+  }
+
+  return { start, stop };
+})();
+
 function showResults() {
   markCompleted();
+  // gently fade the soundtrack out as we move to the results
+  AmbientMusic.pause();
+  reflectMusicState();
+  document.body.classList.remove("quiz-active");
   document.getElementById("quiz-screen").style.display = "none";
   const rs = document.getElementById("results-screen");
   rs.style.display = "block";
@@ -1994,6 +2853,9 @@ function showResults() {
   });
 
   window.scrollTo({ top: 0, behavior: "smooth" });
+
+  // Balloons drift up in the background once the score has landed
+  setTimeout(() => BalloonFX.start(), 700);
 }
 
 function toggleDetail(i) {
@@ -2003,16 +2865,58 @@ function toggleDetail(i) {
   chev.classList.toggle("open");
 }
 
+/* ============================================================
+   TYPEWRITER — intro headline
+   Vanilla adaptation of the framer-motion TypewriterEffect:
+   reveals the title character-by-character with a blinking cursor.
+============================================================ */
+const TITLE_SEGMENTS = [
+  { text: "The ", grad: false },
+  { text: "UX Writing", grad: true },
+  { text: " Challenge", grad: false },
+];
+
+function typeTitle() {
+  const lineEl = document.getElementById("tw-line");
+  const cursorEl = document.getElementById("tw-cursor");
+  if (!lineEl) return;
+
+  lineEl.innerHTML = "";
+  const chars = [];
+  TITLE_SEGMENTS.forEach((seg) => {
+    const span = document.createElement("span");
+    if (seg.grad) span.className = "tw-grad";
+    lineEl.appendChild(span);
+    for (const ch of seg.text) chars.push({ span, ch });
+  });
+
+  let i = 0;
+  function step() {
+    if (i >= chars.length) return;
+    const { span, ch } = chars[i];
+    span.append(document.createTextNode(ch));
+    i++;
+    setTimeout(step, 60);
+  }
+  setTimeout(step, 350);
+}
+
+document.addEventListener("DOMContentLoaded", typeTitle);
+
 function retryQuiz() {
+  BalloonFX.stop();
   userAnswers = new Array(20).fill(null);
   submitted = new Array(20).fill(false);
+  skippedFlag = new Array(20).fill(false);
   currentQ = 0;
   liveScore = 0;
   participantId = null;
   document.getElementById("results-screen").style.display = "none";
   document.getElementById("quiz-screen").style.display = "block";
+  document.body.classList.add("quiz-active");
   renderQuestion(0);
   window.scrollTo({ top: 0, behavior: "smooth" });
+  startMusic();
 }
 </script>
 </body>
