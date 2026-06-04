@@ -1299,8 +1299,7 @@ const questions = [
     options: [
       "Next steps: Don't get your car repaired yet. File a claim first and we'll send an inspector to assess the damage.",
       "Brand proof: With a 96% settlement ratio, you're in safe hands.",
-      "Energy: Don't worry! We've got your back! Let's sort this out 💪",
-      "Empathy: We know this is stressful. Take a deep breath."
+      "Energy: Don't worry! We've got your back! Let's sort this out 💪"
     ],
     correctIndex: 0,
     explanation: "In high-stress moments, lead with what the user needs to do — not reassurance, not stats. Calm, exact, useful. The next-steps copy gives a concrete action and sets an expectation, which is exactly what a panicked person needs."
@@ -1603,11 +1602,16 @@ function mockupContent(id) {
       </div>`;
 
     case "q05": return `
-      <div style="text-align:center;padding:4px 0 10px">
-        <div style="font-size:26px;margin-bottom:6px">🚗</div>
-        <div style="font-size:10px;font-weight:700;color:#474649;letter-spacing:0.6px;text-transform:uppercase;margin-bottom:10px">Accident reported</div>
+      <div style="text-align:center;padding:4px 0 14px">
+        <div style="font-size:28px;margin-bottom:6px">🚗</div>
+        <div style="font-size:10px;font-weight:700;color:#474649;letter-spacing:0.6px;text-transform:uppercase;margin-bottom:14px">Accident reported</div>
       </div>
-      <div style="font-size:13px;color:#141414;line-height:1.6;font-family:'Euclid Circular B',sans-serif;padding:0 2px">We know this is stressful. Take a deep breath.</div>`;
+      <div style="position:relative;background:#F5F3FF;border:1.5px solid #C4B5FD;border-radius:12px;padding:12px 14px;margin:0 4px">
+        <div style="font-size:12.5px;color:#141414;line-height:1.6;font-family:'Euclid Circular B',sans-serif">We know this is stressful. Take a deep breath.</div>
+        <div style="position:absolute;bottom:-9px;left:20px;width:16px;height:9px;overflow:hidden">
+          <div style="width:16px;height:16px;background:#F5F3FF;border:1.5px solid #C4B5FD;transform:rotate(45deg);transform-origin:top left;margin-top:-1px;margin-left:1px"></div>
+        </div>
+      </div>`;
 
     case "q06": return `
       <div class="ph-sub">Need help?</div>
