@@ -904,9 +904,53 @@
   .quiz-nav {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     gap: 10px;
     margin-top: 16px;
   }
+  .skip-link {
+    margin-right: auto;
+    background: none;
+    border: none;
+    color: var(--grey-400);
+    font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+    padding: 6px 2px;
+    transition: color 0.15s;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: rgba(100,116,139,0.4);
+  }
+  .skip-link:hover { color: var(--grey-600); }
+
+  /* skipped review screen */
+  #skipped-screen { display: none; padding-top: 8px; }
+  .skipped-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    padding: 32px 24px;
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+  }
+  .skipped-icon { font-size: 40px; margin-bottom: 16px; }
+  .skipped-title { font-size: 22px; font-weight: 700; color: var(--white); margin-bottom: 8px; }
+  .skipped-sub { font-size: 14px; color: var(--grey-600); margin-bottom: 24px; line-height: 1.5; }
+  .skipped-list {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    justify-content: center; margin-bottom: 28px;
+  }
+  .skipped-tag {
+    background: rgba(123,92,240,0.15);
+    border: 1px solid rgba(123,92,240,0.3);
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--purple);
+  }
+  .skipped-actions { display: flex; flex-direction: column; gap: 10px; }
 
   /* ── Results screen ─────────────────────────────────────── */
   #results-screen { display: none; padding-top: 8px; }
@@ -1096,13 +1140,8 @@
         </div>
         <div class="divider-v"></div>
         <div class="intro-meta-item">
-          <strong>~10</strong>
-          <span>Minutes</span>
-        </div>
-        <div class="divider-v"></div>
-        <div class="intro-meta-item">
-          <strong>0</strong>
-          <span>Tricks</span>
+          <strong>10 min</strong>
+          <span>Give or take</span>
         </div>
       </div>
       <div class="name-input-wrap">
@@ -1156,11 +1195,29 @@
 
     <!-- Nav -->
     <div class="quiz-nav">
+      <button class="skip-link" id="skip-btn" onclick="skipQuestion()">Skip question</button>
       <button class="btn btn-outline" id="submit-btn" onclick="submitAnswer()">Submit</button>
       <button class="btn btn-primary hidden" id="next-btn" onclick="nextQuestion()">
         Next
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
+    </div>
+  </section>
+
+  <!-- ───────────── SKIPPED REVIEW SCREEN ───────────── -->
+  <section id="skipped-screen">
+    <div class="skipped-card">
+      <div class="skipped-icon">⏭</div>
+      <div class="skipped-title" id="skipped-title">You skipped a few</div>
+      <div class="skipped-sub" id="skipped-sub">Want to go back and answer them before seeing your score?</div>
+      <div class="skipped-list" id="skipped-list"></div>
+      <div class="skipped-actions">
+        <button class="btn btn-primary btn-lg" onclick="reviewSkipped()">
+          Review skipped
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="btn btn-outline" onclick="showResults()">See results anyway</button>
+      </div>
     </div>
   </section>
 
@@ -1474,23 +1531,22 @@ const questions = [
       "Your car insurance expires tomorrow 🚗",
       "Get your 🚗 insurance renewed",
       "Your claim was rejected 😭",
-      "Your policy is active. 🎉"
+      "Your policy is active 🎉✨ — great news for you! 🙌"
     ],
     correctIndex: 0,
-    explanation: "A is correct: the emoji sits at the end, replaces the full stop, and the context has appropriate urgency without being insensitive. B uses the emoji as a word replacement (🚗 stands in for 'car'). C uses an emoji in a high-distress context, which is tone-deaf. D places the emoji after a full stop instead of replacing it."
+    explanation: "A is correct: one emoji, at the end, replaces the full stop, and the context suits it. B uses the emoji as a word replacement. C uses an emoji in a high-distress context, which is tone-deaf. D piles on three emojis in one sentence — use them sparingly, one at most."
   },
   {
     mockup: "q17",
-    navTitle: "Cashless Claim",
-    question: "What's wrong with this?",
+    navTitle: "Document upload",
+    question: "A document upload failed. Which copy works better?",
     options: [
-      "It should not apologise at all, since the delay isn't ACKO's fault",
-      "\"Sorry\" is fine, but \"but\" after an apology cancels it out",
-      "It's too short and needs a timeline",
-      "The tone is too casual"
+      "Your document couldn't be uploaded. Please try again with a smaller file.",
+      "We couldn't upload your document because the file is too large. Upload a file under 5 MB.",
+      "Upload failed due to file size exceeding the limit. Please try again."
     ],
     correctIndex: 1,
-    explanation: "Never follow \"sorry\" with \"but\" — it negates the apology. Also, only apologise when ACKO is responsible. Better: \"Our agents are busy right now. We'll connect you in [time].\" No sorry needed if it's a capacity issue."
+    explanation: "B uses active voice (we couldn't), states the exact reason, and gives the precise limit (5 MB) so the user knows exactly what to do. A is passive and vague about the size. C reads like a system error log, not a product."
   },
   {
     mockup: "q18",
@@ -1775,18 +1831,21 @@ function mockupContent(id) {
         </div>
         <div style="background:#F5F5F5;border-radius:8px;padding:9px 11px">
           <div style="font-size:9px;font-weight:700;color:#7A7B7D;letter-spacing:0.5px;margin-bottom:3px;text-transform:uppercase">ACKO · Policy</div>
-          <div style="font-size:11.5px;color:#141414;line-height:1.45;font-family:'Euclid Circular B',sans-serif">Your policy is active. 🎉</div>
+          <div style="font-size:11.5px;color:#141414;line-height:1.45;font-family:'Euclid Circular B',sans-serif">Your policy is active 🎉✨ — great news for you! 🙌</div>
         </div>
       </div>`;
 
     case "q17": return `
-      <div class="ph-sub">Claim update</div>
-      <div class="ph-header" style="margin-bottom:8px">Agent unavailable</div>
-      <div class="ph-otp-error" style="background:#FEF3C7;color:#92400E;border-radius:8px">
-        <span>ℹ</span>
-        <span>Sorry for the delay, but no agents are available right now.</span>
+      <div class="ph-sub">Upload documents</div>
+      <div class="ph-header" style="margin-bottom:10px;font-size:14px">Policy documents</div>
+      <div style="border:1.5px dashed #E0E0E1;border-radius:10px;padding:14px;text-align:center;margin-bottom:10px">
+        <div style="font-size:22px;margin-bottom:4px">📄</div>
+        <div style="font-size:11px;color:#474649">insurance_policy.pdf</div>
+        <div style="font-size:10px;color:#F87171;margin-top:2px;font-weight:600">Upload failed</div>
       </div>
-      <div class="ph-row" style="margin-top:4px"><span class="ph-label">Request ID</span><span class="ph-value">#REQ-9921</span></div>`;
+      <div style="background:#FEF2F2;border-radius:8px;padding:10px 12px;border-left:3px solid #F87171">
+        <div style="font-size:12px;color:#7F1D1D;line-height:1.5;font-family:'Euclid Circular B',sans-serif">We're having trouble with your upload. Please check your file and try again.</div>
+      </div>`;
 
     case "q18": return `
       <div class="ph-sub">Document verification</div>
@@ -1838,7 +1897,7 @@ function mockupCTA(id) {
     q14: ["View full claim", ""],
     q15: ["View plans", ""],
     q16: [null],
-    q17: ["Wait for agent", "muted"],
+    q17: ["Try again", ""],
     q18: ["Okay", ""],
     q19: ["View policy", ""],
     q20: ["Track help", ""],
@@ -1852,8 +1911,11 @@ function mockupCTA(id) {
    QUIZ STATE
 ============================================================ */
 let currentQ = 0;
-let userAnswers = new Array(20).fill(null); // index of selected option
+let userAnswers = new Array(20).fill(null);
 let submitted = new Array(20).fill(false);
+let skipped = new Array(20).fill(false);
+let reviewingSkipped = false;
+let skippedQueue = [];
 
 function startQuiz() {
   document.getElementById("intro-screen").style.display = "none";
@@ -1911,6 +1973,7 @@ function renderQuestion(index) {
   document.getElementById("next-btn").classList.add("hidden");
   document.getElementById("submit-btn").disabled = true;
   document.getElementById("submit-btn").style.opacity = "0.5";
+  document.getElementById("skip-btn").classList.remove("hidden");
 }
 
 function selectOption(i) {
@@ -1978,6 +2041,7 @@ function submitAnswer() {
 
   // swap buttons
   document.getElementById("submit-btn").classList.add("hidden");
+  document.getElementById("skip-btn").classList.add("hidden");
   const nb = document.getElementById("next-btn");
   nb.classList.remove("hidden");
   nb.textContent = currentQ === 19 ? "See results" : "Next";
@@ -1986,12 +2050,69 @@ function submitAnswer() {
     : `Next <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 }
 
+function skipQuestion() {
+  skipped[currentQ] = true;
+  userAnswers[currentQ] = null;
+  if (reviewingSkipped) {
+    advanceSkippedQueue();
+  } else if (currentQ < 19) {
+    renderQuestion(currentQ + 1);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  } else {
+    checkSkippedOrShowResults();
+  }
+}
+
 function nextQuestion() {
+  if (reviewingSkipped) {
+    advanceSkippedQueue();
+    return;
+  }
   if (currentQ < 19) {
     renderQuestion(currentQ + 1);
     window.scrollTo({ top: 0, behavior: "smooth" });
   } else {
-    showResults();
+    checkSkippedOrShowResults();
+  }
+}
+
+function checkSkippedOrShowResults() {
+  const indices = skipped.map((s, i) => s ? i : -1).filter(i => i >= 0);
+  if (indices.length === 0) { showResults(); return; }
+  document.getElementById("quiz-screen").style.display = "none";
+  const ss = document.getElementById("skipped-screen");
+  ss.style.display = "block";
+  const count = indices.length;
+  document.getElementById("skipped-title").textContent =
+    count === 1 ? "You skipped 1 question" : `You skipped ${count} questions`;
+  document.getElementById("skipped-sub").textContent =
+    "Want to go back and answer them before seeing your score?";
+  const list = document.getElementById("skipped-list");
+  list.innerHTML = indices.map(i => `<div class="skipped-tag">Q${i + 1}</div>`).join("");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function reviewSkipped() {
+  reviewingSkipped = true;
+  skippedQueue = skipped.map((s, i) => s ? i : -1).filter(i => i >= 0);
+  // reset skipped flags so they can skip again or answer
+  skippedQueue.forEach(i => { skipped[i] = false; });
+  document.getElementById("skipped-screen").style.display = "none";
+  document.getElementById("quiz-screen").style.display = "block";
+  renderQuestion(skippedQueue.shift());
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function advanceSkippedQueue() {
+  if (skippedQueue.length > 0) {
+    renderQuestion(skippedQueue.shift());
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  } else {
+    reviewingSkipped = false;
+    // check if any were re-skipped
+    const stillSkipped = skipped.some(s => s);
+    if (stillSkipped) checkSkippedOrShowResults();
+    else showResults();
   }
 }
 
