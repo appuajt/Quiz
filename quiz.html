@@ -1259,9 +1259,9 @@ const questions = [
     navTitle: "Get Started",
     question: "What's wrong with the CTA?",
     options: [
-      "\"Let's\" is a contraction — it shouldn't be used",
+      "\"Let's\" is a contraction, so it shouldn't be used",
       "The CTA is in all caps and has an exclamation mark",
-      "The CTA is too short — it should explain what happens next",
+      "The CTA is too short and should explain what happens next",
       "The body copy doesn't match the CTA"
     ],
     correctIndex: 1,
@@ -1275,10 +1275,10 @@ const questions = [
       "The illustration is missing and the header is wrong",
       "\"Oops!\" is wrong for a neutral state, and there's no next step for the user",
       "The body copy is passive and the header needs a full stop",
-      "The tone is too cold — it should be warmer"
+      "The tone is too cold and should be warmer"
     ],
     correctIndex: 1,
-    explanation: "\"Oops!\" implies something went wrong — an empty claims history is neutral. The screen also leaves the user stranded with no next action (e.g. \"File a claim\")."
+    explanation: "\"Oops!\" implies something went wrong, but an empty claims history is neutral. The screen also leaves the user stranded with no next action (e.g. \"File a claim\")."
   },
   {
     mockup: "q04",
@@ -1286,24 +1286,24 @@ const questions = [
     question: "What's wrong with the body copy?",
     options: [
       "\"Try again\" should be a CTA button, not inline text",
-      "The header is too blunt — it should apologise",
-      "It blames the user — should say \"The OTP doesn't match\"",
+      "The header is too blunt and should apologise",
+      "It blames the user; it should say \"The OTP doesn't match\"",
       "It's missing the reason why verification failed"
     ],
     correctIndex: 2,
-    explanation: "\"You entered the wrong OTP\" points the finger. \"The OTP doesn't match\" states the system state without blame — a key UX writing principle."
+    explanation: "\"You entered the wrong OTP\" points the finger. \"The OTP doesn't match\" states the system state without blame, a key UX writing principle."
   },
   {
     mockup: "q05",
     navTitle: "File a claim",
     question: "Someone just had a car accident and opened the app. What should your copy prioritise?",
     options: [
-      "Empathy — We know this is stressful. Take a deep breath.",
-      "Next steps — Don't get your car repaired yet. File a claim first — we'll send an inspector to assess the damage.",
-      "Brand proof — With a 96% settlement ratio, you're in safe hands.",
-      "Energy — Don't worry! We've got your back! Let's sort this out 💪"
+      "Next steps: Don't get your car repaired yet. File a claim first and we'll send an inspector to assess the damage.",
+      "Brand proof: With a 96% settlement ratio, you're in safe hands.",
+      "Energy: Don't worry! We've got your back! Let's sort this out 💪",
+      "Empathy: We know this is stressful. Take a deep breath."
     ],
-    correctIndex: 1,
+    correctIndex: 0,
     explanation: "In high-stress moments, lead with what the user needs to do — not reassurance, not stats. Calm, exact, useful. The next-steps copy gives a concrete action and sets an expectation, which is exactly what a panicked person needs."
   },
   {
@@ -1324,8 +1324,8 @@ const questions = [
     navTitle: "Claim Submitted",
     question: "What's the key problem with the body copy?",
     options: [
-      "It's too short — needs more detail about the claim",
-      "\"Soon\" is vague — ACKO should always give a specific timeline",
+      "It's too short and needs more detail about the claim",
+      "\"Soon\" is vague; ACKO should always give a specific timeline",
       "The CTA should say \"Okay\" not \"Got it\"",
       "It's missing the claim number"
     ],
@@ -1339,11 +1339,11 @@ const questions = [
     options: [
       "\"Deductible applicable: ₹2,000\"",
       "\"Co-payment: ₹2,000 per hospitalisation\"",
-      "\"You'll pay ₹2,000 first — ACKO covers the rest\"",
+      "\"You'll pay ₹2,000 first. ACKO covers the rest.\"",
       "\"IDV deductible: ₹2,000\""
     ],
     correctIndex: 2,
-    explanation: "ACKO's voice is plainspoken — explain what something means for the user, not just what it's called. \"You'll pay ₹2,000 first\" communicates the impact directly."
+    explanation: "ACKO's voice is plainspoken: explain what something means for the user, not just what it's called. \"You'll pay ₹2,000 first\" communicates the impact directly."
   },
   {
     mockup: "q09",
@@ -1356,7 +1356,7 @@ const questions = [
       "Access"
     ],
     correctIndex: 2,
-    explanation: "\"Explore\" is for discovery — browsing something new. For reading an existing document, \"View\" is the precise, standard verb. \"Download\" implies saving; \"Access\" is vague."
+    explanation: "\"Explore\" is for discovery, for browsing something new. For reading an existing document, \"View\" is the precise, standard verb. \"Download\" implies saving; \"Access\" is vague."
   },
   {
     mockup: "q10",
@@ -1365,7 +1365,7 @@ const questions = [
     options: [
       "The emoji is in the wrong position",
       "The header should not use an exclamation mark",
-      "\"Congratulations\" and \"uncertainties\" both violate ACKO's tone — it's overselling a functional moment",
+      "\"Congratulations\" and \"uncertainties\" both violate ACKO's tone; this oversells a functional moment",
       "The body is too long"
     ],
     correctIndex: 2,
@@ -1389,22 +1389,22 @@ const questions = [
     navTitle: "Claim Update",
     question: "What's wrong with how ACKO refers to itself?",
     options: [
-      "\"ACKO\" is correctly used here — no issue",
-      "ACKO should refer to itself as \"we\" — not by name — in customer-facing copy",
+      "\"ACKO\" is correctly used here, no issue",
+      "ACKO should refer to itself as \"we\", not by name, in customer-facing copy",
       "The sentence is too long",
-      "\"Decision\" is too formal — should be \"update\""
+      "\"Decision\" is too formal and should be \"update\""
     ],
     correctIndex: 1,
-    explanation: "In customer-facing copy, ACKO should always use \"we\" and \"our\". Using the brand name in third person feels cold and robotic — as if the company is talking about itself."
+    explanation: "In customer-facing copy, ACKO should always use \"we\" and \"our\". Using the brand name in third person feels cold and robotic, as if the company is talking about itself."
   },
   {
     mockup: "q13",
     navTitle: "Claim Decision",
     question: "What's wrong with this approach?",
     options: [
-      "It's too short — should explain the reason",
-      "The build-up makes it worse — state the fact, the reason, and the next step directly",
-      "\"Disheartening\" is fine — it shows empathy",
+      "It's too short and should explain the reason",
+      "The build-up makes it worse; state the fact, the reason, and the next step directly",
+      "\"Disheartening\" is fine, it shows empathy",
       "The header should apologise"
     ],
     correctIndex: 1,
@@ -1431,7 +1431,7 @@ const questions = [
       "It's too long for a headline",
       "\"Guaranteed\" and \"100% of the time\" are overpromises ACKO must never make unless factually true in every case",
       "It should mention the premium price instead",
-      "Nothing is wrong — it's a strong headline"
+      "Nothing is wrong, it's a strong headline"
     ],
     correctIndex: 1,
     explanation: "ACKO's voice is honest. Absolute claims like \"guaranteed\" and \"100% of the time\" are legally and ethically risky, and damage trust the moment an exception occurs."
@@ -1454,13 +1454,13 @@ const questions = [
     navTitle: "Cashless Claim",
     question: "What's wrong with this?",
     options: [
-      "It should not apologise at all — the delay isn't ACKO's fault",
+      "It should not apologise at all, since the delay isn't ACKO's fault",
       "\"Sorry\" is fine, but \"but\" after an apology cancels it out",
-      "It's too short — needs a timeline",
+      "It's too short and needs a timeline",
       "The tone is too casual"
     ],
     correctIndex: 1,
-    explanation: "Never follow \"sorry\" with \"but\" — it negates the apology. Also, only apologise when ACKO is responsible. Better: \"Our agents are busy right now. We'll connect you in [time].\" — no sorry needed if it's a capacity issue."
+    explanation: "Never follow \"sorry\" with \"but\" — it negates the apology. Also, only apologise when ACKO is responsible. Better: \"Our agents are busy right now. We'll connect you in [time].\" No sorry needed if it's a capacity issue."
   },
   {
     mockup: "q18",
@@ -1481,12 +1481,12 @@ const questions = [
     question: "What's wrong with this?",
     options: [
       "The date format is wrong",
-      "\"Policyholder\" is third-person — should say \"Your coverage begins on 15 June 2026.\"",
+      "\"Policyholder\" is third-person; it should say \"Your coverage begins on 15 June 2026.\"",
       "It should mention ACKO by name",
       "There's no CTA"
     ],
     correctIndex: 1,
-    explanation: "ACKO writes in second person — always address \"you\". \"The policyholder\" sounds like legal text, not a product. \"Your coverage begins\" is warmer and clearer."
+    explanation: "ACKO writes in second person, always addressing \"you\". \"The policyholder\" sounds like legal text, not a product. \"Your coverage begins\" is warmer and clearer."
   },
   {
     mockup: "q20",
@@ -1495,7 +1495,7 @@ const questions = [
     options: [
       "The emoji is inappropriate but the copy is fine",
       "\"ASAP\" is too informal but otherwise it's correct",
-      "This is a high-stress moment — the copy should be calm, direct, and give a specific next step, not be upbeat",
+      "This is a high-stress moment; the copy should be calm, direct, and give a specific next step, not be upbeat",
       "The header is too short"
     ],
     correctIndex: 2,
@@ -1591,15 +1591,11 @@ function mockupContent(id) {
       </div>`;
 
     case "q05": return `
-      <div style="text-align:center;padding:4px 0 8px">
+      <div style="text-align:center;padding:4px 0 10px">
         <div style="font-size:26px;margin-bottom:6px">🚗</div>
-        <div style="font-size:10px;font-weight:700;color:#F87171;letter-spacing:0.6px;text-transform:uppercase;margin-bottom:8px">Accident reported</div>
+        <div style="font-size:10px;font-weight:700;color:#474649;letter-spacing:0.6px;text-transform:uppercase;margin-bottom:10px">Accident reported</div>
       </div>
-      <div style="background:#FFF8F8;border-radius:10px;padding:11px 13px;border:1.5px dashed #F87171;margin-bottom:10px">
-        <div style="font-size:10px;font-weight:700;color:#F87171;letter-spacing:0.5px;margin-bottom:5px;text-transform:uppercase">⚠ Replace this copy</div>
-        <div style="font-size:12px;color:#141414;line-height:1.55;font-family:'Euclid Circular B',sans-serif">We know this is stressful 💙 Take a deep breath — you've got ACKO on your side! We'll sort everything out for you.</div>
-      </div>
-      <div style="font-size:10px;color:#7A7B7D;line-height:1.5;font-family:'Euclid Circular B',sans-serif">What should this screen say instead?</div>`;
+      <div style="font-size:13px;color:#141414;line-height:1.6;font-family:'Euclid Circular B',sans-serif;padding:0 2px">We know this is stressful. Take a deep breath.</div>`;
 
     case "q06": return `
       <div class="ph-success-icon">📄</div>
@@ -1929,7 +1925,7 @@ function showResults() {
   if (correct === 20) { headline = "Perfect score!"; subline = "You nailed every single question. ACKO's voice is strong with you."; }
   else if (correct >= 16) { headline = "Excellent work!"; subline = "You've got a sharp eye for UX writing. Just a few edge cases to review."; }
   else if (correct >= 12) { headline = "Good effort!"; subline = "Solid foundations. Review the explanations below to sharpen your instincts."; }
-  else if (correct >= 8) { headline = "Room to grow!"; subline = "You're getting there. Go through the explanations — they'll make a big difference."; }
+  else if (correct >= 8) { headline = "Room to grow!"; subline = "You're getting there. Go through the explanations, they'll make a big difference."; }
   else { headline = "Keep practising!"; subline = "UX writing takes time. Read through each explanation and try again."; }
   document.getElementById("result-headline").textContent = headline;
   document.getElementById("result-subline").textContent = subline;
