@@ -230,11 +230,12 @@
   }
   .intro-meta-item {
     flex: 0 0 auto;
-    min-width: 90px;
+    min-width: 110px;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 5px;
+    padding: 0 20px;
   }
   .intro-meta-item strong {
     font-size: 30px;
@@ -1399,21 +1400,19 @@
   <section id="intro-screen">
     <div class="intro-content">
 
-      <div class="intro-badge">UX Writing Challenge</div>
-
       <h1 class="intro-title"><span id="tw-line"></span><span class="tw-cursor" id="tw-cursor"></span></h1>
 
-      <p class="intro-lede">25 real-app screens with copy that's too vague, off-tone, or just wrong. Can you spot every mistake?</p>
+      <p class="intro-lede">20 real-app screens with copy that's too vague, off-tone, or just wrong. Can you spot every mistake?</p>
 
       <div class="intro-meta">
         <div class="intro-meta-item">
-          <strong>25</strong>
+          <strong>20</strong>
           <span>Questions</span>
         </div>
         <div class="divider-v"></div>
         <div class="intro-meta-item">
-          <strong>10 min</strong>
-          <span>Give or take</span>
+          <strong>15 mins</strong>
+          <span>To complete</span>
         </div>
       </div>
 
@@ -1448,7 +1447,7 @@
     <!-- Progress -->
     <div class="progress-wrap">
       <div class="progress-top">
-        <span class="progress-label">Question <strong id="q-current">1</strong> of 25</span>
+        <span class="progress-label">Question <strong id="q-current">1</strong> of 20</span>
         <span class="progress-pct" id="q-pct">5%</span>
       </div>
       <div class="progress-track">
@@ -1497,7 +1496,7 @@
         </svg>
         <div class="score-ring-text">
           <div class="score-num" id="result-score">0</div>
-          <div class="score-denom">/ 25</div>
+          <div class="score-denom">/ 20</div>
         </div>
       </div>
       <h2 id="result-headline">Well done!</h2>
@@ -1593,11 +1592,37 @@ async function handleStartQuiz() {
 }
 
 /* ============================================================
-   DATA — 25 questions
+   DATA — 20 questions
    correctIndex is 0-based (0=A, 1=B, 2=C, 3=D)
    mockup: function name string → rendered by buildMockup()
 ============================================================ */
 const questions = [
+  {
+    mockup: "qux1",
+    navTitle: "UX writing",
+    question: "UX writing is primarily for the user. Which copy puts the user first?",
+    options: [
+      "ACKO has processed 50,000 claims this year.",
+      "We're proud to announce our fastest claim settlement yet.",
+      "Your claim has been submitted. Here's what to expect.",
+      "ACKO is trusted by 8+ crore Indians like you."
+    ],
+    correctIndex: 2,
+    explanation: "C is UX writing. It tells the user where they are and what to expect. A, B, and D are all about ACKO — its scale, its pride, its reach. UX writing isn't about the company. It's about helping the user move forward."
+  },
+  {
+    mockup: "qux2",
+    navTitle: "UX writing",
+    question: "Which of these best describes the job of UX copy?",
+    options: [
+      "Sound on-brand and memorable",
+      "Be witty and make users smile",
+      "Use short sentences and simple words",
+      "Help users know what to do next, without making them think too hard"
+    ],
+    correctIndex: 3,
+    explanation: "UX copy's job is to reduce friction and help users complete their task. Being on-brand, witty, or concise are all nice to have. But if the copy leaves a user unsure what to do next, it has failed — no matter how clever it sounds."
+  },
   {
     mockup: "q01",
     navTitle: "Brand voice",
@@ -1609,57 +1634,70 @@ const questions = [
       "Plainspoken"
     ],
     correctIndex: 2,
-    explanation: "Insurance deals with accidents, illness, and loss. Enthusiasm misreads the emotional context entirely — it feels tone-deaf in high-stakes moments. Assuring, Transparent, and Plainspoken all build trust when it matters most."
+    explanation: "Insurance is about accidents, illness, and loss. Being enthusiastic misreads what users are going through. It feels out of place when the stakes are high. Assuring, Transparent, and Plainspoken all build trust when it counts."
   },
   {
     mockup: "q02",
-    navTitle: "Get Started",
+    navTitle: "Get started",
     question: "What's wrong with the CTA?",
     options: [
       "\"Let's\" is a contraction, so it shouldn't be used",
       "The CTA is in all caps and has an exclamation mark",
-      "The CTA is too short and should explain what happens next",
+      "The CTA does not explain what happens next",
       "The body copy doesn't match the CTA"
     ],
     correctIndex: 1,
-    explanation: "CTAs should be sentence case and calm. All caps reads as shouting, and an exclamation mark adds unnecessary pressure. \"Get started\" is the right form."
+    explanation: "CTAs should be sentence case and calm. All caps reads as shouting. An exclamation mark adds pressure the user didn't ask for. \"Get started\" is the right form."
   },
   {
     mockup: "q03",
-    navTitle: "Claims History",
-    question: "What are the two problems with this empty state?",
+    navTitle: "Claims history",
+    question: "What's wrong with the empty state copy here?",
     options: [
-      "The illustration is wrong",
+      "\"Nothing to see here\" is wrong — there is clearly an illustration visible",
       "\"Oops!\" is wrong for a neutral state, and there's no next step for the user",
       "The tone is too cold and should be warmer"
     ],
     correctIndex: 1,
-    explanation: "\"Oops!\" implies something went wrong, but an empty claims history is neutral. The screen also leaves the user stranded with no next action (e.g. \"File a claim\")."
+    explanation: "\"Oops!\" suggests something went wrong. But an empty claims history is just a normal starting point. The screen also leaves the user stuck with no next action, like \"File a claim\"."
   },
   {
     mockup: "q04",
-    navTitle: "OTP Verification",
-    question: "What's wrong with the body copy?",
+    navTitle: "OTP verification",
+    question: "What's wrong with the tooltip copy here?",
     options: [
-      "\"Try again\" should be a CTA button, not inline text",
-      "The header is too blunt and should apologise",
-      "It blames the user; it should say \"The OTP doesn't match\"",
+      "\"Try again\" should be the CTA, not the tooltip",
+      "The header should be warmer and apologetic",
+      "The tooltip blames the user. It should instead say something like \"The OTP doesn't match\"",
       "It's missing the reason why verification failed"
     ],
     correctIndex: 2,
-    explanation: "\"You entered the wrong OTP\" points the finger. \"The OTP doesn't match\" states the system state without blame, a key UX writing principle."
+    explanation: "\"You entered the wrong OTP\" points the finger at the user. \"The OTP doesn't match\" describes the system state without blame. That's a key UX writing principle."
   },
   {
     mockup: "q05",
     navTitle: "File a claim",
     question: "Someone just had a car accident and opened the app. What should your copy prioritise?",
     options: [
-      "Next steps: Don't get your car repaired yet. File a claim first and we'll send an inspector to assess the damage.",
-      "Brand proof: With a 96% settlement ratio, you're in safe hands.",
-      "Energy: Don't worry! We've got your back! Let's sort this out 💪"
+      "<strong>Next steps:</strong> Don't get your car repaired yet. File a claim first and we'll send an inspector to assess the damage.",
+      "<strong>Brand proof:</strong> With a 96% settlement ratio, you're in safe hands.",
+      "<strong>Energy:</strong> Don't worry! We've got your back! Let's sort this out 💪"
     ],
     correctIndex: 0,
-    explanation: "In high-stress moments, lead with what the user needs to do — not reassurance, not stats. Calm, exact, useful. The next-steps copy gives a concrete action and sets an expectation, which is exactly what a panicked person needs."
+    explanation: "In high-stress moments, lead with what the user needs to do. Skip the reassurance and the stats. The next-steps copy is calm, exact, and useful. It gives a clear action and sets an expectation."
+  },
+  {
+    mockup: "q07",
+    navTitle: "Claim submitted",
+    question: "What's the key problem with the description here?",
+    options: [
+      "It's too short and needs more detail about the claim",
+      "\"Soon\" is vague; we should specify a timeline",
+      "The CTA should say \"Okay\" not \"Got it\"",
+      "It's missing the claim number"
+    ],
+    correctIndex: 1,
+    explanation: "\"Soon\" creates anxiety because it means something different to everyone. \"We'll update you within 4 hours\" sets a clear expectation and builds trust. Always give a specific time."
   },
   {
     mockup: "q06",
@@ -1672,33 +1710,20 @@ const questions = [
       "Available from 6 – 8 PM"
     ],
     correctIndex: 0,
-    explanation: "In UI copy, always use the full format (6:00 PM), repeat AM/PM for both times so there's no ambiguity, and use an en-dash (not a hyphen) for ranges."
-  },
-  {
-    mockup: "q07",
-    navTitle: "Claim Submitted",
-    question: "What's the key problem with the body copy?",
-    options: [
-      "It's too short and needs more detail about the claim",
-      "\"Soon\" is vague; ACKO should always give a specific timeline",
-      "The CTA should say \"Okay\" not \"Got it\"",
-      "It's missing the claim number"
-    ],
-    correctIndex: 1,
-    explanation: "\"Soon\" creates anxiety. \"We'll update you within 4 hours\" sets a clear expectation and builds trust. Always be specific about time."
+    explanation: "In UI copy, always use the full time format (6:00 PM). Repeat AM/PM for both times so there's no confusion. Use an en-dash (not a hyphen) for ranges."
   },
   {
     mockup: "q08",
     navTitle: "Claim status",
-    question: "As per our UX writing playbook, what's wrong with the copy on screen?",
+    question: "As per our style guide, what's wrong with the copy on screen?",
     options: [
-      "It should use active voice",
-      "It's in title case. Should be sentence case",
-      "It needs an exclamation mark",
+      "The header should use active voice",
+      "The header is in title case. Should be sentence case",
+      "The header is missing an exclamation mark",
       "Nothing, this is correct"
     ],
     correctIndex: 1,
-    explanation: "ACKO uses sentence case everywhere: headings, CTAs, labels, status messages. Title case (capitalising every word) is reserved for product or plan names only. The correct copy is: Your claim is under review."
+    explanation: "ACKO uses sentence case everywhere: headings, CTAs, labels, and status messages. Title case (capitalising every major word) is only for product or plan names. The correct copy is: Your claim is under review."
   },
   {
     mockup: "q09",
@@ -1711,20 +1736,7 @@ const questions = [
       "Peruse"
     ],
     correctIndex: 2,
-    explanation: "\"Explore\" is for discovery, for browsing something new. For reading an existing document, \"View\" is the precise, standard verb. \"Discover\" and \"Peruse\" are too literary; \"Consume\" is jargon."
-  },
-  {
-    mockup: "q10",
-    navTitle: "Payment",
-    question: "What's wrong with this screen?",
-    options: [
-      "The emoji is in the wrong position",
-      "The header should not use an exclamation mark",
-      "\"Congratulations\" and \"uncertainties\" both violate ACKO's tone; this oversells a functional moment",
-      "The body is too long"
-    ],
-    correctIndex: 2,
-    explanation: "Payment success is a functional confirmation, not a celebration. \"Congratulations\" is over-the-top, and \"life's uncertainties\" is the kind of insurer cliché ACKO's voice actively avoids."
+    explanation: "\"Explore\" is for browsing something open-ended and new. For reading a specific document, \"View\" is the right verb. \"Discover\" and \"Peruse\" are too literary. \"Consume\" is jargon."
   },
   {
     mockup: "q11",
@@ -1737,33 +1749,33 @@ const questions = [
       "It needs a cancel button"
     ],
     correctIndex: 1,
-    explanation: "\"Please wait…\" tells the user nothing. A loading state should communicate what's happening (\"Verifying your documents\") and ideally an estimate (\"This takes about 10 seconds\")."
+    explanation: "\"Please wait...\" tells the user nothing. A loading state should say what's happening, like \"Verifying your documents\". It should also set an expectation, like \"This takes about 10 seconds\"."
   },
   {
     mockup: "q12",
-    navTitle: "Claim Update",
+    navTitle: "Claim update",
     question: "What's wrong with how ACKO refers to itself?",
     options: [
-      "\"ACKO\" is correctly used here, no issue",
       "ACKO should refer to itself as \"we\", not by name, in customer-facing copy",
+      "\"ACKO\" is correctly used here, no issue",
       "The sentence is too long",
-      "\"Decision\" is too formal and should be \"update\""
+      "\"Within 48 hours\" is too vague; something like \"by tomorrow, 5 PM\" would be clearer"
     ],
-    correctIndex: 1,
-    explanation: "In customer-facing copy, ACKO should always use \"we\" and \"our\". Using the brand name in third person feels cold and robotic, as if the company is talking about itself."
+    correctIndex: 0,
+    explanation: "ACKO always uses \"we\" and \"our\" in customer-facing copy. Using the brand name in third person feels cold and robotic, like the company is talking about itself from a distance."
   },
   {
     mockup: "q13",
-    navTitle: "Claim Decision",
+    navTitle: "Claim decision",
     question: "What's wrong with this approach?",
     options: [
       "It's too short and should explain the reason",
-      "The build-up makes it worse; state the fact, the reason, and the next step directly",
       "\"Disheartening\" is fine, it shows empathy",
-      "The header should apologise"
+      "The header should apologise",
+      "The build-up makes it worse; state the fact, the reason, and the next step directly"
     ],
-    correctIndex: 1,
-    explanation: "Prolonged bad-news build-ups increase anxiety. State the decision clearly, give the specific reason, and offer a next step. Avoid presuming how the user feels (\"disheartening\")."
+    correctIndex: 3,
+    explanation: "Building up to bad news makes anxiety worse, not better. State the decision clearly, give the specific reason, and offer a next step. Don't assume how the user feels with words like \"disheartening\"."
   },
   {
     mockup: "q14",
@@ -1776,20 +1788,20 @@ const questions = [
       "\"Deductible\" should be replaced with a simpler word every time it's used"
     ],
     correctIndices: [0, 1, 2],
-    explanation: "\"Deductible\" is fine to use — it gets explained when first introduced in the UI, not replaced everywhere. The real issues: Rs. should be ₹, the passive voice buries the user's action, and there's no context for why this amount applies."
+    explanation: "\"Deductible\" is fine to use. It gets explained the first time it appears, so you don't need to swap it out everywhere. The real issues: Rs. should be ₹, the passive voice hides what the user owes, and there's no reason given for why this amount applies."
   },
   {
     mockup: "q15",
-    navTitle: "Health Insurance",
-    question: "Why is this line a problem?",
+    navTitle: "Health insurance",
+    question: "What's wrong with the line \"Guaranteed instant...\"?",
     options: [
       "It's too long for a headline",
-      "\"Guaranteed\" and \"100% of the time\" are overpromises ACKO must never make unless factually true in every case",
-      "It should mention the premium price instead",
-      "Nothing is wrong, it's a strong headline"
+      "Nothing is wrong, it's a strong headline",
+      "Bold claims at key decision screens drive conversions — this is intentional and effective",
+      "\"Guaranteed\" and \"100% of the time\" are overpromises ACKO must never make unless factually true in every case"
     ],
-    correctIndex: 1,
-    explanation: "ACKO's voice is honest. Absolute claims like \"guaranteed\" and \"100% of the time\" are legally and ethically risky, and damage trust the moment an exception occurs."
+    correctIndex: 3,
+    explanation: "ACKO's voice is honest. Words like \"guaranteed\" and \"100% of the time\" are risky, legally and ethically. Trust breaks down the moment one exception occurs."
   },
   {
     mockup: "q16",
@@ -1802,123 +1814,45 @@ const questions = [
       "Your policy is active 🎉✨ — great news for you! 🙌"
     ],
     correctIndex: 0,
-    explanation: "A is correct: one emoji, at the end, replaces the full stop, and the context suits it. B uses the emoji as a word replacement. C uses an emoji in a high-distress context, which is tone-deaf. D piles on three emojis in one sentence — use them sparingly, one at most."
+    explanation: "A is correct: one emoji at the end, replacing the full stop, in a context that fits. B uses an emoji as a word replacement. C uses an emoji in a high-distress situation, which is tone-deaf. D piles on three emojis in one sentence. Use emojis sparingly, one at most."
   },
   {
     mockup: "q17",
     navTitle: "Document upload",
     question: "A document upload failed. Which copy works better?",
     options: [
-      "Your document couldn't be uploaded. Please try again with a smaller file.",
       "We couldn't upload your document because the file is too large. Upload a file under 5 MB.",
+      "Your document couldn't be uploaded. Please try again with a smaller file.",
       "Upload failed due to file size exceeding the limit. Please try again."
     ],
-    correctIndex: 1,
-    explanation: "B uses active voice (we couldn't), states the exact reason, and gives the precise limit (5 MB) so the user knows exactly what to do. A is passive and vague about the size. C reads like a system error log, not a product."
-  },
-  {
-    mockup: "q18",
-    navTitle: "Cancel order",
-    question: "A user wants to cancel their food order. What's the core problem with this confirmation dialog?",
-    options: [
-      "The heading is too short",
-      "\"Yes\" and \"No\" are ambiguous — the user has to hold the question in their head to understand which button does what",
-      "It needs to explain the refund policy",
-      "Nothing — this is standard confirmation copy"
-    ],
-    correctIndex: 1,
-    explanation: "\"Yes/No\" buttons are the classic confirmation dialog failure. They don't mirror the action. Better: \"Cancel order\" and \"Keep order\" — each button tells the user exactly what will happen without needing to remember the question."
-  },
-  {
-    mockup: "q19",
-    navTitle: "Policy Details",
-    question: "What's wrong with this?",
-    options: [
-      "The date format is wrong",
-      "\"Policyholder\" is third-person; it should say \"Your coverage begins on 15 June 2026.\"",
-      "It should mention ACKO by name",
-      "There's no CTA"
-    ],
-    correctIndex: 1,
-    explanation: "ACKO writes in second person, always addressing \"you\". \"The policyholder\" sounds like legal text, not a product. \"Your coverage begins\" is warmer and clearer."
-  },
-  {
-    mockup: "q20",
-    navTitle: "Ride update",
-    question: "A driver just cancelled the user's ride. Which push notification copy works best?",
-    options: [
-      "\"Driver cancelled your trip. Book again.\"",
-      "\"Oops! Your driver bailed. Tap to rebook 🚗\"",
-      "\"Your driver had to cancel. We're finding you another one now.\"",
-      "\"Trip Cancelled. Please Rebook Your Ride.\""
-    ],
-    correctIndex: 2,
-    explanation: "C acknowledges the inconvenience, uses active voice, and tells the user what's already happening next — without blaming anyone or requiring action. A is dismissive. B uses humour in a frustrating moment. D uses title case and passive construction."
-  },
-  {
-    mockup: "q21",
-    navTitle: "Search",
-    question: "A user picks a check-out date before check-in. Which error message handles this best?",
-    options: [
-      "\"You have entered invalid dates. Please correct your search.\"",
-      "\"Invalid date range. Try again.\"",
-      "\"Error: Date range not valid.\"",
-      "\"Check-out needs to be after check-in. Try different dates.\""
-    ],
-    correctIndex: 3,
-    explanation: "D never blames the user, tells them exactly what the constraint is, and gives a clear next step. A blames the user with \"you have entered invalid\". B and C read like system error logs — useful to engineers, not humans."
+    correctIndex: 0,
+    explanation: "A uses active voice (\"we couldn't\"), states the exact reason, and gives the precise limit (5 MB) so the user knows exactly what to do. B is passive and vague about the size. C reads like a system error log, not a product."
   },
   {
     mockup: "q22",
     navTitle: "Checkout",
     question: "A payment just failed. Which copy handles this best?",
     options: [
-      "\"Something went wrong. Please try again.\"",
-      "\"Payment failed. Please try again later.\"",
-      "\"Your payment didn't go through. Check your card details or try a different payment method.\"",
-      "\"Transaction unsuccessful. Contact your bank.\""
+      "Something went wrong. Please try again.",
+      "Payment failed. Please try again later.",
+      "Your payment didn't go through. Check your card details or try a different payment method.",
+      "Transaction unsuccessful. Contact your bank."
     ],
     correctIndex: 2,
-    explanation: "C tells the user what happened and gives two specific next steps. \"Something went wrong\" (A) is the most useless phrase in product copy — zero information. B adds \"later\" which is wrong when the user can retry immediately. D sends them offsite before suggesting an in-app fix."
+    explanation: "C tells the user what happened and gives two clear next steps. A gives zero useful information. B adds \"later\", but the user can retry right now. D sends them to their bank before suggesting an in-app fix."
   },
   {
-    mockup: "q23",
-    navTitle: "Book a ride",
-    question: "What's wrong with the button on this screen?",
+    mockup: "q21",
+    navTitle: "International travel insurance",
+    question: "A user picks a return date before their departure date. Which error message handles this best?",
     options: [
-      "It should read \"Confirm your ride\" in title case",
-      "A button label should be a verb phrase. \"Ride Confirmation\" is a noun — it names a page, not an action",
-      "It's too long for a button label",
-      "Nothing — noun labels are standard on confirmation screens"
-    ],
-    correctIndex: 1,
-    explanation: "Button labels should always be verb phrases that tell the user what will happen when they tap. \"Ride Confirmation\" names a concept. \"Confirm ride\" is the right fix: action verb + object, sentence case, no filler."
-  },
-  {
-    mockup: "q24",
-    navTitle: "Your booking",
-    question: "A hotel booking was just cancelled. Which message handles this best?",
-    options: [
-      "\"Booking Cancelled. You may be eligible for a refund based on the cancellation policy.\"",
-      "\"We've cancelled your booking. You'll get a full refund within 5–7 business days. Details sent to your email.\"",
-      "\"Your booking has been cancelled. Refund eligibility depends on the property's policy.\"",
-      "\"Cancelled! Hope to see you book again soon! 🏨\""
-    ],
-    correctIndex: 1,
-    explanation: "B is in active voice, confirms the outcome definitively, gives the exact refund timeline, and tells the user where to find details. A and C use \"may be eligible\" — deliberately non-committal when the user most needs certainty. D is tone-deaf: celebrating a cancellation."
-  },
-  {
-    mockup: "q25",
-    navTitle: "Order history",
-    question: "A first-time user opens their order history. Which empty state copy works best?",
-    options: [
-      "\"No orders found.\"",
-      "\"No data to display.\"",
-      "\"It's empty here! Start ordering food now.\"",
-      "\"You haven't ordered yet. Hungry? Browse restaurants near you.\""
+      "You have entered invalid dates. Please correct your search.",
+      "Invalid date range. Try again.",
+      "Error: Date range not valid.",
+      "Your return date needs to be after your departure date. Try different dates."
     ],
     correctIndex: 3,
-    explanation: "D acknowledges the user's state, adds a touch of warmth, and gives a clear forward path. A and B are database-speak — they describe a system state, not a human one. C is over-enthusiastic and the CTA is vague (\"now\" vs a specific action)."
+    explanation: "D doesn't blame the user. It tells them exactly what the rule is and what to do next. A blames the user with \"you have entered invalid\". B and C sound like system error logs. Those work for engineers, not for users."
   }
 ];
 
@@ -2074,7 +2008,7 @@ function mockupContent(id) {
       <div class="ph-divider"></div>
       <div class="ph-row"><span class="ph-label">Claim no.</span><span class="ph-value">CLM-2026-00831</span></div>
       <div class="ph-row"><span class="ph-label">Submitted</span><span class="ph-value">2 Jun 2026</span></div>
-      <div class="ph-row"><span class="ph-label">Est. update</span><span class="ph-value">Within 4 hours</span></div>`;
+      <div class="ph-row"><span class="ph-label">Next update</span><span class="ph-value">Within 4 hours</span></div>`;
 
     case "q09": return `
       <div class="ph-sub">Documents</div>
@@ -2096,13 +2030,6 @@ function mockupContent(id) {
         </div>
       </div>`;
 
-    case "q10": return `
-      <div class="ph-success-icon">💳</div>
-      <div class="ph-header" style="text-align:center;font-size:16px">Payment done! 🎊</div>
-      <div class="ph-body" style="text-align:center">Congratulations! You're now protected against life's uncertainties!</div>
-      <div class="ph-divider" style="margin-top:8px"></div>
-      <div class="ph-row"><span class="ph-label">Amount paid</span><span class="ph-value">₹12,499</span></div>
-      <div class="ph-row"><span class="ph-label">Mode</span><span class="ph-value">UPI</span></div>`;
 
     case "q11": return `
       <div style="text-align:center;padding:16px 0 10px">
@@ -2114,16 +2041,13 @@ function mockupContent(id) {
       <div class="ph-sub">Update</div>
       <div class="ph-header" style="margin-bottom:8px">Claim update</div>
       <div class="ph-notif-bar" style="background:#EEF2FF;border-left-color:#6841E6;color:#3730A3">
-        ACKO will update you by tomorrow with the decision.
+        ACKO will update you on the next steps within 48 hours.
       </div>
       <div class="ph-divider" style="margin-top:8px"></div>
       <div class="ph-row"><span class="ph-label">Claim ID</span><span class="ph-value">#CL-20491</span></div>`;
 
     case "q13": return `
-      <div class="ph-error-top">
-        <span style="font-size:16px">😔</span>
-        <span>We have some bad news.</span>
-      </div>
+      <div class="ph-header" style="margin-bottom:8px">We have some bad news 😔</div>
       <div class="ph-body">It may be disheartening, but your claim has been rejected.</div>`;
 
     case "q14": return `
@@ -2139,12 +2063,12 @@ function mockupContent(id) {
 
     case "q15": return `
       <div style="text-align:center;padding:8px 0 12px">
-        <div style="font-size:11px;font-weight:700;color:#6841E6;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px">Health Insurance</div>
-        <div style="font-size:15px;font-weight:800;color:#141414;line-height:1.3">Guaranteed instant claim<br>approval — 100% of the time.</div>
-        <div style="margin-top:10px;font-size:11px;color:#474649">Starting at ₹499/month</div>
+        <div style="font-size:13px;font-weight:700;color:#6841E6;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px">Health Insurance</div>
+        <div style="font-size:18px;font-weight:800;color:#141414;line-height:1.3">Guaranteed instant claim<br>approval — 100% of the time.</div>
+        <div style="margin-top:10px;font-size:13px;color:#474649">Starting at ₹499/month</div>
         <div class="ph-divider" style="margin:10px 0"></div>
-        <div style="font-size:10px;color:#7A7B7D">• Cashless at 10,000+ hospitals</div>
-        <div style="font-size:10px;color:#7A7B7D;margin-top:3px">• No paperwork</div>
+        <div style="font-size:12px;color:#7A7B7D">• Cashless at 10,000+ hospitals</div>
+        <div style="font-size:12px;color:#7A7B7D;margin-top:3px">• No paperwork</div>
       </div>`;
 
     case "q16": return `
@@ -2180,54 +2104,28 @@ function mockupContent(id) {
         <div style="font-size:12px;color:#7F1D1D;line-height:1.5;font-family:'Euclid Circular B',sans-serif">We're having trouble with your upload. Please check your file and try again.</div>
       </div>`;
 
-    case "q18": return `
-      <div class="ph-sub" style="color:#F59E0B;font-size:11px;font-weight:700;letter-spacing:0.5px;margin-bottom:8px">🍕 PIZZA PALACE · ₹420</div>
-      <div class="ph-header" style="margin-bottom:4px;font-size:16px">Cancel order?</div>
-      <div class="ph-body" style="margin-bottom:16px;color:#474649;font-size:13px">Are you sure you want to cancel?</div>
-      <div style="display:flex;gap:8px;margin-top:4px">
-        <button style="flex:1;padding:11px 8px;border-radius:8px;border:1.5px solid #E0E0E1;background:white;font-size:13px;font-weight:600;color:#0A0A0A;font-family:inherit;cursor:default">No</button>
-        <button style="flex:1;padding:11px 8px;border-radius:8px;border:none;background:#6841E6;color:white;font-size:13px;font-weight:600;font-family:inherit;cursor:default">Yes</button>
-      </div>`;
 
-    case "q19": return `
-      <div class="ph-success-icon">🛡</div>
-      <div class="ph-header" style="text-align:center;margin-bottom:6px">Policy confirmed</div>
-      <div class="ph-body" style="text-align:center;font-size:13px">The policyholder's coverage begins on 15 June 2026.</div>
-      <div class="ph-divider" style="margin-top:8px"></div>
-      <div class="ph-row"><span class="ph-label">Policy no.</span><span class="ph-value">ACK-2026-00502</span></div>
-      <div class="ph-row"><span class="ph-label">Type</span><span class="ph-value">Comprehensive</span></div>`;
 
-    case "q20": return `
-      <div class="ph-sub" style="font-size:11px;color:#7A7B7D;font-weight:600;margin-bottom:10px">Just now</div>
-      <div style="background:#FEF9EC;border:1px solid #FDE68A;border-radius:12px;padding:14px;margin-bottom:8px">
-        <div style="font-size:10px;font-weight:700;color:#92400E;letter-spacing:0.5px;margin-bottom:6px">🚗 RIDE UPDATE</div>
-        <div style="font-size:13px;font-weight:700;color:#0A0A0A;margin-bottom:4px">Driver cancelled your trip.</div>
-        <div style="font-size:12px;color:#474649">Book again.</div>
-      </div>
-      <div style="background:#F5F5F5;border-radius:12px;padding:14px">
-        <div style="font-size:10px;font-weight:700;color:#7A7B7D;letter-spacing:0.5px;margin-bottom:6px">EARLIER TODAY</div>
-        <div style="font-size:12px;color:#7A7B7D">Your ride has been confirmed.</div>
-      </div>`;
 
     case "q21": return `
-      <div class="ph-sub" style="margin-bottom:10px">Where are you going?</div>
+      <div class="ph-sub" style="margin-bottom:10px">When are you going?</div>
       <div style="display:flex;gap:8px;margin-bottom:12px">
         <div style="flex:1;background:#F5F5F5;border-radius:8px;padding:10px 12px">
-          <div style="font-size:10px;color:#7A7B7D;font-weight:700;letter-spacing:0.4px;margin-bottom:3px">CHECK-IN</div>
+          <div style="font-size:10px;color:#7A7B7D;font-weight:700;letter-spacing:0.4px;margin-bottom:3px">DEPARTURE</div>
           <div style="font-size:15px;font-weight:700;color:#0A0A0A">12 Jun</div>
         </div>
-        <div style="flex:1;background:#F5F5F5;border-radius:8px;padding:10px 12px;border:1.5px solid #EF4444">
-          <div style="font-size:10px;color:#7A7B7D;font-weight:700;letter-spacing:0.4px;margin-bottom:3px">CHECK-OUT</div>
-          <div style="font-size:15px;font-weight:700;color:#EF4444">10 Jun</div>
+        <div style="flex:1;background:#FFF1F2;border-radius:8px;padding:10px 12px;border:1.5px solid #FF5A5F">
+          <div style="font-size:10px;color:#7A7B7D;font-weight:700;letter-spacing:0.4px;margin-bottom:3px">RETURN</div>
+          <div style="font-size:15px;font-weight:700;color:#FF5A5F">10 Jun</div>
         </div>
       </div>
-      <div class="ph-notif-bar" style="background:#FEF2F2;border-left-color:#EF4444;color:#B91C1C;font-size:12px">
+      <div class="ph-notif-bar" style="background:#FFF1F2;border-left-color:#FF5A5F;color:#C0262C;font-size:12px">
         You have entered invalid dates. Please correct your search.
       </div>`;
 
     case "q22": return `
       <div style="text-align:center;padding:12px 0 8px">
-        <div style="width:52px;height:52px;border-radius:50%;background:#FEF2F2;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:24px">✗</div>
+        <div style="width:52px;height:52px;border-radius:50%;background:#FEF2F2;display:flex;align-items:center;justify-content:center;margin:0 auto 10px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
         <div style="font-size:16px;font-weight:700;color:#0A0A0A;margin-bottom:4px">Payment failed</div>
       </div>
       <div class="ph-notif-bar" style="background:#FEF2F2;border-left-color:#EF4444;color:#B91C1C;font-size:12px;margin-bottom:10px">
@@ -2237,37 +2135,39 @@ function mockupContent(id) {
       <div class="ph-row"><span class="ph-label">Amount</span><span class="ph-value">₹342</span></div>
       <div class="ph-row"><span class="ph-label">Method</span><span class="ph-value">UPI · 9876****10</span></div>`;
 
-    case "q23": return `
-      <div style="text-align:center;padding-bottom:12px">
-        <div style="font-size:32px;margin-bottom:6px">🚗</div>
-        <div style="font-size:14px;font-weight:700;color:#0A0A0A">Hatchback · ₹180</div>
-        <div style="font-size:12px;color:#7A7B7D;margin-top:2px">4 min away · up to 4 seats</div>
+
+    case "qux1": return `
+      <div style="text-align:center;padding:8px 0 12px">
+        <div style="width:48px;height:48px;border-radius:50%;background:#F5F3FF;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px">📋</div>
+        <div style="font-size:14px;font-weight:700;color:#141414;margin-bottom:4px">Claim filed</div>
+      </div>
+      <div style="background:#F5F5F5;border-radius:8px;padding:10px 12px;margin-bottom:10px">
+        <div style="font-size:10px;font-weight:700;color:#7A7B7D;letter-spacing:0.5px;margin-bottom:4px">WHAT SHOULD THE APP SAY HERE?</div>
+        <div style="font-size:12px;color:#7A7B7D;font-style:italic">Pick the option that puts the user first.</div>
       </div>
       <div class="ph-divider"></div>
-      <div class="ph-row"><span class="ph-label">From</span><span class="ph-value">Koramangala</span></div>
-      <div class="ph-row"><span class="ph-label">To</span><span class="ph-value">MG Road</span></div>
-      <div class="ph-row"><span class="ph-label">Est. time</span><span class="ph-value">22 min</span></div>`;
-
-    case "q24": return `
-      <div style="text-align:center;padding-bottom:12px">
-        <div style="font-size:32px;margin-bottom:6px">🏨</div>
-        <div style="font-size:16px;font-weight:700;color:#0A0A0A;margin-bottom:2px">Booking Cancelled</div>
-      </div>
-      <div class="ph-notif-bar" style="background:#FEF9EC;border-left-color:#F59E0B;color:#92400E;font-size:12px;line-height:1.5;margin-bottom:10px">
-        You may be eligible for a refund based on the host's cancellation policy.
-      </div>
+      <div class="ph-row"><span class="ph-label">Claim ID</span><span class="ph-value">#CL-40821</span></div>
+      <div class="ph-row"><span class="ph-label">Filed</span><span class="ph-value">Today, 2:14 PM</span></div>
       <div class="ph-divider"></div>
-      <div class="ph-row"><span class="ph-label">Property</span><span class="ph-value">The Grand Hotel</span></div>
-      <div class="ph-row"><span class="ph-label">Dates</span><span class="ph-value">14–16 Jun 2025</span></div>`;
+      <div style="font-size:11px;font-weight:700;color:#7A7B7D;letter-spacing:0.4px;margin-bottom:6px">WHAT TO EXPECT</div>
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <div style="font-size:11px;color:#474649">📞 Our team will call you within 24 hours</div>
+        <div style="font-size:11px;color:#474649">📄 Documents to be submitted via the app</div>
+        <div style="font-size:11px;color:#474649">✅ Settlement within 7 working days</div>
+      </div>`;
 
-    case "q25": return `
-      <div style="text-align:center;padding:16px 0 8px">
-        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" style="margin-bottom:12px">
-          <circle cx="32" cy="32" r="32" fill="#F5F5F5"/>
-          <rect x="18" y="20" width="28" height="24" rx="3" stroke="#7A7B7D" stroke-width="2" fill="none"/>
-          <path d="M23 28h18M23 33h12" stroke="#7A7B7D" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-        <div style="font-size:15px;font-weight:700;color:#0A0A0A;margin-bottom:4px">No orders found.</div>
+    case "qux2": return `
+      <div class="ph-sub" style="margin-bottom:10px">Complete your profile</div>
+      <div style="margin-bottom:10px">
+        <div style="font-size:11px;font-weight:600;color:#7A7B7D;margin-bottom:4px">Information</div>
+        <div style="border:1.5px solid #E0E0E1;border-radius:8px;padding:10px 12px;font-size:12px;color:#B0B0B1">Provide input</div>
+      </div>
+      <div style="margin-bottom:10px">
+        <div style="font-size:11px;font-weight:600;color:#7A7B7D;margin-bottom:4px">Details</div>
+        <div style="border:1.5px solid #E0E0E1;border-radius:8px;padding:10px 12px;font-size:12px;color:#B0B0B1">Enter data</div>
+      </div>
+      <div style="background:#FEF2F2;border-radius:8px;padding:10px 12px;border-left:3px solid #F87171">
+        <div style="font-size:12px;color:#7F1D1D;line-height:1.5">An error has occurred. Please rectify your submission and resubmit.</div>
       </div>`;
 
     default: return `<div class="ph-body">Screen content</div>`;
@@ -2276,6 +2176,8 @@ function mockupContent(id) {
 
 function mockupCTA(id) {
   const map = {
+    qux1: [null],
+    qux2: [null],
     q01: [null],
     q02: ["GET STARTED NOW!", "caps"],
     q03: [null],
@@ -2285,7 +2187,6 @@ function mockupCTA(id) {
     q07: ["Got it", ""],
     q08: ["Track claim", ""],
     q09: ["Download all", ""],
-    q10: ["View policy", ""],
     q11: [null],
     q12: ["Got it", ""],
     q13: ["Contact support", ""],
@@ -2293,14 +2194,8 @@ function mockupCTA(id) {
     q15: ["View plans", ""],
     q16: [null],
     q17: ["Try again", ""],
-    q18: [null],
-    q19: ["View policy", ""],
-    q20: [null],
     q21: ["Search", ""],
     q22: ["Try again", ""],
-    q23: ["Ride Confirmation", ""],
-    q24: ["Back to home", ""],
-    q25: ["Browse restaurants", ""],
   };
   const entry = map[id];
   if (!entry || !entry[0]) return "";
@@ -2311,9 +2206,9 @@ function mockupCTA(id) {
    QUIZ STATE
 ============================================================ */
 let currentQ = 0;
-let userAnswers = new Array(25).fill(null); // index of selected option
-let submitted = new Array(25).fill(false);
-let skippedFlag = new Array(25).fill(false); // marked when a question is skipped to answer later
+let userAnswers = new Array(20).fill(null); // index of selected option
+let submitted = new Array(20).fill(false);
+let skippedFlag = new Array(20).fill(false); // marked when a question is skipped to answer later
 
 /* count of questions still waiting to be answered */
 function unsubmittedCount() {
@@ -2324,7 +2219,7 @@ function unsubmittedCount() {
    around. Returns -1 when every other question is already submitted. */
 function findNextUnsubmitted(from) {
   for (let step = 1; step <= 24; step++) {
-    const idx = (from + step) % 25;
+    const idx = (from + step) % 20;
     if (!submitted[idx]) return idx;
   }
   return -1;
@@ -2710,12 +2605,12 @@ function renderQuestion(index) {
   document.querySelector('.quiz-question-col')?.classList.add('q-enter');
 
   // progress
-  const pct = Math.round(((index + 1) / 25) * 100);
+  const pct = Math.round(((index + 1) / 20) * 100);
   document.getElementById("q-current").textContent = index + 1;
   document.getElementById("q-pct").textContent = pct + "%";
   document.getElementById("progress-fill").style.width = pct + "%";
   const qNum = String(index + 1).padStart(2, "0");
-  document.getElementById("q-tag").textContent = "Question " + qNum + " of 25";
+  document.getElementById("q-tag").textContent = "Question " + qNum + " of 20";
 
   // revisit hint when landing back on a skipped question
   const revisitNote = document.getElementById("revisit-note");
@@ -3138,8 +3033,8 @@ function showResults() {
     }
     return a === q.correctIndex;
   }).length;
-  const wrong = 25 - correct;
-  const pct = (correct / 25) * 100;
+  const wrong = 20 - correct;
+  const pct = (correct / 20) * 100;
 
   document.getElementById("result-score").textContent = correct;
   document.getElementById("correct-count").textContent = correct;
@@ -3147,15 +3042,15 @@ function showResults() {
 
   // headline
   let headline, subline;
-  if (correct === 25) { headline = "Perfect score!"; subline = "You nailed every single question. ACKO's voice is strong with you."; }
-  else if (correct >= 20) { headline = "Excellent work!"; subline = "You've got a sharp eye for UX writing. Just a few edge cases to review."; }
-  else if (correct >= 15) { headline = "Good effort!"; subline = "Solid foundations. Review the explanations below to sharpen your instincts."; }
-  else if (correct >= 10) { headline = "Room to grow!"; subline = "You're getting there. Go through the explanations, they'll make a big difference."; }
+  if (correct === 20) { headline = "Perfect score!"; subline = "You nailed every single question. ACKO's voice is strong with you."; }
+  else if (correct >= 16) { headline = "Excellent work!"; subline = "You've got a sharp eye for UX writing. Just a few edge cases to review."; }
+  else if (correct >= 12) { headline = "Good effort!"; subline = "Solid foundations. Review the explanations below to sharpen your instincts."; }
+  else if (correct >= 8) { headline = "Room to grow!"; subline = "You're getting there. Go through the explanations, they'll make a big difference."; }
   else { headline = "Keep practising!"; subline = "UX writing takes time. Read through each explanation and try again."; }
   document.getElementById("result-headline").textContent = headline;
   document.getElementById("result-subline").textContent = subline;
 
-  if (correct >= 17) setTimeout(launchConfetti, 400);
+  if (correct >= 14) setTimeout(launchConfetti, 400);
 
   // animate ring — circumference = 2π × 45 ≈ 283
   const ring = document.getElementById("score-ring");
@@ -3283,9 +3178,9 @@ document.addEventListener("DOMContentLoaded", typeTitle);
 
 function retryQuiz() {
   BalloonFX.stop();
-  userAnswers = new Array(25).fill(null);
-  submitted = new Array(25).fill(false);
-  skippedFlag = new Array(25).fill(false);
+  userAnswers = new Array(20).fill(null);
+  submitted = new Array(20).fill(false);
+  skippedFlag = new Array(20).fill(false);
   currentQ = 0;
   liveScore = 0;
   participantId = null;
