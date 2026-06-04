@@ -1436,16 +1436,16 @@ const questions = [
   },
   {
     mockup: "q16",
-    navTitle: "Nominee Details",
-    question: "Which is the correct replacement CTA?",
+    navTitle: "Notifications",
+    question: "Which of these uses emojis correctly?",
     options: [
-      "\"Confirm Nominee\"",
-      "\"Confirm nominee\"",
-      "\"Confirm nominee details\"",
-      "\"Proceed to confirmation\""
+      "Your car insurance expires tomorrow 🚗",
+      "Get your 🚗 insurance renewed",
+      "Your claim was rejected 😭",
+      "Your policy is active. 🎉"
     ],
-    correctIndex: 1,
-    explanation: "ACKO CTAs follow verb + object in sentence case. \"Confirm nominee\" is concise, action-oriented, and correctly cased. Title case (A) is wrong; (C) is redundant; (D) is passive."
+    correctIndex: 0,
+    explanation: "A is correct: the emoji sits at the end, replaces the full stop, and the context has appropriate urgency without being insensitive. B uses the emoji as a word replacement (🚗 stands in for 'car'). C uses an emoji in a high-distress context, which is tone-deaf. D places the emoji after a full stop instead of replacing it."
   },
   {
     mockup: "q17",
@@ -1718,20 +1718,34 @@ function mockupContent(id) {
 
     case "q15": return `
       <div style="text-align:center;padding:8px 0 12px">
-        <div style="font-size:11px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px">Health Insurance</div>
-        <div style="font-size:15px;font-weight:800;color:var(--grey-900);line-height:1.3">Guaranteed instant claim<br>approval — 100% of the time.</div>
-        <div style="margin-top:10px;font-size:11px;color:var(--grey-600)">Starting at ₹499/month</div>
+        <div style="font-size:11px;font-weight:700;color:#6841E6;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px">Health Insurance</div>
+        <div style="font-size:15px;font-weight:800;color:#141414;line-height:1.3">Guaranteed instant claim<br>approval — 100% of the time.</div>
+        <div style="margin-top:10px;font-size:11px;color:#474649">Starting at ₹499/month</div>
         <div class="ph-divider" style="margin:10px 0"></div>
-        <div style="font-size:10px;color:var(--grey-400)">• Cashless at 10,000+ hospitals</div>
-        <div style="font-size:10px;color:var(--grey-400);margin-top:3px">• No paperwork</div>
+        <div style="font-size:10px;color:#7A7B7D">• Cashless at 10,000+ hospitals</div>
+        <div style="font-size:10px;color:#7A7B7D;margin-top:3px">• No paperwork</div>
       </div>`;
 
     case "q16": return `
-      <div class="ph-sub">Step 3 of 4</div>
-      <div class="ph-header" style="margin-bottom:6px">Nominee details</div>
-      <div class="ph-row"><span class="ph-label">Name</span><span class="ph-value">Meera Ajith</span></div>
-      <div class="ph-row"><span class="ph-label">Relation</span><span class="ph-value">Spouse</span></div>
-      <div class="ph-row"><span class="ph-label">Share</span><span class="ph-value">100%</span></div>`;
+      <div class="ph-sub" style="margin-bottom:8px">Notifications</div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="background:#F5F5F5;border-radius:8px;padding:9px 11px">
+          <div style="font-size:9px;font-weight:700;color:#7A7B7D;letter-spacing:0.5px;margin-bottom:3px;text-transform:uppercase">ACKO · Insurance</div>
+          <div style="font-size:11.5px;color:#141414;line-height:1.45;font-family:'Euclid Circular B',sans-serif">Your car insurance expires tomorrow 🚗</div>
+        </div>
+        <div style="background:#F5F5F5;border-radius:8px;padding:9px 11px">
+          <div style="font-size:9px;font-weight:700;color:#7A7B7D;letter-spacing:0.5px;margin-bottom:3px;text-transform:uppercase">ACKO · Insurance</div>
+          <div style="font-size:11.5px;color:#141414;line-height:1.45;font-family:'Euclid Circular B',sans-serif">Get your 🚗 insurance renewed</div>
+        </div>
+        <div style="background:#F5F5F5;border-radius:8px;padding:9px 11px">
+          <div style="font-size:9px;font-weight:700;color:#7A7B7D;letter-spacing:0.5px;margin-bottom:3px;text-transform:uppercase">ACKO · Claims</div>
+          <div style="font-size:11.5px;color:#141414;line-height:1.45;font-family:'Euclid Circular B',sans-serif">Your claim was rejected 😭</div>
+        </div>
+        <div style="background:#F5F5F5;border-radius:8px;padding:9px 11px">
+          <div style="font-size:9px;font-weight:700;color:#7A7B7D;letter-spacing:0.5px;margin-bottom:3px;text-transform:uppercase">ACKO · Policy</div>
+          <div style="font-size:11.5px;color:#141414;line-height:1.45;font-family:'Euclid Circular B',sans-serif">Your policy is active. 🎉</div>
+        </div>
+      </div>`;
 
     case "q17": return `
       <div class="ph-sub">Claim update</div>
@@ -1791,7 +1805,7 @@ function mockupCTA(id) {
     q13: ["Contact support", ""],
     q14: ["View full claim", ""],
     q15: ["View plans", ""],
-    q16: ["Click here to confirm your nominee details and proceed", ""],
+    q16: [null],
     q17: ["Wait for agent", "muted"],
     q18: ["Okay", ""],
     q19: ["View policy", ""],
