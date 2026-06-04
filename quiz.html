@@ -1312,12 +1312,55 @@
   .music-toggle.playing .music-eq { display: inline-flex; }
   .music-toggle.playing .music-off-icon { display: none; }
   body.quiz-active .music-toggle { display: inline-flex; }
+
+  /* ── Quiz countdown timer (top-left) ───────────────────── */
+  .quiz-timer {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 50;
+    display: none; /* only surfaced during the quiz */
+    align-items: center;
+    gap: 8px;
+    height: 38px;
+    padding: 0 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.14);
+    background: rgba(20,20,20,0.55);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: rgba(255,255,255,0.85);
+    font-family: 'Euclid Circular B', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.4px;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+  }
+  .quiz-timer svg { flex-shrink: 0; }
+  .quiz-timer .timer-value { min-width: 40px; text-align: center; }
+  /* last 2 minutes: amber, last minute: red + pulse */
+  .quiz-timer.warning { color: #FBBF24; border-color: rgba(251,191,36,0.5); background: rgba(251,191,36,0.12); }
+  .quiz-timer.danger {
+    color: #F87171;
+    border-color: rgba(248,113,113,0.55);
+    background: rgba(248,113,113,0.15);
+    animation: timer-pulse 1s ease-in-out infinite;
+  }
+  @keyframes timer-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
+  body.quiz-active .quiz-timer { display: inline-flex; }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body class="intro-active">
 <canvas id="shader-canvas" aria-hidden="true"></canvas>
 <canvas id="balloon-canvas" aria-hidden="true"></canvas>
+
+<!-- Countdown timer (top-left) -->
+<div id="quiz-timer" class="quiz-timer" aria-live="polite" title="Time remaining">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M9 2h6"/></svg>
+  <span class="timer-value" id="timer-value">15:00</span>
+</div>
 
 <!-- Ambient music toggle (top corner) -->
 <button id="music-toggle" class="music-toggle" aria-label="Toggle background music" title="Background music" onclick="toggleMusic()">
@@ -2287,6 +2330,58 @@ function findNextUnsubmitted(from) {
   return -1;
 }
 
+/* ============================================================
+   QUIZ TIMER — 15 minute countdown that starts with the quiz
+   and auto-submits when it reaches zero
+============================================================ */
+const QuizTimer = (() => {
+  const TOTAL_SECONDS = 15 * 60;
+  let remaining = TOTAL_SECONDS;
+  let intervalId = null;
+
+  function format(s) {
+    const m = Math.floor(s / 60);
+    const sec = s % 60;
+    return m + ":" + String(sec).padStart(2, "0");
+  }
+
+  function render() {
+    const el = document.getElementById("timer-value");
+    const wrap = document.getElementById("quiz-timer");
+    if (el) el.textContent = format(remaining);
+    if (wrap) {
+      wrap.classList.toggle("warning", remaining <= 120 && remaining > 60);
+      wrap.classList.toggle("danger", remaining <= 60);
+    }
+  }
+
+  function tick() {
+    remaining--;
+    if (remaining <= 0) {
+      remaining = 0;
+      render();
+      stop();
+      // time's up — finish the quiz automatically
+      if (typeof showResults === "function") showResults();
+      return;
+    }
+    render();
+  }
+
+  function start() {
+    remaining = TOTAL_SECONDS;
+    render();
+    if (intervalId) clearInterval(intervalId);
+    intervalId = setInterval(tick, 1000);
+  }
+
+  function stop() {
+    if (intervalId) { clearInterval(intervalId); intervalId = null; }
+  }
+
+  return { start, stop };
+})();
+
 function startQuiz() {
   document.getElementById("intro-screen").style.display = "none";
   document.getElementById("quiz-screen").style.display = "block";
@@ -2295,6 +2390,8 @@ function startQuiz() {
   renderQuestion(0);
   // begin the soothing soundtrack (we're inside a user gesture, so autoplay is allowed)
   startMusic();
+  // start the 15-minute countdown the moment the quiz begins
+  QuizTimer.start();
 }
 
 /* ============================================================
@@ -3023,6 +3120,8 @@ const BalloonFX = (() => {
 
 function showResults() {
   markCompleted();
+  // stop the countdown once the quiz is over
+  QuizTimer.stop();
   // gently fade the soundtrack out as we move to the results
   AmbientMusic.pause();
   reflectMusicState();
@@ -3196,6 +3295,8 @@ function retryQuiz() {
   renderQuestion(0);
   window.scrollTo({ top: 0, behavior: "smooth" });
   startMusic();
+  // restart the countdown from 15:00 for the retry
+  QuizTimer.start();
 }
 </script>
 </body>
