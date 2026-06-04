@@ -1243,16 +1243,16 @@ async function handleStartQuiz() {
 const questions = [
   {
     mockup: "q01",
-    navTitle: "Claim Status",
-    question: "What's wrong with the copy on this screen?",
+    navTitle: "Brand voice",
+    question: "You're defining the voice for an insurance brand. Which quality does NOT belong?",
     options: [
-      "The CTA should say \"Got it\" not \"Okay\"",
-      "The copy uses passive voice — it hides who's responsible",
-      "The header should end with a full stop",
-      "The body copy is too long"
+      "Steady",
+      "Transparent",
+      "Enthusiastic",
+      "Plainspoken"
     ],
-    correctIndex: 1,
-    explanation: "Both \"Your documents are being checked\" and \"Your claim is being reviewed\" are passive constructions. Active voice — \"Our team is checking your documents\" — is clearer and more accountable."
+    correctIndex: 2,
+    explanation: "Insurance deals with accidents, illness, and loss. Enthusiasm misreads the emotional context entirely — it feels tone-deaf in high-stakes moments. Steady, Transparent, and Plainspoken all build trust when it matters most."
   },
   {
     mockup: "q02",
@@ -1542,13 +1542,26 @@ function buildMockup(id, navTitle) {
 function mockupContent(id) {
   switch(id) {
     case "q01": return `
-      <div class="ph-sub">Status</div>
-      <div class="ph-badge info" style="margin-bottom:6px">🔄 In review</div>
-      <div class="ph-header">Your claim is being reviewed</div>
-      <div class="ph-body">Your documents are being checked by our team.</div>
-      <div class="ph-divider"></div>
-      <div class="ph-row"><span class="ph-label">Claim ID</span><span class="ph-value">#CL-20491</span></div>
-      <div class="ph-row"><span class="ph-label">Submitted</span><span class="ph-value">2 Jun 2026</span></div>`;
+      <div class="ph-sub">Brand guidelines</div>
+      <div class="ph-header" style="margin-bottom:12px;font-size:15px">Our voice</div>
+      <div style="display:flex;flex-direction:column;gap:7px">
+        <div style="background:#F5F3FF;border-radius:10px;padding:9px 12px;border-left:3px solid #6841E6">
+          <div style="font-size:9px;font-weight:800;color:#6841E6;letter-spacing:0.8px;margin-bottom:3px;text-transform:uppercase">Steady</div>
+          <div style="font-size:11px;color:#141414;line-height:1.45;font-family:'Euclid Circular B',sans-serif">"Help is on the way. We'll reach you in 30 minutes."</div>
+        </div>
+        <div style="background:#F5F3FF;border-radius:10px;padding:9px 12px;border-left:3px solid #6841E6">
+          <div style="font-size:9px;font-weight:800;color:#6841E6;letter-spacing:0.8px;margin-bottom:3px;text-transform:uppercase">Transparent</div>
+          <div style="font-size:11px;color:#141414;line-height:1.45;font-family:'Euclid Circular B',sans-serif">"Your premium went up ₹200 this year. Here's why."</div>
+        </div>
+        <div style="background:#F5F3FF;border-radius:10px;padding:9px 12px;border-left:3px solid #6841E6">
+          <div style="font-size:9px;font-weight:800;color:#6841E6;letter-spacing:0.8px;margin-bottom:3px;text-transform:uppercase">Enthusiastic</div>
+          <div style="font-size:11px;color:#141414;line-height:1.45;font-family:'Euclid Circular B',sans-serif">"Woohoo! 🎉 You filed a claim! This is SO exciting!"</div>
+        </div>
+        <div style="background:#F5F3FF;border-radius:10px;padding:9px 12px;border-left:3px solid #6841E6">
+          <div style="font-size:9px;font-weight:800;color:#6841E6;letter-spacing:0.8px;margin-bottom:3px;text-transform:uppercase">Plainspoken</div>
+          <div style="font-size:11px;color:#141414;line-height:1.45;font-family:'Euclid Circular B',sans-serif">"Your policy covers hospitalisation up to ₹5 lakh."</div>
+        </div>
+      </div>`;
 
     case "q02": return `
       <div style="text-align:center;padding:6px 0 4px">
@@ -1728,7 +1741,7 @@ function mockupContent(id) {
 
 function mockupCTA(id) {
   const map = {
-    q01: ["Okay", ""],
+    q01: [null],
     q02: ["GET STARTED NOW!", "caps"],
     q03: [null],
     q04: ["Resend OTP", ""],
