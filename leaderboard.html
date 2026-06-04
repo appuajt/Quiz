@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ACKO UX Writing Challenge — Live Leaderboard</title>
+<style>
+  @font-face {
+    font-family: 'Euclid Circular B';
+    src: url('https://pub-c050457d48794d5bb9ffc2b4649de2c1.r2.dev/Euclid%20Font/EuclidCircularB-Regular.ttf') format('truetype'),
+         url('Font/EuclidCircularB-Regular.ttf') format('truetype');
+    font-weight: 400; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'Euclid Circular B';
+    src: url('https://pub-c050457d48794d5bb9ffc2b4649de2c1.r2.dev/Euclid%20Font/EuclidCircularB-Medium.ttf') format('truetype'),
+         url('Font/EuclidCircularB-Medium.ttf') format('truetype');
+    font-weight: 500; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'Euclid Circular B';
+    src: url('https://pub-c050457d48794d5bb9ffc2b4649de2c1.r2.dev/Euclid%20Font/EuclidCircularB-Semibold.ttf') format('truetype'),
+         url('Font/EuclidCircularB-Semibold.ttf') format('truetype');
+    font-weight: 600; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'Euclid Circular B';
+    src: url('https://pub-c050457d48794d5bb9ffc2b4649de2c1.r2.dev/Euclid%20Font/EuclidCircularB-Bold.ttf') format('truetype'),
+         url('Font/EuclidCircularB-Bold.ttf') format('truetype');
+    font-weight: 700; font-style: normal; font-display: swap;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; }
+  body {
+    font-family: 'Euclid Circular B', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #F4F5F7;
+    color: #141414;
+    min-height: 100vh;
+    padding: 0 16px 60px;
+  }
+
+  :root {
+    --purple: #6841E6;
+    --purple-light: #EDE9FC;
+    --purple-dark: #4F2FB8;
+    --green: #22C55E;
+    --green-light: #DCFCE7;
+    --red: #EF4444;
+    --red-light: #FEE2E2;
+    --amber: #F59E0B;
+    --grey-100: #F4F5F7;
+    --grey-200: #E5E7EB;
+    --grey-400: #9CA3AF;
+    --grey-600: #6B7280;
+    --grey-900: #111827;
+    --white: #FFFFFF;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+    --shadow-md: 0 4px 16px rgba(0,0,0,.10), 0 1px 4px rgba(0,0,0,.06);
+  }
+
+  .wrapper { max-width: 680px; margin: 0 auto; }
+
+  /* ── Header ──────────────────────────────────────────────── */
+  .site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 0 20px;
+  }
+  .logo-text {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--purple);
+    letter-spacing: -0.5px;
+  }
+  .live-badge {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--green-light);
+    color: #15803D;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    padding: 6px 14px;
+    border-radius: 100px;
+  }
+  .live-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--green);
+    border-radius: 50%;
+    animation: pulse-dot 1.5s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.75); }
+  }
+
+  /* ── Hero card ──────────────────────────────────────────── */
+  .lb-hero {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 28px 28px 24px;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 16px;
+  }
+  .lb-title {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--grey-900);
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+  .lb-title span { color: var(--purple); }
+  .lb-subtitle {
+    font-size: 14px;
+    color: var(--grey-600);
+    margin-bottom: 24px;
+  }
+  .lb-stats {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+  }
+  .lb-stat {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 0 12px;
+  }
+  .lb-stat:first-child { padding-left: 0; }
+  .lb-stat:last-child { padding-right: 0; }
+  .lb-stat .val {
+    font-size: 30px;
+    font-weight: 800;
+    color: var(--purple);
+    line-height: 1;
+    transition: color 0.3s;
+  }
+  .lb-stat .lbl {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--grey-400);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .stat-divider {
+    width: 1px;
+    background: var(--grey-200);
+    align-self: stretch;
+    margin: 4px 0;
+  }
+
+  /* ── Leaderboard list ────────────────────────────────────── */
+  .lb-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+  }
+
+  .lb-row {
+    background: var(--white);
+    border-radius: 14px;
+    box-shadow: var(--shadow-sm);
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: relative;
+    overflow: hidden;
+    will-change: transform;
+  }
+  .lb-row.rank-1 { border-left: 3px solid #F59E0B; }
+  .lb-row.rank-2 { border-left: 3px solid #94A3B8; }
+  .lb-row.rank-3 { border-left: 3px solid #CD7C2F; }
+
+  /* entrance animation */
+  .lb-row-enter {
+    animation: row-enter 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  @keyframes row-enter {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* score flash overlay */
+  .lb-row::after {
+    content: '+1';
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--green);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .lb-row.score-flash::after {
+    animation: score-pop 0.9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  @keyframes score-pop {
+    0%   { opacity: 0; transform: translateY(-50%); }
+    20%  { opacity: 1; transform: translateY(-60%); }
+    80%  { opacity: 1; transform: translateY(-70%); }
+    100% { opacity: 0; transform: translateY(-80%); }
+  }
+
+  /* ── Row parts ───────────────────────────────────────────── */
+  .lb-rank {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--grey-100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--grey-600);
+    flex-shrink: 0;
+  }
+  .lb-rank.medal { background: transparent; font-size: 24px; }
+
+  .lb-info { flex: 1; min-width: 0; }
+  .lb-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--grey-900);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .lb-sub {
+    font-size: 12px;
+    color: var(--grey-400);
+    font-weight: 400;
+    margin-top: 2px;
+  }
+
+  .lb-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+    flex-shrink: 0;
+  }
+  .lb-score {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--grey-900);
+    line-height: 1;
+    transition: color 0.4s;
+  }
+  .lb-score.flash { color: var(--green); }
+  .lb-score .denom {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--grey-400);
+  }
+  .lb-progress-bar {
+    width: 88px;
+    height: 4px;
+    background: var(--grey-200);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+  .lb-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--purple), #9B72F0);
+    border-radius: 100px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .lb-badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    padding: 3px 8px;
+    border-radius: 100px;
+    text-transform: uppercase;
+  }
+  .lb-badge.done     { background: var(--green-light); color: #15803D; }
+  .lb-badge.going    { background: var(--purple-light); color: var(--purple); }
+
+  /* ── Empty state ────────────────────────────────────────── */
+  .lb-empty {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 48px 28px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+  }
+  .lb-empty .icon { font-size: 36px; margin-bottom: 14px; }
+  .lb-empty .heading { font-size: 16px; font-weight: 700; color: var(--grey-900); margin-bottom: 6px; }
+  .lb-empty p { font-size: 13px; color: var(--grey-600); line-height: 1.5; }
+
+  /* ── Footer ──────────────────────────────────────────────── */
+  .lb-footer {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 12px;
+    color: var(--grey-400);
+    line-height: 1.6;
+  }
+  .lb-footer a {
+    color: var(--purple);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .lb-footer a:hover { text-decoration: underline; }
+
+  /* ── Connection error banner ────────────────────────────── */
+  .error-banner {
+    display: none;
+    background: #FEE2E2;
+    color: #991B1B;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 10px 16px;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+  .error-banner.show { display: block; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+<div class="wrapper">
+
+  <header class="site-header">
+    <span class="logo-text">ACKO</span>
+    <div class="live-badge">
+      <div class="live-dot"></div>
+      Live
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <div class="lb-hero">
+    <div class="lb-title"><span>UX Writing</span> Challenge</div>
+    <div class="lb-subtitle">Live leaderboard — updates after every answer</div>
+    <div class="lb-stats">
+      <div class="lb-stat">
+        <div class="val" id="stat-total">—</div>
+        <div class="lbl">Playing</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="lb-stat">
+        <div class="val" id="stat-done">—</div>
+        <div class="lbl">Finished</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="lb-stat">
+        <div class="val" id="stat-top">—</div>
+        <div class="lbl">Top score</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error banner -->
+  <div class="error-banner" id="error-banner">
+    Could not connect to the leaderboard. Check your internet connection and refresh.
+  </div>
+
+  <!-- Leaderboard -->
+  <div class="lb-list" id="lb-list">
+    <div class="lb-empty">
+      <div class="icon">⏳</div>
+      <div class="heading">Loading leaderboard…</div>
+      <p>Connecting to live data.</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="lb-footer">
+    Updates live as answers come in &nbsp;·&nbsp;
+    <a href="quiz.html">Take the quiz →</a>
+  </div>
+
+</div>
+
+<script>
+/* ============================================================
+   CONFIG
+============================================================ */
+const SUPABASE_URL = 'https://aockezekacztfwcrhqjv.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_9AILbi97khhPRxddkX_QaQ_3Yxsro40';
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+/* ============================================================
+   STATE
+============================================================ */
+let participants = [];        // sorted array
+let prevScores   = {};        // pid → last known score (for flash)
+let prevRanks    = {};        // pid → last known rank (for FLIP)
+
+/* ============================================================
+   MEDAL HELPERS
+============================================================ */
+const MEDALS = { 1: '🥇', 2: '🥈', 3: '🥉' };
+
+function rankLabel(n) {
+  return MEDALS[n]
+    ? `<div class="lb-rank medal">${MEDALS[n]}</div>`
+    : `<div class="lb-rank">${n}</div>`;
+}
+
+/* ============================================================
+   SORT — score desc, completed desc, answers_count asc, created_at asc
+============================================================ */
+function sortParticipants(list) {
+  return [...list].sort((a, b) => {
+    if (b.score !== a.score) return b.score - a.score;
+    if (b.completed !== a.completed) return b.completed ? 1 : -1;
+    if (a.answers_count !== b.answers_count) return a.answers_count - b.answers_count;
+    return new Date(a.created_at) - new Date(b.created_at);
+  });
+}
+
+/* ============================================================
+   UPDATE STATS
+============================================================ */
+function updateStats(list) {
+  document.getElementById('stat-total').textContent = list.length || '—';
+  document.getElementById('stat-done').textContent  = list.filter(p => p.completed).length || '—';
+  const top = list[0]?.score ?? null;
+  document.getElementById('stat-top').textContent   = top !== null ? top : '—';
+}
+
+/* ============================================================
+   RENDER — with FLIP animation
+============================================================ */
+function renderLeaderboard(newList, flashIds = new Set()) {
+  const container = document.getElementById('lb-list');
+
+  // Step 1: capture current DOM positions (for FLIP)
+  const beforePositions = {};
+  container.querySelectorAll('.lb-row[data-pid]').forEach(el => {
+    beforePositions[el.dataset.pid] = el.getBoundingClientRect().top;
+  });
+
+  // Step 2: build new DOM
+  if (!newList.length) {
+    container.innerHTML = `
+      <div class="lb-empty">
+        <div class="icon">🏁</div>
+        <div class="heading">No participants yet</div>
+        <p>Share the quiz link — the leaderboard updates in real time.</p>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = newList.map((p, i) => {
+    const rank = i + 1;
+    const rankClass = rank <= 3 ? ` rank-${rank}` : '';
+    const pct = Math.round((p.answers_count / 20) * 100);
+    const subText = p.completed
+      ? 'Finished'
+      : p.answers_count > 0
+        ? `Q${p.answers_count} of 20`
+        : 'Just joined';
+    const badgeHtml = p.completed
+      ? '<div class="lb-badge done">Done</div>'
+      : '<div class="lb-badge going">In progress</div>';
+
+    return `
+      <div class="lb-row${rankClass}" data-pid="${p.id}" data-rank="${rank}">
+        ${rankLabel(rank)}
+        <div class="lb-info">
+          <div class="lb-name">${escapeHtml(p.name)}</div>
+          <div class="lb-sub">${subText}</div>
+        </div>
+        <div class="lb-right">
+          <div class="lb-score${flashIds.has(p.id) ? ' flash' : ''}" id="score-${p.id}">
+            ${p.score}<span class="denom">/20</span>
+          </div>
+          <div class="lb-progress-bar">
+            <div class="lb-progress-fill" style="width:${pct}%"></div>
+          </div>
+          ${badgeHtml}
+        </div>
+      </div>`;
+  }).join('');
+
+  // Step 3: FLIP — animate position changes for existing rows
+  container.querySelectorAll('.lb-row[data-pid]').forEach(el => {
+    const pid = el.dataset.pid;
+    const oldTop = beforePositions[pid];
+
+    if (oldTop === undefined) {
+      // Brand-new participant — slide in
+      el.classList.add('lb-row-enter');
+      return;
+    }
+
+    const newTop = el.getBoundingClientRect().top;
+    const delta  = oldTop - newTop;
+
+    if (Math.abs(delta) > 1) {
+      el.style.transform  = `translateY(${delta}px)`;
+      el.style.transition = 'none';
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          el.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+          el.style.transform  = '';
+        });
+      });
+    }
+
+    // Score flash
+    if (flashIds.has(pid)) {
+      el.classList.add('score-flash');
+      setTimeout(() => el.classList.remove('score-flash'), 950);
+      const scoreEl = el.querySelector('.lb-score');
+      if (scoreEl) {
+        setTimeout(() => scoreEl.classList.remove('flash'), 800);
+      }
+    }
+  });
+}
+
+/* ============================================================
+   ESCAPE HTML
+============================================================ */
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ============================================================
+   HANDLE REALTIME UPDATE
+============================================================ */
+function handleUpdate(payload) {
+  const { eventType, new: row, old: oldRow } = payload;
+  const flashIds = new Set();
+
+  if (eventType === 'INSERT') {
+    participants.push(row);
+  } else if (eventType === 'UPDATE') {
+    const idx = participants.findIndex(p => p.id === row.id);
+    if (idx !== -1) {
+      if (row.score > participants[idx].score) flashIds.add(row.id);
+      participants[idx] = row;
+    } else {
+      participants.push(row);
+    }
+  } else if (eventType === 'DELETE') {
+    participants = participants.filter(p => p.id !== (oldRow?.id ?? ''));
+  }
+
+  participants = sortParticipants(participants);
+  updateStats(participants);
+  renderLeaderboard(participants, flashIds);
+}
+
+/* ============================================================
+   INIT — load + subscribe
+============================================================ */
+async function init() {
+  try {
+    const { data, error } = await db
+      .from('participants')
+      .select('*')
+      .order('score', { ascending: false });
+
+    if (error) throw error;
+
+    participants = sortParticipants(data || []);
+    updateStats(participants);
+    renderLeaderboard(participants);
+
+    // Subscribe to all changes on the participants table
+    db.channel('public:participants')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'participants'
+      }, handleUpdate)
+      .subscribe(status => {
+        if (status === 'SUBSCRIBED') {
+          document.getElementById('error-banner').classList.remove('show');
+        }
+      });
+
+  } catch (err) {
+    console.error('Leaderboard init failed:', err);
+    document.getElementById('error-banner').classList.add('show');
+    document.getElementById('lb-list').innerHTML = `
+      <div class="lb-empty">
+        <div class="icon">⚠️</div>
+        <div class="heading">Could not load leaderboard</div>
+        <p>Make sure the Supabase table is set up and RLS policies are in place.<br>See <strong>schema.sql</strong> for setup instructions.</p>
+      </div>`;
+  }
+}
+
+init();
+</script>
+</body>
+</html>

@@ -948,7 +948,34 @@
   /* ── Utility ─────────────────────────────────────────────── */
   .hidden { display: none !important; }
   .text-center { text-align: center; }
+
+  /* ── Name entry ────────────────────────────────────────────── */
+  .name-input-wrap { margin-bottom: 24px; }
+  .name-input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid var(--grey-200);
+    border-radius: 12px;
+    font-size: 15px;
+    font-family: 'Euclid Circular B', sans-serif;
+    color: var(--grey-900);
+    background: var(--grey-100);
+    outline: none;
+    transition: border-color 0.15s, background 0.15s;
+    margin-bottom: 10px;
+  }
+  .name-input:focus { border-color: var(--purple); background: white; }
+  .name-input::placeholder { color: var(--grey-400); }
+  .name-error {
+    font-size: 13px;
+    color: var(--red);
+    margin-bottom: 10px;
+    display: none;
+    text-align: left;
+  }
+  .btn-loading { opacity: 0.7; pointer-events: none; }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
 <div class="wrapper">
@@ -982,10 +1009,22 @@
           <span>Tricks</span>
         </div>
       </div>
-      <button class="btn btn-primary btn-lg" onclick="startQuiz()">
-        Start quiz
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
+      <div class="name-input-wrap">
+        <input
+          type="text"
+          id="player-name"
+          class="name-input"
+          placeholder="Enter your name to begin"
+          maxlength="30"
+          autocomplete="off"
+          onkeydown="if(event.key==='Enter') handleStartQuiz()"
+        />
+        <div class="name-error" id="name-error">Please enter your name to start</div>
+        <button class="btn btn-primary btn-lg btn-full" id="start-btn" onclick="handleStartQuiz()">
+          Start quiz
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
     </div>
   </section>
 
@@ -1067,6 +1106,71 @@
 </div><!-- /wrapper -->
 
 <script>
+/* ============================================================
+   SUPABASE — live score sync
+============================================================ */
+const SUPABASE_URL = 'https://aockezekacztfwcrhqjv.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_9AILbi97khhPRxddkX_QaQ_3Yxsro40';
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let participantId = null;
+let liveScore = 0;
+
+async function createParticipant(name) {
+  try {
+    const { data, error } = await db
+      .from('participants')
+      .insert([{ name: name.trim(), score: 0, answers_count: 0, completed: false }])
+      .select()
+      .single();
+    if (error) throw error;
+    participantId = data.id;
+  } catch (e) {
+    console.warn('Supabase createParticipant failed:', e.message);
+  }
+}
+
+async function pushScore(isCorrect) {
+  if (!participantId) return;
+  if (isCorrect) liveScore++;
+  const answersCount = submitted.filter(Boolean).length;
+  try {
+    await db.from('participants')
+      .update({ score: liveScore, answers_count: answersCount })
+      .eq('id', participantId);
+  } catch (e) {
+    console.warn('Supabase pushScore failed:', e.message);
+  }
+}
+
+async function markCompleted() {
+  if (!participantId) return;
+  try {
+    await db.from('participants')
+      .update({ completed: true })
+      .eq('id', participantId);
+  } catch (e) {
+    console.warn('Supabase markCompleted failed:', e.message);
+  }
+}
+
+async function handleStartQuiz() {
+  const nameInput = document.getElementById('player-name');
+  const nameError = document.getElementById('name-error');
+  const startBtn  = document.getElementById('start-btn');
+  const name = nameInput.value.trim();
+  if (!name) {
+    nameError.style.display = 'block';
+    nameInput.focus();
+    return;
+  }
+  nameError.style.display = 'none';
+  startBtn.classList.add('btn-loading');
+  startBtn.innerHTML = 'Setting up… <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  await createParticipant(name);
+  startQuiz();
+}
+
 /* ============================================================
    DATA — 20 questions
    correctIndex is 0-based (0=A, 1=B, 2=C, 3=D)
@@ -1675,6 +1779,7 @@ function submitAnswer() {
   const fi = document.getElementById("feedback-icon");
   const ft = document.getElementById("feedback-text");
   const isCorrect = chosen === q.correctIndex;
+  pushScore(isCorrect);
   fb.className = "feedback-banner show " + (isCorrect ? "correct" : "wrong");
   fi.textContent = isCorrect ? "✓" : "✗";
   ft.textContent = q.explanation;
@@ -1702,6 +1807,7 @@ function nextQuestion() {
    RESULTS
 ============================================================ */
 function showResults() {
+  markCompleted();
   document.getElementById("quiz-screen").style.display = "none";
   const rs = document.getElementById("results-screen");
   rs.style.display = "block";
@@ -1795,6 +1901,8 @@ function retryQuiz() {
   userAnswers = new Array(20).fill(null);
   submitted = new Array(20).fill(false);
   currentQ = 0;
+  liveScore = 0;
+  participantId = null;
   document.getElementById("results-screen").style.display = "none";
   document.getElementById("quiz-screen").style.display = "block";
   renderQuestion(0);
