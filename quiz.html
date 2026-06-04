@@ -908,49 +908,6 @@
     gap: 10px;
     margin-top: 16px;
   }
-  .skip-link {
-    margin-right: auto;
-    background: none;
-    border: none;
-    color: var(--grey-400);
-    font-size: 13px;
-    font-family: inherit;
-    cursor: pointer;
-    padding: 6px 2px;
-    transition: color 0.15s;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    text-decoration-color: rgba(100,116,139,0.4);
-  }
-  .skip-link:hover { color: var(--grey-600); }
-
-  /* skipped review screen */
-  #skipped-screen { display: none; padding-top: 8px; }
-  .skipped-card {
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 20px;
-    padding: 32px 24px;
-    text-align: center;
-    box-shadow: var(--shadow-lg);
-  }
-  .skipped-icon { font-size: 40px; margin-bottom: 16px; }
-  .skipped-title { font-size: 22px; font-weight: 700; color: var(--white); margin-bottom: 8px; }
-  .skipped-sub { font-size: 14px; color: var(--grey-600); margin-bottom: 24px; line-height: 1.5; }
-  .skipped-list {
-    display: flex; flex-wrap: wrap; gap: 8px;
-    justify-content: center; margin-bottom: 28px;
-  }
-  .skipped-tag {
-    background: rgba(123,92,240,0.15);
-    border: 1px solid rgba(123,92,240,0.3);
-    border-radius: 8px;
-    padding: 6px 14px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--purple);
-  }
-  .skipped-actions { display: flex; flex-direction: column; gap: 10px; }
 
   /* ── Results screen ─────────────────────────────────────── */
   #results-screen { display: none; padding-top: 8px; }
@@ -1135,7 +1092,7 @@
       <p>20 real-app screens with copy that's too vague, off-tone, or just wrong. Can you spot every mistake?</p>
       <div class="intro-meta">
         <div class="intro-meta-item">
-          <strong>20</strong>
+          <strong>25</strong>
           <span>Questions</span>
         </div>
         <div class="divider-v"></div>
@@ -1168,7 +1125,7 @@
     <!-- Progress -->
     <div class="progress-wrap">
       <div class="progress-top">
-        <span class="progress-label">Question <strong id="q-current">1</strong> of 20</span>
+        <span class="progress-label">Question <strong id="q-current">1</strong> of 25</span>
         <span class="progress-pct" id="q-pct">5%</span>
       </div>
       <div class="progress-track">
@@ -1195,29 +1152,11 @@
 
     <!-- Nav -->
     <div class="quiz-nav">
-      <button class="skip-link" id="skip-btn" onclick="skipQuestion()">Skip question</button>
       <button class="btn btn-outline" id="submit-btn" onclick="submitAnswer()">Submit</button>
       <button class="btn btn-primary hidden" id="next-btn" onclick="nextQuestion()">
         Next
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
-    </div>
-  </section>
-
-  <!-- ───────────── SKIPPED REVIEW SCREEN ───────────── -->
-  <section id="skipped-screen">
-    <div class="skipped-card">
-      <div class="skipped-icon">⏭</div>
-      <div class="skipped-title" id="skipped-title">You skipped a few</div>
-      <div class="skipped-sub" id="skipped-sub">Want to go back and answer them before seeing your score?</div>
-      <div class="skipped-list" id="skipped-list"></div>
-      <div class="skipped-actions">
-        <button class="btn btn-primary btn-lg" onclick="reviewSkipped()">
-          Review skipped
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <button class="btn btn-outline" onclick="showResults()">See results anyway</button>
-      </div>
     </div>
   </section>
 
@@ -1231,7 +1170,7 @@
         </svg>
         <div class="score-ring-text">
           <div class="score-num" id="result-score">0</div>
-          <div class="score-denom">/ 20</div>
+          <div class="score-denom">/ 25</div>
         </div>
       </div>
       <h2 id="result-headline">Well done!</h2>
@@ -1325,7 +1264,7 @@ async function handleStartQuiz() {
 }
 
 /* ============================================================
-   DATA — 20 questions
+   DATA — 25 questions
    correctIndex is 0-based (0=A, 1=B, 2=C, 3=D)
    mockup: function name string → rendered by buildMockup()
 ============================================================ */
@@ -1550,16 +1489,16 @@ const questions = [
   },
   {
     mockup: "q18",
-    navTitle: "Documents",
-    question: "What's the better version of this sentence?",
+    navTitle: "Cancel order",
+    question: "A user wants to cancel their food order. What's the core problem with this confirmation dialog?",
     options: [
-      "\"Your documents will be reviewed within 2 hours.\"",
-      "\"We'll review your documents within 2 hours.\"",
-      "\"Document review: within 2 hours.\"",
-      "\"Our team shall review your documents in 2 hours.\""
+      "The heading is too short",
+      "\"Yes\" and \"No\" are ambiguous — the user has to hold the question in their head to understand which button does what",
+      "It needs to explain the refund policy",
+      "Nothing — this is standard confirmation copy"
     ],
     correctIndex: 1,
-    explanation: "ACKO's voice uses contractions (\"we'll\" not \"we will\") and first person (\"we\"). \"Shall\" is too formal. Option A is passive. Option C drops the human touch entirely."
+    explanation: "\"Yes/No\" buttons are the classic confirmation dialog failure. They don't mirror the action. Better: \"Cancel order\" and \"Keep order\" — each button tells the user exactly what will happen without needing to remember the question."
   },
   {
     mockup: "q19",
@@ -1576,16 +1515,81 @@ const questions = [
   },
   {
     mockup: "q20",
-    navTitle: "Roadside Assist",
-    question: "What's wrong with this tone?",
+    navTitle: "Ride update",
+    question: "A driver just cancelled the user's ride. Which push notification copy works best?",
     options: [
-      "The emoji is inappropriate but the copy is fine",
-      "\"ASAP\" is too informal but otherwise it's correct",
-      "This is a high-stress moment; the copy should be calm, direct, and give a specific next step, not be upbeat",
-      "The header is too short"
+      "\"Driver cancelled your trip. Book again.\"",
+      "\"Oops! Your driver bailed. Tap to rebook 🚗\"",
+      "\"Your driver had to cancel. We're finding you another one now.\"",
+      "\"Trip Cancelled. Please Rebook Your Ride.\""
     ],
     correctIndex: 2,
-    explanation: "A car accident is a high-stress moment. Upbeat copy (\"Let's go! 🚗\", \"ACKO's got you!\") misreads the emotional context. Calm, direct, and specific is right: \"Help is on the way. Our team will reach you within 30 minutes.\""
+    explanation: "C acknowledges the inconvenience, uses active voice, and tells the user what's already happening next — without blaming anyone or requiring action. A is dismissive. B uses humour in a frustrating moment. D uses title case and passive construction."
+  },
+  {
+    mockup: "q21",
+    navTitle: "Search",
+    question: "A user picks a check-out date before check-in. Which error message handles this best?",
+    options: [
+      "\"You have entered invalid dates. Please correct your search.\"",
+      "\"Invalid date range. Try again.\"",
+      "\"Error: Date range not valid.\"",
+      "\"Check-out needs to be after check-in. Try different dates.\""
+    ],
+    correctIndex: 3,
+    explanation: "D never blames the user, tells them exactly what the constraint is, and gives a clear next step. A blames the user with \"you have entered invalid\". B and C read like system error logs — useful to engineers, not humans."
+  },
+  {
+    mockup: "q22",
+    navTitle: "Checkout",
+    question: "A payment just failed. Which copy handles this best?",
+    options: [
+      "\"Something went wrong. Please try again.\"",
+      "\"Payment failed. Please try again later.\"",
+      "\"Your payment didn't go through. Check your card details or try a different payment method.\"",
+      "\"Transaction unsuccessful. Contact your bank.\""
+    ],
+    correctIndex: 2,
+    explanation: "C tells the user what happened and gives two specific next steps. \"Something went wrong\" (A) is the most useless phrase in product copy — zero information. B adds \"later\" which is wrong when the user can retry immediately. D sends them offsite before suggesting an in-app fix."
+  },
+  {
+    mockup: "q23",
+    navTitle: "Book a ride",
+    question: "What's wrong with the button on this screen?",
+    options: [
+      "It should read \"Confirm your ride\" in title case",
+      "A button label should be a verb phrase. \"Ride Confirmation\" is a noun — it names a page, not an action",
+      "It's too long for a button label",
+      "Nothing — noun labels are standard on confirmation screens"
+    ],
+    correctIndex: 1,
+    explanation: "Button labels should always be verb phrases that tell the user what will happen when they tap. \"Ride Confirmation\" names a concept. \"Confirm ride\" is the right fix: action verb + object, sentence case, no filler."
+  },
+  {
+    mockup: "q24",
+    navTitle: "Your booking",
+    question: "A hotel booking was just cancelled. Which message handles this best?",
+    options: [
+      "\"Booking Cancelled. You may be eligible for a refund based on the cancellation policy.\"",
+      "\"We've cancelled your booking. You'll get a full refund within 5–7 business days. Details sent to your email.\"",
+      "\"Your booking has been cancelled. Refund eligibility depends on the property's policy.\"",
+      "\"Cancelled! Hope to see you book again soon! 🏨\""
+    ],
+    correctIndex: 1,
+    explanation: "B is in active voice, confirms the outcome definitively, gives the exact refund timeline, and tells the user where to find details. A and C use \"may be eligible\" — deliberately non-committal when the user most needs certainty. D is tone-deaf: celebrating a cancellation."
+  },
+  {
+    mockup: "q25",
+    navTitle: "Order history",
+    question: "A first-time user opens their order history. Which empty state copy works best?",
+    options: [
+      "\"No orders found.\"",
+      "\"No data to display.\"",
+      "\"It's empty here! Start ordering food now.\"",
+      "\"You haven't ordered yet. Hungry? Browse restaurants near you.\""
+    ],
+    correctIndex: 3,
+    explanation: "D acknowledges the user's state, adds a touch of warmth, and gives a clear forward path. A and B are database-speak — they describe a system state, not a human one. C is over-enthusiastic and the CTA is vague (\"now\" vs a specific action)."
   }
 ];
 
@@ -1848,15 +1852,13 @@ function mockupContent(id) {
       </div>`;
 
     case "q18": return `
-      <div class="ph-sub">Document verification</div>
-      <div class="ph-header" style="margin-bottom:8px">We received your documents</div>
-      <div class="ph-notif-bar" style="background:#EEF2FF;border-left-color:#6841E6;color:#3730A3">
-        We will review your documents within 2 hours.
-      </div>
-      <div class="ph-divider" style="margin-top:8px"></div>
-      <div class="ph-timeline-row"><div class="ph-timeline-dot done"></div><div class="ph-timeline-text">Documents uploaded</div></div>
-      <div class="ph-timeline-row"><div class="ph-timeline-dot active"></div><div class="ph-timeline-text"><strong>Review in progress</strong></div></div>
-      <div class="ph-timeline-row"><div class="ph-timeline-dot pending"></div><div class="ph-timeline-text">Verification complete</div></div>`;
+      <div class="ph-sub" style="color:#F59E0B;font-size:11px;font-weight:700;letter-spacing:0.5px;margin-bottom:8px">🍕 PIZZA PALACE · ₹420</div>
+      <div class="ph-header" style="margin-bottom:4px;font-size:16px">Cancel order?</div>
+      <div class="ph-body" style="margin-bottom:16px;color:#474649;font-size:13px">Are you sure you want to cancel?</div>
+      <div style="display:flex;gap:8px;margin-top:4px">
+        <button style="flex:1;padding:11px 8px;border-radius:8px;border:1.5px solid #E0E0E1;background:white;font-size:13px;font-weight:600;color:#0A0A0A;font-family:inherit;cursor:default">No</button>
+        <button style="flex:1;padding:11px 8px;border-radius:8px;border:none;background:#6841E6;color:white;font-size:13px;font-weight:600;font-family:inherit;cursor:default">Yes</button>
+      </div>`;
 
     case "q19": return `
       <div class="ph-success-icon">🛡</div>
@@ -1867,13 +1869,77 @@ function mockupContent(id) {
       <div class="ph-row"><span class="ph-label">Type</span><span class="ph-value">Comprehensive</span></div>`;
 
     case "q20": return `
-      <div style="background:linear-gradient(135deg,#6841E6,#9B72F0);margin:-16px -16px 10px;padding:14px 16px;border-radius:0">
-        <div style="font-size:14px;font-weight:800;color:white;line-height:1.3">Let's get you back on the road quickly! 🚗</div>
+      <div class="ph-sub" style="font-size:11px;color:#7A7B7D;font-weight:600;margin-bottom:10px">Just now</div>
+      <div style="background:#FEF9EC;border:1px solid #FDE68A;border-radius:12px;padding:14px;margin-bottom:8px">
+        <div style="font-size:10px;font-weight:700;color:#92400E;letter-spacing:0.5px;margin-bottom:6px">🚗 RIDE UPDATE</div>
+        <div style="font-size:13px;font-weight:700;color:#0A0A0A;margin-bottom:4px">Driver cancelled your trip.</div>
+        <div style="font-size:12px;color:#474649">Book again.</div>
       </div>
-      <div class="ph-body">Don't worry, ACKO's got you! We'll send help ASAP.</div>
-      <div class="ph-divider" style="margin:6px 0"></div>
-      <div class="ph-row"><span class="ph-label">Request type</span><span class="ph-value">Roadside assist</span></div>
-      <div class="ph-row"><span class="ph-label">Location</span><span class="ph-value">Sharing…</span></div>`;
+      <div style="background:#F5F5F5;border-radius:12px;padding:14px">
+        <div style="font-size:10px;font-weight:700;color:#7A7B7D;letter-spacing:0.5px;margin-bottom:6px">EARLIER TODAY</div>
+        <div style="font-size:12px;color:#7A7B7D">Your ride has been confirmed.</div>
+      </div>`;
+
+    case "q21": return `
+      <div class="ph-sub" style="margin-bottom:10px">Where are you going?</div>
+      <div style="display:flex;gap:8px;margin-bottom:12px">
+        <div style="flex:1;background:#F5F5F5;border-radius:8px;padding:10px 12px">
+          <div style="font-size:10px;color:#7A7B7D;font-weight:700;letter-spacing:0.4px;margin-bottom:3px">CHECK-IN</div>
+          <div style="font-size:15px;font-weight:700;color:#0A0A0A">12 Jun</div>
+        </div>
+        <div style="flex:1;background:#F5F5F5;border-radius:8px;padding:10px 12px;border:1.5px solid #EF4444">
+          <div style="font-size:10px;color:#7A7B7D;font-weight:700;letter-spacing:0.4px;margin-bottom:3px">CHECK-OUT</div>
+          <div style="font-size:15px;font-weight:700;color:#EF4444">10 Jun</div>
+        </div>
+      </div>
+      <div class="ph-notif-bar" style="background:#FEF2F2;border-left-color:#EF4444;color:#B91C1C;font-size:12px">
+        You have entered invalid dates. Please correct your search.
+      </div>`;
+
+    case "q22": return `
+      <div style="text-align:center;padding:12px 0 8px">
+        <div style="width:52px;height:52px;border-radius:50%;background:#FEF2F2;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:24px">✗</div>
+        <div style="font-size:16px;font-weight:700;color:#0A0A0A;margin-bottom:4px">Payment failed</div>
+      </div>
+      <div class="ph-notif-bar" style="background:#FEF2F2;border-left-color:#EF4444;color:#B91C1C;font-size:12px;margin-bottom:10px">
+        Something went wrong. Please try again.
+      </div>
+      <div class="ph-divider"></div>
+      <div class="ph-row"><span class="ph-label">Amount</span><span class="ph-value">₹342</span></div>
+      <div class="ph-row"><span class="ph-label">Method</span><span class="ph-value">UPI · 9876****10</span></div>`;
+
+    case "q23": return `
+      <div style="text-align:center;padding-bottom:12px">
+        <div style="font-size:32px;margin-bottom:6px">🚗</div>
+        <div style="font-size:14px;font-weight:700;color:#0A0A0A">Hatchback · ₹180</div>
+        <div style="font-size:12px;color:#7A7B7D;margin-top:2px">4 min away · up to 4 seats</div>
+      </div>
+      <div class="ph-divider"></div>
+      <div class="ph-row"><span class="ph-label">From</span><span class="ph-value">Koramangala</span></div>
+      <div class="ph-row"><span class="ph-label">To</span><span class="ph-value">MG Road</span></div>
+      <div class="ph-row"><span class="ph-label">Est. time</span><span class="ph-value">22 min</span></div>`;
+
+    case "q24": return `
+      <div style="text-align:center;padding-bottom:12px">
+        <div style="font-size:32px;margin-bottom:6px">🏨</div>
+        <div style="font-size:16px;font-weight:700;color:#0A0A0A;margin-bottom:2px">Booking Cancelled</div>
+      </div>
+      <div class="ph-notif-bar" style="background:#FEF9EC;border-left-color:#F59E0B;color:#92400E;font-size:12px;line-height:1.5;margin-bottom:10px">
+        You may be eligible for a refund based on the host's cancellation policy.
+      </div>
+      <div class="ph-divider"></div>
+      <div class="ph-row"><span class="ph-label">Property</span><span class="ph-value">The Grand Hotel</span></div>
+      <div class="ph-row"><span class="ph-label">Dates</span><span class="ph-value">14–16 Jun 2025</span></div>`;
+
+    case "q25": return `
+      <div style="text-align:center;padding:16px 0 8px">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" style="margin-bottom:12px">
+          <circle cx="32" cy="32" r="32" fill="#F5F5F5"/>
+          <rect x="18" y="20" width="28" height="24" rx="3" stroke="#7A7B7D" stroke-width="2" fill="none"/>
+          <path d="M23 28h18M23 33h12" stroke="#7A7B7D" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <div style="font-size:15px;font-weight:700;color:#0A0A0A;margin-bottom:4px">No orders found.</div>
+      </div>`;
 
     default: return `<div class="ph-body">Screen content</div>`;
   }
@@ -1898,9 +1964,14 @@ function mockupCTA(id) {
     q15: ["View plans", ""],
     q16: [null],
     q17: ["Try again", ""],
-    q18: ["Okay", ""],
+    q18: [null],
     q19: ["View policy", ""],
-    q20: ["Track help", ""],
+    q20: [null],
+    q21: ["Search", ""],
+    q22: ["Try again", ""],
+    q23: ["Ride Confirmation", ""],
+    q24: ["Back to home", ""],
+    q25: ["Browse restaurants", ""],
   };
   const entry = map[id];
   if (!entry || !entry[0]) return "";
@@ -1911,11 +1982,8 @@ function mockupCTA(id) {
    QUIZ STATE
 ============================================================ */
 let currentQ = 0;
-let userAnswers = new Array(20).fill(null);
-let submitted = new Array(20).fill(false);
-let skipped = new Array(20).fill(false);
-let reviewingSkipped = false;
-let skippedQueue = [];
+let userAnswers = new Array(25).fill(null);
+let submitted = new Array(25).fill(false);
 
 function startQuiz() {
   document.getElementById("intro-screen").style.display = "none";
@@ -1929,7 +1997,7 @@ function renderQuestion(index) {
   document.querySelector('.question-card')?.classList.add('q-enter');
 
   // progress
-  const pct = Math.round(((index + 1) / 20) * 100);
+  const pct = Math.round(((index + 1) / 25) * 100);
   document.getElementById("q-current").textContent = index + 1;
   document.getElementById("q-pct").textContent = pct + "%";
   document.getElementById("progress-fill").style.width = pct + "%";
@@ -1973,7 +2041,6 @@ function renderQuestion(index) {
   document.getElementById("next-btn").classList.add("hidden");
   document.getElementById("submit-btn").disabled = true;
   document.getElementById("submit-btn").style.opacity = "0.5";
-  document.getElementById("skip-btn").classList.remove("hidden");
 }
 
 function selectOption(i) {
@@ -2041,78 +2108,20 @@ function submitAnswer() {
 
   // swap buttons
   document.getElementById("submit-btn").classList.add("hidden");
-  document.getElementById("skip-btn").classList.add("hidden");
   const nb = document.getElementById("next-btn");
   nb.classList.remove("hidden");
-  nb.textContent = currentQ === 19 ? "See results" : "Next";
-  nb.innerHTML = currentQ === 19
+  nb.textContent = currentQ === 24 ? "See results" : "Next";
+  nb.innerHTML = currentQ === 24
     ? `See results <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`
     : `Next <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 }
 
-function skipQuestion() {
-  skipped[currentQ] = true;
-  userAnswers[currentQ] = null;
-  if (reviewingSkipped) {
-    advanceSkippedQueue();
-  } else if (currentQ < 19) {
-    renderQuestion(currentQ + 1);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  } else {
-    checkSkippedOrShowResults();
-  }
-}
-
 function nextQuestion() {
-  if (reviewingSkipped) {
-    advanceSkippedQueue();
-    return;
-  }
-  if (currentQ < 19) {
+  if (currentQ < 24) {
     renderQuestion(currentQ + 1);
     window.scrollTo({ top: 0, behavior: "smooth" });
   } else {
-    checkSkippedOrShowResults();
-  }
-}
-
-function checkSkippedOrShowResults() {
-  const indices = skipped.map((s, i) => s ? i : -1).filter(i => i >= 0);
-  if (indices.length === 0) { showResults(); return; }
-  document.getElementById("quiz-screen").style.display = "none";
-  const ss = document.getElementById("skipped-screen");
-  ss.style.display = "block";
-  const count = indices.length;
-  document.getElementById("skipped-title").textContent =
-    count === 1 ? "You skipped 1 question" : `You skipped ${count} questions`;
-  document.getElementById("skipped-sub").textContent =
-    "Want to go back and answer them before seeing your score?";
-  const list = document.getElementById("skipped-list");
-  list.innerHTML = indices.map(i => `<div class="skipped-tag">Q${i + 1}</div>`).join("");
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-function reviewSkipped() {
-  reviewingSkipped = true;
-  skippedQueue = skipped.map((s, i) => s ? i : -1).filter(i => i >= 0);
-  // reset skipped flags so they can skip again or answer
-  skippedQueue.forEach(i => { skipped[i] = false; });
-  document.getElementById("skipped-screen").style.display = "none";
-  document.getElementById("quiz-screen").style.display = "block";
-  renderQuestion(skippedQueue.shift());
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-function advanceSkippedQueue() {
-  if (skippedQueue.length > 0) {
-    renderQuestion(skippedQueue.shift());
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  } else {
-    reviewingSkipped = false;
-    // check if any were re-skipped
-    const stillSkipped = skipped.some(s => s);
-    if (stillSkipped) checkSkippedOrShowResults();
-    else showResults();
+    showResults();
   }
 }
 
@@ -2152,8 +2161,8 @@ function showResults() {
     }
     return a === q.correctIndex;
   }).length;
-  const wrong = 20 - correct;
-  const pct = (correct / 20) * 100;
+  const wrong = 25 - correct;
+  const pct = (correct / 25) * 100;
 
   document.getElementById("result-score").textContent = correct;
   document.getElementById("correct-count").textContent = correct;
@@ -2161,15 +2170,15 @@ function showResults() {
 
   // headline
   let headline, subline;
-  if (correct === 20) { headline = "Perfect score!"; subline = "You nailed every single question. ACKO's voice is strong with you."; }
-  else if (correct >= 16) { headline = "Excellent work!"; subline = "You've got a sharp eye for UX writing. Just a few edge cases to review."; }
-  else if (correct >= 12) { headline = "Good effort!"; subline = "Solid foundations. Review the explanations below to sharpen your instincts."; }
-  else if (correct >= 8) { headline = "Room to grow!"; subline = "You're getting there. Go through the explanations, they'll make a big difference."; }
+  if (correct === 25) { headline = "Perfect score!"; subline = "You nailed every single question. ACKO's voice is strong with you."; }
+  else if (correct >= 20) { headline = "Excellent work!"; subline = "You've got a sharp eye for UX writing. Just a few edge cases to review."; }
+  else if (correct >= 15) { headline = "Good effort!"; subline = "Solid foundations. Review the explanations below to sharpen your instincts."; }
+  else if (correct >= 10) { headline = "Room to grow!"; subline = "You're getting there. Go through the explanations, they'll make a big difference."; }
   else { headline = "Keep practising!"; subline = "UX writing takes time. Read through each explanation and try again."; }
   document.getElementById("result-headline").textContent = headline;
   document.getElementById("result-subline").textContent = subline;
 
-  if (correct >= 14) setTimeout(launchConfetti, 400);
+  if (correct >= 17) setTimeout(launchConfetti, 400);
 
   // animate ring — circumference = 2π × 45 ≈ 283
   const ring = document.getElementById("score-ring");
@@ -2255,8 +2264,8 @@ function toggleDetail(i) {
 }
 
 function retryQuiz() {
-  userAnswers = new Array(20).fill(null);
-  submitted = new Array(20).fill(false);
+  userAnswers = new Array(25).fill(null);
+  submitted = new Array(25).fill(false);
   currentQ = 0;
   liveScore = 0;
   participantId = null;
