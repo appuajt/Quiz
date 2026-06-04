@@ -782,7 +782,39 @@
     background: rgba(123,92,240,0.08);
     transform: translateX(2px);
   }
-  .option-label input[type="radio"] { display: none; }
+  .option-label input[type="radio"],
+  .option-label input[type="checkbox"] { display: none; }
+  .multi-check {
+    margin-left: auto;
+    flex-shrink: 0;
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    border: 1.5px solid rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: transparent;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    align-self: center;
+  }
+  .option-label.selected .multi-check {
+    background: var(--purple);
+    border-color: var(--purple);
+    color: white;
+    box-shadow: 0 0 8px rgba(123,92,240,0.5);
+  }
+  .option-label.correct .multi-check {
+    background: var(--green);
+    border-color: var(--green);
+    color: white;
+  }
+  .option-label.wrong .multi-check {
+    background: var(--red);
+    border-color: var(--red);
+    color: white;
+  }
   .option-letter {
     width: 28px; height: 28px;
     border-radius: 8px;
@@ -1859,8 +1891,12 @@ function renderQuestion(index) {
     label.innerHTML = `
       <input type="${isMulti ? 'checkbox' : 'radio'}" name="option" value="${i}" />
       <div class="option-letter">${letters[i]}</div>
-      <div class="option-text">${opt}</div>`;
-    label.addEventListener("click", () => isMulti ? toggleOption(i) : selectOption(i));
+      <div class="option-text">${opt}</div>
+      ${isMulti ? '<div class="multi-check">✓</div>' : ''}`;
+    label.addEventListener("click", (e) => {
+      if (isMulti) { e.preventDefault(); toggleOption(i); }
+      else selectOption(i);
+    });
     ol.appendChild(label);
   });
 
