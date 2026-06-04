@@ -1410,16 +1410,16 @@ const questions = [
   },
   {
     mockup: "q14",
-    navTitle: "Reminder",
-    question: "What should this copy look like?",
+    navTitle: "Policy details",
+    question: "Rs. 2,000 deductible will be applicable. What's wrong with this sentence? Pick all that apply.",
     options: [
-      "\"PUC expiry warning! Don't let your coverage lapse!\"",
-      "\"Your PUC expires in 3 days. Renew now to avoid a fine.\"",
-      "\"Please renew your PUC before it expires.\"",
-      "\"Reminder: PUC certificate renewal required.\""
+      "Currency format is wrong; should be ₹2,000",
+      "\"Will be applicable\" is passive; tell the user directly what they pay",
+      "Doesn't tell the user why they're paying this amount",
+      "\"Deductible\" should be replaced with a simpler word every time it's used"
     ],
-    correctIndex: 1,
-    explanation: "Specificity reduces anxiety and drives action. \"3 days\" is a concrete deadline. \"Renew now to avoid a fine\" gives a clear reason. No exclamation marks, no jargon."
+    correctIndices: [0, 1, 2],
+    explanation: "\"Deductible\" is fine to use — it gets explained when first introduced in the UI, not replaced everywhere. The real issues: Rs. should be ₹, the passive voice buries the user's action, and there's no context for why this amount applies."
   },
   {
     mockup: "q15",
@@ -1706,12 +1706,15 @@ function mockupContent(id) {
       <div class="ph-body">It may be disheartening, but your claim has been rejected.</div>`;
 
     case "q14": return `
-      <div style="background:#FEF3C7;border-left:3px solid #D97706;border-radius:4px;padding:8px 10px;margin-bottom:6px">
-        <div style="font-size:11px;font-weight:700;color:#92400E;margin-bottom:3px">Your policy needs attention!</div>
-        <div style="font-size:11px;color:#78350F;line-height:1.4">Your PUC is about to expire soon. Take action immediately!</div>
-      </div>
-      <div class="ph-row"><span class="ph-label">Vehicle</span><span class="ph-value">MH12 AB 4521</span></div>
-      <div class="ph-row"><span class="ph-label">PUC valid till</span><span class="ph-value" style="color:#D97706">7 Jun 2026</span></div>`;
+      <div class="ph-sub">Claim summary</div>
+      <div class="ph-row"><span class="ph-label">Claim no.</span><span class="ph-value">CLM-2026-00912</span></div>
+      <div class="ph-row"><span class="ph-label">Status</span><span class="ph-value" style="color:#22C55E">Approved</span></div>
+      <div class="ph-row"><span class="ph-label">Amount</span><span class="ph-value">₹48,000</span></div>
+      <div class="ph-divider"></div>
+      <div style="background:#FEF9EC;border-radius:8px;padding:10px 12px;border-left:3px solid #D97706">
+        <div style="font-size:11px;font-weight:700;color:#92400E;margin-bottom:4px">Important</div>
+        <div style="font-size:12px;color:#78350F;line-height:1.5;font-family:'Euclid Circular B',sans-serif">Rs. 2,000 deductible will be applicable.</div>
+      </div>`;
 
     case "q15": return `
       <div style="text-align:center;padding:8px 0 12px">
@@ -1786,7 +1789,7 @@ function mockupCTA(id) {
     q11: [null],
     q12: ["Got it", ""],
     q13: ["Contact support", ""],
-    q14: ["Renew PUC", ""],
+    q14: ["View full claim", ""],
     q15: ["View plans", ""],
     q16: ["Click here to confirm your nominee details and proceed", ""],
     q17: ["Wait for agent", "muted"],
@@ -1834,15 +1837,16 @@ function renderQuestion(index) {
   const ol = document.getElementById("options-list");
   ol.innerHTML = "";
   const letters = ["A","B","C","D"];
+  const isMulti = Array.isArray(q.correctIndices);
   q.options.forEach((opt, i) => {
     const label = document.createElement("label");
     label.className = "option-label";
     label.dataset.index = i;
     label.innerHTML = `
-      <input type="radio" name="option" value="${i}" />
+      <input type="${isMulti ? 'checkbox' : 'radio'}" name="option" value="${i}" />
       <div class="option-letter">${letters[i]}</div>
       <div class="option-text">${opt}</div>`;
-    label.addEventListener("click", () => selectOption(i));
+    label.addEventListener("click", () => isMulti ? toggleOption(i) : selectOption(i));
     ol.appendChild(label);
   });
 
@@ -1862,12 +1866,23 @@ function renderQuestion(index) {
 function selectOption(i) {
   if (submitted[currentQ]) return;
   userAnswers[currentQ] = i;
-  // update UI
   document.querySelectorAll(".option-label").forEach(l => l.classList.remove("selected"));
   document.querySelectorAll(".option-label")[i].classList.add("selected");
-  // enable submit
   document.getElementById("submit-btn").disabled = false;
   document.getElementById("submit-btn").style.opacity = "1";
+}
+
+function toggleOption(i) {
+  if (submitted[currentQ]) return;
+  if (!Array.isArray(userAnswers[currentQ])) userAnswers[currentQ] = [];
+  const arr = userAnswers[currentQ];
+  const pos = arr.indexOf(i);
+  const label = document.querySelectorAll(".option-label")[i];
+  if (pos === -1) { arr.push(i); label.classList.add("selected"); }
+  else { arr.splice(pos, 1); label.classList.remove("selected"); }
+  const hasSelection = arr.length > 0;
+  document.getElementById("submit-btn").disabled = !hasSelection;
+  document.getElementById("submit-btn").style.opacity = hasSelection ? "1" : "0.5";
 }
 
 function submitAnswer() {
@@ -1877,18 +1892,31 @@ function submitAnswer() {
 
   submitted[currentQ] = true;
   const labels = document.querySelectorAll(".option-label");
+  const isMulti = Array.isArray(q.correctIndices);
 
   labels.forEach((l, i) => {
     l.classList.add("disabled");
-    if (i === q.correctIndex) l.classList.add("correct");
-    else if (i === chosen && i !== q.correctIndex) l.classList.add("wrong");
+    if (isMulti) {
+      if (q.correctIndices.includes(i)) l.classList.add("correct");
+      else if (Array.isArray(chosen) && chosen.includes(i)) l.classList.add("wrong");
+    } else {
+      if (i === q.correctIndex) l.classList.add("correct");
+      else if (i === chosen && i !== q.correctIndex) l.classList.add("wrong");
+    }
   });
 
   // feedback
   const fb = document.getElementById("feedback-banner");
   const fi = document.getElementById("feedback-icon");
   const ft = document.getElementById("feedback-text");
-  const isCorrect = chosen === q.correctIndex;
+  let isCorrect;
+  if (isMulti) {
+    const sel = Array.isArray(chosen) ? [...chosen].sort((a,b)=>a-b) : [];
+    const exp = [...q.correctIndices].sort((a,b)=>a-b);
+    isCorrect = JSON.stringify(sel) === JSON.stringify(exp);
+  } else {
+    isCorrect = chosen === q.correctIndex;
+  }
   pushScore(isCorrect);
   if (!isCorrect) {
     document.querySelector('.question-card').classList.add('shake');
@@ -1945,7 +1973,14 @@ function showResults() {
   const rs = document.getElementById("results-screen");
   rs.style.display = "block";
 
-  const correct = userAnswers.filter((a, i) => a === questions[i].correctIndex).length;
+  const correct = userAnswers.filter((a, i) => {
+    const q = questions[i];
+    if (Array.isArray(q.correctIndices)) {
+      const sel = Array.isArray(a) ? [...a].sort((x,y)=>x-y) : [];
+      return JSON.stringify(sel) === JSON.stringify([...q.correctIndices].sort((x,y)=>x-y));
+    }
+    return a === q.correctIndex;
+  }).length;
   const wrong = 20 - correct;
   const pct = (correct / 20) * 100;
 
@@ -1982,28 +2017,44 @@ function showResults() {
 
   questions.forEach((q, i) => {
     const ua = userAnswers[i];
-    const isCorrect = ua === q.correctIndex;
+    const isMultiQ = Array.isArray(q.correctIndices);
+    let isCorrect;
+    if (isMultiQ) {
+      const sel = Array.isArray(ua) ? [...ua].sort((a,b)=>a-b) : [];
+      isCorrect = JSON.stringify(sel) === JSON.stringify([...q.correctIndices].sort((a,b)=>a-b));
+    } else {
+      isCorrect = ua === q.correctIndex;
+    }
     const item = document.createElement("div");
     item.className = "result-item";
 
     let detailsHTML = "";
     if (!isCorrect) {
+      const yourText = isMultiQ
+        ? (Array.isArray(ua) && ua.length ? ua.map(x => letters[x]).join(", ") + ". " + ua.map(x => q.options[x]).join(" / ") : "Not answered")
+        : (ua !== null ? `${letters[ua]}. ${q.options[ua]}` : "Not answered");
+      const correctText = isMultiQ
+        ? q.correctIndices.map(x => letters[x]).join(", ") + ". " + q.correctIndices.map(x => q.options[x]).join(" / ")
+        : `${letters[q.correctIndex]}. ${q.options[q.correctIndex]}`;
       detailsHTML = `
         <div class="result-details" id="rd-${i}">
           <div class="result-answer-row">
             <div class="answer-dot your"></div>
-            <div><span class="answer-label">Your answer:</span>${letters[ua] ?? "–"}. ${ua !== null ? q.options[ua] : "Not answered"}</div>
+            <div><span class="answer-label">Your answer:</span>${yourText}</div>
           </div>
           <div class="result-answer-row">
             <div class="answer-dot correct"></div>
-            <div><span class="answer-label">Correct:</span>${letters[q.correctIndex]}. ${q.options[q.correctIndex]}</div>
+            <div><span class="answer-label">Correct:</span>${correctText}</div>
           </div>
           <div style="margin-top:8px;font-size:12px;color:var(--grey-600);line-height:1.5;padding-top:8px;border-top:1px solid var(--grey-200)">${q.explanation}</div>
         </div>`;
     } else {
+      const correctText = isMultiQ
+        ? q.correctIndices.map(x => letters[x]).join(", ")
+        : `${letters[q.correctIndex]}. ${q.options[q.correctIndex]}`;
       detailsHTML = `
         <div class="result-details" id="rd-${i}">
-          <div class="result-correct-badge">✓ Correct — ${letters[q.correctIndex]}. ${q.options[q.correctIndex]}</div>
+          <div class="result-correct-badge">✓ Correct${isMultiQ ? " — " + correctText : " — " + correctText}</div>
           <div style="margin-top:8px;font-size:12px;color:var(--grey-600);line-height:1.5">${q.explanation}</div>
         </div>`;
     }
