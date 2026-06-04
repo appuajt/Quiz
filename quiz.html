@@ -1334,16 +1334,16 @@ const questions = [
   },
   {
     mockup: "q08",
-    navTitle: "Health Summary",
-    question: "Which of these is the plainspoken alternative?",
+    navTitle: "Claim status",
+    question: "As per our UX writing playbook, what's wrong with the copy on screen?",
     options: [
-      "\"Deductible applicable: ₹2,000\"",
-      "\"Co-payment: ₹2,000 per hospitalisation\"",
-      "\"You'll pay ₹2,000 first. ACKO covers the rest.\"",
-      "\"IDV deductible: ₹2,000\""
+      "It should use active voice",
+      "It's in title case. Should be sentence case",
+      "It needs an exclamation mark",
+      "Nothing, this is correct"
     ],
-    correctIndex: 2,
-    explanation: "ACKO's voice is plainspoken: explain what something means for the user, not just what it's called. \"You'll pay ₹2,000 first\" communicates the impact directly."
+    correctIndex: 1,
+    explanation: "ACKO uses sentence case everywhere: headings, CTAs, labels, status messages. Title case (capitalising every word) is reserved for product or plan names only. The correct copy is: Your claim is under review."
   },
   {
     mockup: "q09",
@@ -1623,14 +1623,14 @@ function mockupContent(id) {
       <div class="ph-row"><span class="ph-label">Claim ID</span><span class="ph-value">#CL-20512</span></div>`;
 
     case "q08": return `
-      <div class="ph-sub">Coverage summary</div>
-      <div class="ph-row"><span class="ph-label">Sum insured</span><span class="ph-value">₹5,00,000</span></div>
-      <div class="ph-row" style="background:#FEF9EC;border-radius:6px;padding:8px;border-bottom:none;margin:2px 0">
-        <span class="ph-label" style="font-size:11px;color:#92400E">Applicable deductible</span>
-        <span class="ph-value" style="color:#92400E">₹2,000 (as per policy terms)</span>
+      <div style="text-align:center;padding:6px 0 12px">
+        <div style="font-size:32px;margin-bottom:8px">🔍</div>
+        <div style="font-size:15px;font-weight:700;color:#141414;line-height:1.4;font-family:'Euclid Circular B',sans-serif">Your Claim Is Under Review</div>
       </div>
-      <div class="ph-row"><span class="ph-label">Room rent</span><span class="ph-value">Up to ₹3,000/day</span></div>
-      <div class="ph-row"><span class="ph-label">Day care</span><span class="ph-value">Covered</span></div>`;
+      <div class="ph-divider"></div>
+      <div class="ph-row"><span class="ph-label">Claim no.</span><span class="ph-value">CLM-2026-00831</span></div>
+      <div class="ph-row"><span class="ph-label">Submitted</span><span class="ph-value">2 Jun 2026</span></div>
+      <div class="ph-row"><span class="ph-label">Est. update</span><span class="ph-value">Within 4 hours</span></div>`;
 
     case "q09": return `
       <div class="ph-sub">Documents</div>
@@ -1757,7 +1757,7 @@ function mockupCTA(id) {
     q05: ["Start claim", ""],
     q06: ["Start chat", ""],
     q07: ["Got it", ""],
-    q08: ["View full policy", ""],
+    q08: ["Track claim", ""],
     q09: ["Download all", ""],
     q10: ["View policy", ""],
     q11: [null],
