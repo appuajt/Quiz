@@ -315,6 +315,81 @@
   }
   .lb-footer a:hover { text-decoration: underline; }
 
+  /* ── Reset button ───────────────────────────────────────── */
+  .reset-wrap {
+    text-align: center;
+    margin-top: 20px;
+  }
+  .btn-reset {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Euclid Circular B', sans-serif;
+    color: #991B1B;
+    background: #FEE2E2;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn-reset:hover { background: #FECACA; }
+  .btn-reset:disabled { opacity: 0.5; pointer-events: none; }
+
+  /* ── Confirm dialog ─────────────────────────────────────── */
+  .confirm-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+  .confirm-overlay.show { display: flex; }
+  .confirm-card {
+    background: white;
+    border-radius: 16px;
+    padding: 28px 24px;
+    max-width: 360px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    text-align: center;
+  }
+  .confirm-card .icon { font-size: 32px; margin-bottom: 12px; }
+  .confirm-card h3 { font-size: 17px; font-weight: 800; color: #111827; margin-bottom: 8px; }
+  .confirm-card p { font-size: 13px; color: #6B7280; line-height: 1.5; margin-bottom: 20px; }
+  .confirm-actions { display: flex; gap: 10px; }
+  .btn-cancel {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    border: 2px solid #E5E7EB;
+    background: white;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Euclid Circular B', sans-serif;
+    color: #374151;
+    cursor: pointer;
+  }
+  .btn-confirm-delete {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: #EF4444;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Euclid Circular B', sans-serif;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn-confirm-delete:hover { background: #DC2626; }
+
   /* ── Connection error banner ────────────────────────────── */
   .error-banner {
     display: none;
@@ -384,6 +459,26 @@
     <a href="quiz.html">Take the quiz →</a>
   </div>
 
+  <!-- Reset button -->
+  <div class="reset-wrap">
+    <button class="btn-reset" onclick="showConfirm()">
+      🗑 Reset leaderboard
+    </button>
+  </div>
+
+</div>
+
+<!-- Confirm dialog -->
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="confirm-card">
+    <div class="icon">⚠️</div>
+    <h3>Reset leaderboard?</h3>
+    <p>This deletes all participant data permanently. Do this before a fresh session — not during one.</p>
+    <div class="confirm-actions">
+      <button class="btn-cancel" onclick="hideConfirm()">Cancel</button>
+      <button class="btn-confirm-delete" id="confirm-delete-btn" onclick="resetLeaderboard()">Yes, reset</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -605,6 +700,33 @@ async function init() {
 }
 
 init();
+
+/* ============================================================
+   RESET
+============================================================ */
+function showConfirm() {
+  document.getElementById('confirm-overlay').classList.add('show');
+}
+function hideConfirm() {
+  document.getElementById('confirm-overlay').classList.remove('show');
+}
+async function resetLeaderboard() {
+  const btn = document.getElementById('confirm-delete-btn');
+  btn.textContent = 'Deleting…';
+  btn.disabled = true;
+  try {
+    const { error } = await db.from('participants').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+    if (error) throw error;
+    participants = [];
+    updateStats([]);
+    renderLeaderboard([]);
+    hideConfirm();
+  } catch (e) {
+    btn.textContent = 'Error — try again';
+    btn.disabled = false;
+    console.error('Reset failed:', e);
+  }
+}
 </script>
 </body>
 </html>
