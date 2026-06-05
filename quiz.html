@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>ACKO UX Writing Challenge</title>
+<title>ACKO UX Writing Quiz</title>
 <style>
   /* ── Euclid Circular B ─────────────────────────────────── */
   @font-face {
@@ -1312,7 +1312,8 @@
   .music-toggle.playing { color: #fff; border-color: rgba(180,142,248,0.55); background: rgba(123,92,240,0.22); }
   .music-toggle.playing .music-eq { display: inline-flex; }
   .music-toggle.playing .music-off-icon { display: none; }
-  body.quiz-active .music-toggle { display: inline-flex; }
+  body.quiz-active .music-toggle,
+  body.results-active .music-toggle { display: inline-flex; }
 
   /* ── Quiz countdown timer (top-left) ───────────────────── */
   .quiz-timer {
@@ -3020,6 +3021,7 @@ function showResults() {
   AmbientMusic.pause();
   reflectMusicState();
   document.body.classList.remove("quiz-active");
+  document.body.classList.add("results-active");
   document.getElementById("quiz-screen").style.display = "none";
   const rs = document.getElementById("results-screen");
   rs.style.display = "block";
@@ -3145,7 +3147,7 @@ function toggleDetail(i) {
 const TITLE_SEGMENTS = [
   { text: "The ", grad: false },
   { text: "UX Writing", grad: true },
-  { text: " Challenge", grad: false },
+  { text: " Quiz", grad: false },
 ];
 
 function typeTitle() {
@@ -3185,6 +3187,7 @@ function retryQuiz() {
   participantId = null;
   document.getElementById("results-screen").style.display = "none";
   document.getElementById("quiz-screen").style.display = "block";
+  document.body.classList.remove("results-active");
   document.body.classList.add("quiz-active");
   renderQuestion(0);
   window.scrollTo({ top: 0, behavior: "smooth" });
